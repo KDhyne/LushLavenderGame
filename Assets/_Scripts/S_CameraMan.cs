@@ -19,7 +19,7 @@ public class S_CameraMan : MonoBehaviour
     {
         C_mainCamera = Camera.main;
         T_cameraManTransform = transform;
-        T_cameraTarget = GameObject.Find("_Player").transform;
+        T_cameraTarget = GameObject.Find("Player").transform;
         st_currentCameraState = CameraState.ZoomIn;
     }
 

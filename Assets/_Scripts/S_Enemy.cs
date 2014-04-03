@@ -19,7 +19,7 @@ public class S_Enemy : S_Actor
         f_moveSpeed = s_GUI.f_enemySpeed;
 
         //Set a random texture from an array of textures
-        go_actorSprite.renderer.material.mainTexture = mat_icons[Random.Range(0, mat_icons.Length)];
+        //go_actorSprite.renderer.material.mainTexture = mat_icons[Random.Range(0, mat_icons.Length)];
 	}
 	
 	// Update is called once per frame

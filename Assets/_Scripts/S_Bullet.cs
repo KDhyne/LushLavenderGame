@@ -69,9 +69,9 @@ public class S_Bullet : MonoBehaviour
         //Get the target object's transform
         T_targetTransform = GameObject.Find("Target Prefab").transform;
 
-        s_player = (S_Player)GameObject.Find("_Player").GetComponent("S_Player");
+        s_player = (S_Player)GameObject.Find("Player").GetComponent("S_Player");
         //Get the Player transform
-        T_playerTransform = GameObject.Find("_Player").transform;
+        T_playerTransform = GameObject.Find("Player").transform;
         //Get the power bar
         go_powerBar = GameObject.Find("Power Bar");
         //Start the power bar scale at 0
@@ -243,11 +243,11 @@ public class S_Bullet : MonoBehaviour
         GameObject explosion = (GameObject)Instantiate(go_explosion, T_bulletTransform.position, Quaternion.identity);
 
         //Shake the things to shake
-        foreach (string objName in stuffToShake)
-        {
-            GameObject go = GameObject.Find(objName);
-            //iTween.PunchPosition(go, new Vector3(Random.Range(-.3f, .3f), Random.Range(-.3f, .3f), 0) * 10, .25f);
-        }
+        //foreach (string objName in stuffToShake)
+        //{
+        //    GameObject go = GameObject.Find(objName);
+        //    //iTween.PunchPosition(go, new Vector3(Random.Range(-.3f, .3f), Random.Range(-.3f, .3f), 0) * 10, .25f);
+        //}
 
         //Destroy the explosion after a set time
         Destroy(explosion.gameObject, .5f);

@@ -1,37 +1,27 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class S_ActorFoot : MonoBehaviour 
 {
     //Actor to whom the foot is attached
-    public S_Actor s_actor;
+    private S_Actor parentActor;
 
     //Number of contact floors
-    public int i_floorCount = 0;
+    private int numFloorsTouching;
 
-    float f_yContactPos;
+    private float contactPositionY;
 
-    float f_actorFloorPos;
+    float relativeFloorPosition;
 
     //Stores the floors depending on orientation to actor
-    public GameObject go_leftFloor;
-    public GameObject go_rightFloor;
+    public GameObject leftFloor;
+    public GameObject rightFloor;
 
     //public bool b_canDetectWalls;
 
 	// Use this for initialization
 	void Start () 
     {
-        s_actor = transform.parent.gameObject.GetComponent<S_Actor>();
-	}
-	
-	// Update is called once per frame
-	void Update () 
-    {
-        if (i_floorCount >= 3)
-        {
-            Debug.Log("Aha!!");
-        }
+        this.parentActor = transform.parent.gameObject.GetComponent<S_Actor>();
 	}
 
     void OnTriggerEnter(Collider otherObj)
@@ -39,51 +29,31 @@ public class S_ActorFoot : MonoBehaviour
         if (otherObj.tag == "Floor" || otherObj.tag == "MovingFloor")
         {
             //Raise the number of contact Floors by 1
-            i_floorCount++;
+            this.numFloorsTouching++;
 			
 			//Add the floor to the floor array. This will be used to determine which incline to use for snapping
-            CheckFloorLR(otherObj);
+            this.CheckSurroundingFloors(otherObj);
 
             //Get the floor's rotation
-            s_actor.f_floorRot = (otherObj.transform.eulerAngles.z * Mathf.Deg2Rad);
+            this.parentActor.ActiveFloorRotation = (otherObj.transform.eulerAngles.z * Mathf.Deg2Rad);
 
-            s_actor.b_canDetectFloors = false;
+            this.parentActor.CanDetectFloors = false;
 
             //Ground the actor and stop vertical velocity
-            s_actor.st_verticalState = S_Actor.VerticalState.Grounded;
-            s_actor.f_velY = 0;
+            this.parentActor.CurrentVerticalState = S_Actor.VerticalState.Grounded;
+            this.parentActor.VerticalSpeed = 0;
             
             //Get the center of contact, located at the middle of the platform directly under the actor's feet
-            float f_xDistFromFloorCenter = otherObj.transform.position.x - transform.position.x;
+            var xDistanceFromFloorCenter = otherObj.transform.position.x - transform.position.x;
             //Debug.Log("xDist = " + f_xDistFromFloorCenter);
-            float f_yDistFromFloorCenter = f_xDistFromFloorCenter * Mathf.Tan(s_actor.f_floorRot);
+            var yDistFromFloorCenter = xDistanceFromFloorCenter * Mathf.Tan(this.parentActor.ActiveFloorRotation);
 
-            f_yContactPos = otherObj.transform.position.y - f_yDistFromFloorCenter;
+            this.contactPositionY = otherObj.transform.position.y - yDistFromFloorCenter;
 
             //Check actor's y position relative to floor
-            f_actorFloorPos = s_actor.ActorTransform.position.y - f_yContactPos;
+            this.relativeFloorPosition = this.parentActor.ActorTransform.position.y - this.contactPositionY;
 
             SnapToFloor(otherObj);
-
-            ////Snap smoothly
-            ////if actor is above floor
-            //if (f_actorFloorPos > 0 && i_floorCount == 1)
-            //{
-            //    s_actor.Snap(otherObj, "Floor", f_yContactPos);
-            //    //Debug.Log("Snapping to " + otherObj.gameObject.name);
-
-            //}
-            ////else if actor is below floor
-            //else if (f_actorFloorPos < 0 && i_floorCount == 1)
-            //{
-            //    s_actor.Snap(otherObj, "Ceiling", f_yContactPos);
-            //    s_actor.st_verticalState = S_Actor.VerticalState.Airborn;
-            //}
-
-            //if (otherObj.tag == "MovingFloor")
-            //{
-            //    s_actor.gameObject.transform.parent = otherObj.transform;
-            //}
         }
     }
 
@@ -92,120 +62,109 @@ public class S_ActorFoot : MonoBehaviour
         if (otherObj.tag == "Floor" || otherObj.tag == "MovingFloor")
         {
             //Reduce number of contact floors by 1
-            i_floorCount--;
+            this.numFloorsTouching--;
 
-            if (i_floorCount == 1)
+            if (this.numFloorsTouching == 1)
             {
-                if (s_actor.b_facingRight)
+                if (this.parentActor.FacingRight)
                 {
-                    go_leftFloor = go_rightFloor;
-                    //SnapToFloor(go_rightFloor.collider);
+                    this.leftFloor = this.rightFloor;
+                    //SnapToFloor(rightFloor.collider);
                 }
                 else
                 {
-                    go_rightFloor = go_leftFloor;
-                    //SnapToFloor(go_leftFloor.collider);
+                    this.rightFloor = this.leftFloor;
+                    //SnapToFloor(leftFloor.collider);
                 }
             }
 
-
             //If the number of contact floors is zero, make the actor airborn,
             //set horizontal movement rotation to zero, and unparent its transform
-            if (i_floorCount <= 0)
+            if (this.numFloorsTouching <= 0)
             {
-                go_leftFloor = null;
-                go_rightFloor = null;
+                this.leftFloor = null;
+                this.rightFloor = null;
 
-                s_actor.st_verticalState = S_Actor.VerticalState.Airborn;
-                s_actor.b_canDetectFloors = true;
-                s_actor.gameObject.transform.parent = null;
-                s_actor.f_floorRot = 0;
+                this.parentActor.CurrentVerticalState = S_Actor.VerticalState.Airborn;
+                this.parentActor.CanDetectFloors = true;
+                this.parentActor.gameObject.transform.parent = null;
+                this.parentActor.ActiveFloorRotation = 0;
             }
         }
     }
 	
-	public void CheckFloorLR(Collider floorCollider)
+    /// <summary>
+    /// Check where the floor the foot is in contact with lies and determine if it
+    /// lies on the left or right of the actor relative to the camera
+    /// </summary>
+    /// <param name="floorCollider"></param>
+	public void CheckSurroundingFloors(Collider floorCollider)
     {
-        float xDistFromFloorCenter = floorCollider.transform.position.x - transform.position.x;
+        var xDistFromFloorCenter = floorCollider.transform.position.x - transform.position.x;
 
         //If the floor is to the right of the actor 
         if (xDistFromFloorCenter >= 0)
         {
             //If there is no right floor, set it now
-            if (go_rightFloor == null)
+            if (this.rightFloor == null)
             {
-                go_rightFloor = floorCollider.gameObject;
+                this.rightFloor = floorCollider.gameObject;
             }
             else //Make the right floor the left floor to make room for the NEW right floor
             {
-                if (go_rightFloor.transform.position.x <= transform.position.x)
+                if (this.rightFloor.transform.position.x <= transform.position.x)
                 {
-                    go_leftFloor = go_rightFloor;
+                    this.leftFloor = this.rightFloor;
                 }
 
-                
-                go_rightFloor = floorCollider.gameObject;
+                this.rightFloor = floorCollider.gameObject;
             }
         }
         else //if it's to the left of the actor
         {
             //If there is no left floor, set it now
-            if (go_leftFloor == null)
+            if (this.leftFloor == null)
             {
-                go_leftFloor = floorCollider.gameObject;
+                this.leftFloor = floorCollider.gameObject;
             }
             else //Make the left floor the right floor to make room for the NEW left floor
             {
-                if (go_leftFloor.transform.position.x > transform.position.x)
+                if (this.leftFloor.transform.position.x > transform.position.x)
                 {
-                    go_rightFloor = go_leftFloor;
+                    this.rightFloor = this.leftFloor;
                 }
-
                 
-                go_leftFloor = floorCollider.gameObject;
+                this.leftFloor = floorCollider.gameObject;
             }
         }
     }
 
+    /// <summary>
+    /// Select a floor based on the orientation of the actor
+    /// </summary>
+    /// <param name="facingRight">Whether or not the actor is facing right</param>
+    /// <returns></returns>
     public GameObject ChooseActiveFloor(bool facingRight)
     {
         //If the actor is only touching 1 floor, use it no matter its orientation
-        if (i_floorCount == 1)
+        if (this.numFloorsTouching == 1)
         {
             //Facing right
-            if (s_actor.b_facingRight )
-            {
-                if (go_rightFloor == null)
-                {
-                    return go_leftFloor;
-                }
-                else
-                {
-                    return go_rightFloor;
-                }
-            }
-            else //Facing left
-            {
-                if (go_leftFloor == null)
-                {
-                    return go_rightFloor;
-                }
-                else
-                {
-                    return go_leftFloor;
-                }
-            }
+            if (facingRight)
+                return this.rightFloor ?? this.leftFloor;
+            else
+                return this.leftFloor ?? this.rightFloor;
         }
         //Otherwise use the appropriate floor
-        else if (i_floorCount > 1)
+        if (this.numFloorsTouching > 1)
         {
-            if (facingRight && go_rightFloor != null)
+            if (facingRight && this.rightFloor != null)
             {
-                return go_rightFloor;
+                return this.rightFloor;
             }
-            else if(!facingRight && go_leftFloor != null)
+            if(!facingRight && this.leftFloor != null)
             {
-                return go_leftFloor;
+                return this.leftFloor;
             }
             else
             {
@@ -214,32 +173,32 @@ public class S_ActorFoot : MonoBehaviour
             }
         }
         else
-        {
-            //Debug.Log("floorcount is more than 2");
             return this.gameObject;
-        }
     }
 
+    /// <summary>
+    /// Snap the actor to either a floor or ceiling depending on the actor's
+    /// position relative to the collided floor
+    /// </summary>
+    /// <param name="floor">Floor collided with</param>
     void SnapToFloor(Collider floor)
     {
         //if actor is above floor
-        if (f_actorFloorPos > 0)
+        if (this.relativeFloorPosition > 0)
         {
-            s_actor.Snap(floor, "Floor", f_yContactPos);
+            this.parentActor.Snap(floor, "Floor", this.contactPositionY);
             //Debug.Log("Snapping to " + otherObj.gameObject.name);
-
         }
         //else if actor is below floor
-//        else if (f_actorFloorPos < 0)
-//        {
-//            s_actor.Snap(floor, "Ceiling", f_yContactPos);
-//            s_actor.st_verticalState = S_Actor.VerticalState.Airborn;
-//        }
+        else if (relativeFloorPosition < 0)
+        {
+            this.parentActor.Snap(floor, "Ceiling", contactPositionY);
+            this.parentActor.CurrentVerticalState = S_Actor.VerticalState.Airborn;
+        }
 
         if (floor.tag == "MovingFloor")
         {
-            s_actor.gameObject.transform.parent = floor.transform;
+            this.parentActor.gameObject.transform.parent = floor.transform;
         }
     }
-
 }

@@ -230,7 +230,7 @@ public class S_RunActor : MonoBehaviour
 		if (otherObj.tag == "Wall" || otherObj.tag == "MovingWall")
 		{
 			b_walled = true;
-			//f_actorSpeed = 0;
+			//HorizontalSpeed = 0;
 			
 			//Check wall position
 			f_wallPos = otherObj.transform.position.x - T_actorTransform.position.x;
@@ -250,7 +250,7 @@ public class S_RunActor : MonoBehaviour
 			if (otherObj.tag == "MovingWall")
 			{
 				T_actorTransform.parent = otherObj.transform;
-				//st_verticalState = VerticalState.Grounded;
+				//CurrentVerticalState = VerticalState.Grounded;
 				b_hanging = true;
 				b_canJump = true;
 			}      
@@ -266,7 +266,7 @@ public class S_RunActor : MonoBehaviour
 				if (otherObj.bounds.max.y > (T_actorTransform.collider.bounds.min.y + .125f) && (otherObj.bounds.min.y < T_actorTransform.collider.bounds.max.y - .125f))
 				{
 					b_walled = true;
-					//f_actorSpeed = 0;
+					//HorizontalSpeed = 0;
 					
 					//Check wall position
 					f_wallPos = otherObj.transform.position.x - T_actorTransform.position.x;
@@ -354,7 +354,7 @@ public class S_RunActor : MonoBehaviour
 		//Scale the running animation's speed based on player speed
 		spriteAnim.GetAnimation("Lavender_Run").speed = (f_actorSpeed/f_maxActorSpeed);
 		
-		//Manage f_actorSpeed min and max
+		//Manage HorizontalSpeed min and max
 		if (f_actorSpeed <= 0)
 		{
 			f_actorSpeed = 0;
@@ -379,9 +379,9 @@ public class S_RunActor : MonoBehaviour
 			}
 			
 			////If the actor's speed is more then 2/3 the max speed, stop and skid
-			//if (f_actorSpeed >= (f_maxActorSpeed * .66f))
+			//if (HorizontalSpeed >= (MaxHorizontalSpeed * .66f))
 			//{
-			//    f_actorSpeed /= 2f;
+			//    HorizontalSpeed /= 2f;
 			//}
 		}
 		//Face right
@@ -579,7 +579,7 @@ public class S_RunActor : MonoBehaviour
 	
 	void OnGUI()
 	{
-		if (GUI.Button(new Rect(50, 50, 100, 60), "Clear markers"))
+		if (GUI.Button(new Rect(50, 50, 100, 60), "Clear MarkerObjects"))
 		{
 			foreach (GameObject marker in markers)
 			{

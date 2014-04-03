@@ -26,7 +26,8 @@ public class S_Player : S_Actor
 	// Use this for initialization
 	public override void Start() 
 	{
-        i_hp = 15;
+        this.HitPoints = 15;
+        SpawnLocation = GameObject.Find("Spawn");
         base.Start();
 	}
 	
@@ -62,10 +63,10 @@ public class S_Player : S_Actor
         //Fire a projectile whenever the left mouse button is clicked
         if (Input.GetMouseButtonDown(0))
         {
-            b_canLookLeftRight = false;
+            this.CanLookLeftRight = false;
 
             //Build the bullet's position
-            if (b_facingRight)
+            if (this.FacingRight)
             {
                 v3_bulletOffset = new Vector3(-1.7f, .6f);
             }
@@ -78,7 +79,7 @@ public class S_Player : S_Actor
         }
         if (Input.GetMouseButtonUp(0))
         {
-            b_canLookLeftRight = true;
+            this.CanLookLeftRight = true;
         }
 
         #endregion
@@ -86,5 +87,19 @@ public class S_Player : S_Actor
         base.Update();
 	}
 
-    
+    protected override void DestroyActor()
+    {
+        this.HitPoints = 10;
+        this.ActorTransform.position = SpawnLocation.transform.position;
+        this.CurrentActorState = ActorState.Alive;
+    }
+
+    protected override void Decelerate()
+    {
+        //If no horizontal movement key is pushed, Decelerate
+        if (!(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
+        {
+            this.HorizontalSpeed -= 1f;
+        }
+    }
 }

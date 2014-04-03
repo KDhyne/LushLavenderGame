@@ -22,7 +22,7 @@ public class S_RunPlayer : S_Actor
 	// Use this for initialization
 	public override void Start() 
 	{
-        i_hp = 15;
+        this.HitPoints = 15;
         base.Start();
 	}
 	
@@ -32,7 +32,7 @@ public class S_RunPlayer : S_Actor
         #region Player Movement
         //Use the Horizontal movement axis for input
         MoveHorizontal(1);
-        f_actorSpeed = f_maxActorSpeed;
+        this.HorizontalSpeed = this.MaxHorizontalSpeed;
 
         //Jump
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
