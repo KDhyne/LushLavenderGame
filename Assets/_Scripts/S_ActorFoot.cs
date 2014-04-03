@@ -22,7 +22,7 @@ public class S_ActorFoot : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        s_actor = (S_Actor)transform.parent.gameObject.GetComponent("S_Actor");
+        s_actor = transform.parent.gameObject.GetComponent<S_Actor>();
 	}
 	
 	// Update is called once per frame
@@ -40,18 +40,12 @@ public class S_ActorFoot : MonoBehaviour
         {
             //Raise the number of contact Floors by 1
             i_floorCount++;
-
-            
-
-            //s_actor.s_animEngine.PlaySpriteAnimation("Lavender_Landing", S_AnimationEngine.AnimEvents.OnComplete);
 			
 			//Add the floor to the floor array. This will be used to determine which incline to use for snapping
             CheckFloorLR(otherObj);
 
             //Get the floor's rotation
             s_actor.f_floorRot = (otherObj.transform.eulerAngles.z * Mathf.Deg2Rad);
-
-            
 
             s_actor.b_canDetectFloors = false;
 
@@ -67,7 +61,7 @@ public class S_ActorFoot : MonoBehaviour
             f_yContactPos = otherObj.transform.position.y - f_yDistFromFloorCenter;
 
             //Check actor's y position relative to floor
-            f_actorFloorPos = s_actor.T_actorTransform.position.y - f_yContactPos;
+            f_actorFloorPos = s_actor.ActorTransform.position.y - f_yContactPos;
 
             SnapToFloor(otherObj);
 
@@ -228,7 +222,6 @@ public class S_ActorFoot : MonoBehaviour
 
     void SnapToFloor(Collider floor)
     {
-        //Snap smoothly
         //if actor is above floor
         if (f_actorFloorPos > 0)
         {

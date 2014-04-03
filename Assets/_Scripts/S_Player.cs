@@ -74,7 +74,7 @@ public class S_Player : S_Actor
                 v3_bulletOffset = new Vector3(1.7f, .6f);
             }
             //Create a bullet at the player's position
-            Instantiate(go_bulletPrefab, T_actorTransform.position + v3_bulletOffset, Quaternion.identity);
+            Instantiate(go_bulletPrefab, this.ActorTransform.position + v3_bulletOffset, Quaternion.identity);
         }
         if (Input.GetMouseButtonUp(0))
         {

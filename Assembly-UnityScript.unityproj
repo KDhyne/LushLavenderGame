@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{BCD86F34-DEC7-A54F-9C57-65001D48D9A1}</ProjectGuid>
+	<ProjectGuid>{B3555320-0318-37AB-44F3-AD0F71AD08E3}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -63,9 +63,6 @@
  </Reference>
  <Reference Include="Platform">
  <HintPath>Assets\PlatformBuilder\Scripts\Platform.dll</HintPath>
- </Reference>
- <Reference Include="VisualizerStudio">
- <HintPath>Assets\VisualizerStudio\Scripts\VisualizerStudio.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

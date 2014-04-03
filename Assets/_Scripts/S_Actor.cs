@@ -16,10 +16,10 @@ public class S_Actor : MonoBehaviour
         Grounded
     }
 
-    public Transform T_actorTransform;
+    public Transform ActorTransform;
 
     //Animation handlers
-    protected exSpriteAnimation spriteAnim;
+    public Animator spriteAnimator;
     public S_AnimationEngine s_animEngine;
 
     //True means this is the main character
@@ -98,36 +98,25 @@ public class S_Actor : MonoBehaviour
     public virtual void Start()
     {
         //Cache the transform
-        T_actorTransform = transform;
+        this.ActorTransform = transform;
 
         //Find and set the actor mesh
-        foreach (Transform child in T_actorTransform)
+        foreach (Transform child in this.ActorTransform)
         {
-            //The mesh should be the only thing with the renderer 
-            if (child.tag == "Sprite")
-            {
-                go_actorSprite = child.gameObject;
-            }
-            else if (child.name == "Foot")
+            if (child.name == "Foot")
             {
                 go_actorFoot = child.gameObject;
             }
         }
 
-        //Get the initial scale of the mesh
-        v3_actorSpriteScale = go_actorSprite.transform.localScale;
-
         //Get the ActorFoot's script
-        s_actorFoot = (S_ActorFoot)go_actorFoot.gameObject.GetComponent("S_ActorFoot");
+        s_actorFoot = go_actorFoot.gameObject.GetComponent<S_ActorFoot>();
 
         //Set the animation object
-        spriteAnim = (exSpriteAnimation)go_actorSprite.GetComponent("exSpriteAnimation");
-
-        s_animEngine = (S_AnimationEngine)go_actorSprite.GetComponent("S_AnimationEngine");
-
+        spriteAnimator = this.GetComponent<Animator>();
 
         //Position the foot at the bottom of the actor collider
-        go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, -(T_actorTransform.collider.bounds.size.y / 3), go_actorFoot.transform.localPosition.z);
+        go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, -(this.ActorTransform.collider.bounds.size.y / 2), go_actorFoot.transform.localPosition.z);
 
         //If this is the main character, set the respawner
         if (b_Main)
@@ -145,24 +134,24 @@ public class S_Actor : MonoBehaviour
             //Move the foot to the top or bottom of the actor depending on vertical velocity
             if (f_velY > 0)
             {
-                go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, T_actorTransform.collider.bounds.size.y / 3, go_actorFoot.transform.localPosition.z);
+                go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, this.ActorTransform.collider.bounds.size.y / 2, go_actorFoot.transform.localPosition.z);
             }
             else if (f_velY < 0)
             {
-                    s_animEngine.PlaySpriteAnimation("Lavender_Fall", false);
+                    //s_animEngine.PlaySpriteAnimation("Lavender_Fall", false);
                 
-                go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, -(T_actorTransform.collider.bounds.size.y / 3), go_actorFoot.transform.localPosition.z);
+                go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, -(this.ActorTransform.collider.bounds.size.y / 2), go_actorFoot.transform.localPosition.z);
             }
             else
             {
-                go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, -(T_actorTransform.collider.bounds.size.y / 3), go_actorFoot.transform.localPosition.z);
+                go_actorFoot.transform.localPosition = new Vector3(go_actorFoot.transform.localPosition.x, -(this.ActorTransform.collider.bounds.size.y / 2), go_actorFoot.transform.localPosition.z);
             }
 
             if (st_verticalState == VerticalState.Airborn && !b_hanging)
             {
                 //Apply gravity
                 f_velY -= (f_gravity * Time.fixedDeltaTime);
-                T_actorTransform.Translate(Vector3.up * f_velY, Space.World);
+                this.ActorTransform.Translate(Vector3.up * f_velY, Space.World);
 
                 if (f_velY < f_maxVelY)
                 {
@@ -178,8 +167,6 @@ public class S_Actor : MonoBehaviour
 
             if (st_verticalState == VerticalState.Grounded)
             {
-                //s_animEngine.PlaySpriteAnimation("Lavender_Landing", true);
-
                 //Allow the actor to jump again
                 f_velY = 0f;
                 b_canJump = true;
@@ -195,7 +182,7 @@ public class S_Actor : MonoBehaviour
             if (b_Main)
             {
                 i_hp = 10;
-                T_actorTransform.position = obj_respawn.transform.position;
+                this.ActorTransform.position = obj_respawn.transform.position;
                 st_actorState = ActorState.Alive;
             }
             else //Destroy it
@@ -214,12 +201,12 @@ public class S_Actor : MonoBehaviour
             if (b_facingRight)
             {
                 //Debug.Log("facing right");
-                go_actorSprite.transform.localScale = new Vector3(v3_actorSpriteScale.x, v3_actorSpriteScale.y, v3_actorSpriteScale.z);
+                //go_actorSprite.transform.localScale = new Vector3(v3_actorSpriteScale.x, v3_actorSpriteScale.y, v3_actorSpriteScale.z);
             }
             else
             {
                 //Debug.Log("facing left");
-                go_actorSprite.transform.localScale = new Vector3(-v3_actorSpriteScale.x, v3_actorSpriteScale.y, v3_actorSpriteScale.z);
+                //go_actorSprite.transform.localScale = new Vector3(-v3_actorSpriteScale.x, v3_actorSpriteScale.y, v3_actorSpriteScale.z);
             }
         }
     }
@@ -233,7 +220,7 @@ public class S_Actor : MonoBehaviour
             //f_actorSpeed = 0;
 
             //Check wall position
-            f_wallPos = otherObj.transform.position.x - T_actorTransform.position.x;
+            f_wallPos = otherObj.transform.position.x - this.ActorTransform.position.x;
 
             //Stop player from moving on appropriate side and snap smoothly
             if (f_wallPos > 0)
@@ -249,7 +236,7 @@ public class S_Actor : MonoBehaviour
 
             if (otherObj.tag == "MovingWall")
 	        {
-                T_actorTransform.parent = otherObj.transform;
+                this.ActorTransform.parent = otherObj.transform;
                 //st_verticalState = VerticalState.Grounded;
                 b_hanging = true;
                 b_canJump = true;
@@ -261,15 +248,15 @@ public class S_Actor : MonoBehaviour
         //floor as a wall
         if (otherObj.tag == "Floor" && st_verticalState == VerticalState.Airborn && b_canDetectFloors)
         {
-            if (T_actorTransform.position.x < otherObj.bounds.min.x || T_actorTransform.position.x > otherObj.bounds.max.x)
+            if (this.ActorTransform.position.x < otherObj.bounds.min.x || this.ActorTransform.position.x > otherObj.bounds.max.x)
             {
-                if (otherObj.bounds.max.y > (T_actorTransform.collider.bounds.min.y + .125f) && (otherObj.bounds.min.y < T_actorTransform.collider.bounds.max.y - .125f))
+                if (otherObj.bounds.max.y > (this.ActorTransform.collider.bounds.min.y + .125f) && (otherObj.bounds.min.y < this.ActorTransform.collider.bounds.max.y - .125f))
                 {
                     b_walled = true;
                     //f_actorSpeed = 0;
 
                     //Check wall position
-                    f_wallPos = otherObj.transform.position.x - T_actorTransform.position.x;
+                    f_wallPos = otherObj.transform.position.x - this.ActorTransform.position.x;
 
                     //Stop player from moving on appropriate side and snap smoothly
                     if (f_wallPos > 0)
@@ -297,7 +284,7 @@ public class S_Actor : MonoBehaviour
         {
             b_walled = false;
             b_hanging = false;
-            T_actorTransform.parent = null;
+            this.ActorTransform.parent = null;
         }
     }
     #endregion
@@ -321,26 +308,26 @@ public class S_Actor : MonoBehaviour
         switch (obstaclePos)
         {
             case "Right":
-                T_actorTransform.position = new Vector3(obstacleCollider.transform.position.x - snapOffsetX, T_actorTransform.position.y);
+                this.ActorTransform.position = new Vector3(obstacleCollider.transform.position.x - snapOffsetX, this.ActorTransform.position.y);
                 //Debug.Log("Snapping wall");
                 break;
             case "Left":
-                T_actorTransform.position = new Vector3(obstacleCollider.transform.position.x + snapOffsetX, T_actorTransform.position.y);
+                this.ActorTransform.position = new Vector3(obstacleCollider.transform.position.x + snapOffsetX, this.ActorTransform.position.y);
                 //Debug.Log("Snapping wall");
                 break;
             case "Floor":
                 //Debug object
                 if (TestForPostitions)
                 {
-                    var newMarker = (GameObject)Instantiate(go_marker, new Vector3(T_actorTransform.position.x, yContactPos, -1), Quaternion.identity);
+                    var newMarker = (GameObject)Instantiate(go_marker, new Vector3(this.ActorTransform.position.x, yContactPos, -1), Quaternion.identity);
                     markers.Add(newMarker);
                 }
                 
-                T_actorTransform.position = new Vector3(T_actorTransform.position.x, yContactPos + snapOffsetY);
+                this.ActorTransform.position = new Vector3(this.ActorTransform.position.x, yContactPos + snapOffsetY);
                 break;
             case "Ceiling":
                 //Debug.Log(snapOffsetY);
-                T_actorTransform.position = new Vector3(T_actorTransform.position.x, yContactPos - snapOffsetY);
+                this.ActorTransform.position = new Vector3(this.ActorTransform.position.x, yContactPos - snapOffsetY);
                 break;
         }
     }
@@ -352,7 +339,7 @@ public class S_Actor : MonoBehaviour
     public virtual void MoveHorizontal(float moveInput)
     {
         //Scale the running animation's speed based on player speed
-        spriteAnim.GetAnimation("Lavender_Run").speed = (f_actorSpeed/f_maxActorSpeed);
+        //spriteAnim.GetAnimation("Lavender_Run").speed = (f_actorSpeed/f_maxActorSpeed);
 
         //Manage f_actorSpeed min and max
         if (f_actorSpeed <= 0)
@@ -375,7 +362,7 @@ public class S_Actor : MonoBehaviour
                 GameObject activeFloor = s_actorFoot.ChooseActiveFloor(b_facingRight);
                 f_floorRot = (activeFloor.transform.eulerAngles.z * Mathf.Deg2Rad);
 
-				s_animEngine.PlaySpriteAnimation("Lavender_Run", false);
+				//s_animEngine.PlaySpriteAnimation("Lavender_Run", false);
             }
             
             ////If the actor's speed is more then 2/3 the max speed, stop and skid
@@ -394,7 +381,7 @@ public class S_Actor : MonoBehaviour
                 GameObject activeFloor = s_actorFoot.ChooseActiveFloor(b_facingRight);
                 f_floorRot = (activeFloor.transform.eulerAngles.z * Mathf.Deg2Rad);
 
-           		s_animEngine.PlaySpriteAnimation("Lavender_Run", false);
+           		//s_animEngine.PlaySpriteAnimation("Lavender_Run", false);
                 
             }
         }
@@ -403,7 +390,7 @@ public class S_Actor : MonoBehaviour
         {
             if (st_verticalState == VerticalState.Grounded)
             {
-            	s_animEngine.PlaySpriteAnimation("Lavender_Idle", false);
+            	//s_animEngine.PlaySpriteAnimation("Lavender_Idle", false);
                 
             }
             Decelerate(b_Main);
@@ -416,7 +403,7 @@ public class S_Actor : MonoBehaviour
             if (!b_walled)
             {
                 Vector3 test = Quaternion.Euler(0, 0, f_floorRot * Mathf.Rad2Deg) * Vector3.right;
-                T_actorTransform.Translate(test * moveInput * f_actorSpeed * Time.fixedDeltaTime);
+                this.ActorTransform.Translate(test * moveInput * f_actorSpeed * Time.fixedDeltaTime);
             }
             else //Restrict movement to one side
             {
@@ -426,7 +413,7 @@ public class S_Actor : MonoBehaviour
                     //Debug.Log("Walled Right");
                     if (moveInput < 0)
                     {
-                        T_actorTransform.Translate(Vector3.right * moveInput * f_actorSpeed * Time.fixedDeltaTime);
+                        this.ActorTransform.Translate(Vector3.right * moveInput * f_actorSpeed * Time.fixedDeltaTime);
                     }
                 }
                 //Wall is on the left
@@ -435,7 +422,7 @@ public class S_Actor : MonoBehaviour
                     //Debug.Log("Walled Left");
                     if (moveInput > 0)
                     {
-                        T_actorTransform.Translate(Vector3.right * moveInput * f_actorSpeed * Time.fixedDeltaTime);
+                        this.ActorTransform.Translate(Vector3.right * moveInput * f_actorSpeed * Time.fixedDeltaTime);
                     }
                 }
             }
@@ -512,7 +499,7 @@ public class S_Actor : MonoBehaviour
     /// </param>
     public void Jump(float jumpAmount)
     {
-        s_animEngine.PlaySpriteAnimation("Lavender_Jump", false);
+        //s_animEngine.PlaySpriteAnimation("Lavender_Jump", false);
         
 
         if (st_verticalState == VerticalState.Grounded && b_canJump)
@@ -563,19 +550,6 @@ public class S_Actor : MonoBehaviour
             st_actorState = ActorState.Dead;
         }
     }
-
-    ///// <summary>
-    ///// Play the sprite animation only if it hasn't already been playing.
-    ///// </summary>
-    ///// <param name="animationName">The animation to play</param>
-    //public void PlaySpriteAnimation(string animationName)
-    //{
-    //    if (!spriteAnim.IsPlaying(animationName))
-    //    {
-    //        spriteAnim.Play(animationName);
-    //    }
-    //}
-
 
     void OnGUI()
     {

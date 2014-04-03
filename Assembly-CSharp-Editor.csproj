@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{6C6BD555-B0B8-0A59-F9C7-BBE75151CF95}</ProjectGuid>
+	<ProjectGuid>{C2D49C31-23DF-6510-CB8E-645894A9C460}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -68,9 +68,6 @@
  <Reference Include="Platform">
  <HintPath>Assets\PlatformBuilder\Scripts\Platform.dll</HintPath>
  </Reference>
- <Reference Include="VisualizerStudio">
- <HintPath>Assets\VisualizerStudio\Scripts\VisualizerStudio.dll</HintPath>
- </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
  </Reference>
@@ -92,9 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{ED3AE768-E64A-7748-C89C-C21263FC26FD}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+      <Project>{980AC24E-0907-BB28-0C7C-3356DD05F61C}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-UnityScript.unityproj">
-      <Project>{BCD86F34-DEC7-A54F-9C57-65001D48D9A1}</Project>      <Name>Assembly-UnityScript</Name>    </ProjectReference>
+      <Project>{B3555320-0318-37AB-44F3-AD0F71AD08E3}</Project>      <Name>Assembly-UnityScript</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
