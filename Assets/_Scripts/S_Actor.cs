@@ -20,9 +20,7 @@ public class S_Actor : MonoBehaviour
     private Animator spriteAnimator;
     public GameObject SpawnLocation;
     public ActorState CurrentActorState = ActorState.Alive;
-
     public VerticalState CurrentVerticalState = VerticalState.Airborn;
-
 
     //Set Hit Points
     public int HitPoints = 10;
@@ -41,6 +39,7 @@ public class S_Actor : MonoBehaviour
     //Stores the position of the wall, L or R
     public float WallPosition;
     public bool IsTouchingWall = false;
+    public bool IsTouchingFloorEdge = false;
     public bool CanDetectFloors = true;
     public float ContactPositionY;
     public float ActiveFloorRotation;
@@ -49,7 +48,7 @@ public class S_Actor : MonoBehaviour
 
     #region Vertical vars
 
-    //TODO: Tie vertical speed to animator
+    //TODO: Animation needs some work. Either here or in the animator window
     public float VerticalSpeed;
     public float MaxVerticalSpeed;
     public float Gravity;
@@ -67,7 +66,6 @@ public class S_Actor : MonoBehaviour
     public List<GameObject> MarkerObjects = new List<GameObject>();
     public bool TestForPostitions = false;
 
-
     // Use this for initialization
     public virtual void Start()
     {
@@ -78,16 +76,14 @@ public class S_Actor : MonoBehaviour
         foreach (Transform child in this.ActorTransform)
         {
             if (child.name == "Foot")
-            {
                 this.ActorFoot = child.gameObject;
-            }
         }
 
         //Set the animation object
         spriteAnimator = this.GetComponent<Animator>();
 
         //Position the foot at the bottom of the actor collider
-        this.ActorFoot.transform.localPosition = new Vector3(this.ActorFoot.transform.localPosition.x, -(this.ActorTransform.collider.bounds.size.y / 2), this.ActorFoot.transform.localPosition.z);
+        this.ActorFoot.transform.localPosition = new Vector3(this.ActorFoot.transform.localPosition.x, -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2), this.ActorFoot.transform.localPosition.z);
     }
 
     // Update is called once per frame
@@ -105,14 +101,14 @@ public class S_Actor : MonoBehaviour
                 {
                     this.ActorFoot.transform.localPosition = new Vector3(
                         this.ActorFoot.transform.localPosition.x,
-                        this.ActorTransform.collider.bounds.size.y / 2,
+                        this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2,
                         this.ActorFoot.transform.localPosition.z);
                 }
                 else
                 {
                     this.ActorFoot.transform.localPosition = new Vector3(
                         this.ActorFoot.transform.localPosition.x,
-                        -(this.ActorTransform.collider.bounds.size.y / 2),
+                        -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2),
                         this.ActorFoot.transform.localPosition.z);
                 }
                 if (this.CurrentVerticalState == VerticalState.Airborn && !this.IsHanging)
@@ -122,9 +118,7 @@ public class S_Actor : MonoBehaviour
                     this.ActorTransform.Translate(Vector3.up * this.VerticalSpeed, Space.World);
 
                     if (this.VerticalSpeed < this.MaxVerticalSpeed)
-                    {
                         this.VerticalSpeed = this.MaxVerticalSpeed;
-                    }
 
                     //If you fall below the Death Volume, die or respawn
                     //if (T_actorTransform.position.y < obj_deathVolume.transform.position.y)
@@ -132,6 +126,7 @@ public class S_Actor : MonoBehaviour
                     //    st_charState = S_Char.CharState.Dead;
                     //}
 
+                    spriteAnimator.SetFloat("vSpeed", VerticalSpeed * 10);
                     spriteAnimator.SetBool("Grounded", false);
                 }
                 if (this.CurrentVerticalState == VerticalState.Grounded)
@@ -178,15 +173,10 @@ public class S_Actor : MonoBehaviour
 
             //Stop player from moving on appropriate side and snap smoothly
             if (this.WallPosition > 0)
-            {
-                //Debug.Log("Hit Right");
                 Snap(otherObj, "Right", 0);
-            }
+
             else if (this.WallPosition < 0)
-            {
-                //Debug.Log("Hit Left");
                 Snap(otherObj, "Left", 0);
-            }
 
             if (otherObj.tag == "MovingWall")
 	        {
@@ -199,14 +189,14 @@ public class S_Actor : MonoBehaviour
         //Check position of the floor. If the center of the floor 
         //is between the top and bottom of the collider, treat the
         //floor as a wall
-        //TODO: check if this also fires when jumping onto a slanted floor
         if (otherObj.tag == "Floor" && this.CurrentVerticalState == VerticalState.Airborn && this.CanDetectFloors)
         {
             if (this.ActorTransform.position.x < otherObj.bounds.min.x || this.ActorTransform.position.x > otherObj.bounds.max.x)
             {
-                if (otherObj.bounds.max.y > (this.ActorTransform.collider.bounds.min.y + .125f) && (otherObj.bounds.min.y < this.ActorTransform.collider.bounds.max.y - .125f))
+                if (otherObj.bounds.max.y > (this.ActorTransform.GetComponent<CapsuleCollider>().bounds.min.y + .125f)
+                    && otherObj.bounds.min.y < (this.ActorTransform.GetComponent<CapsuleCollider>().bounds.max.y - .125f))
                 {
-                    this.IsTouchingWall = true;
+                    this.IsTouchingFloorEdge = true;
                     //HorizontalSpeed = 0;
 
                     //Check wall position
@@ -214,25 +204,33 @@ public class S_Actor : MonoBehaviour
 
                     //Stop player from moving on appropriate side and snap smoothly
                     if (this.WallPosition > 0)
-                    {
                         Snap(otherObj, "Right", 0);
-                    }
+
                     else if (this.WallPosition < 0)
-                    {
                         Snap(otherObj, "Left", 0);
-                    }
                 }
             }
         }
     }
 
+    public virtual void OnTriggerStay(Collider otherObj)
+    {
+        if (otherObj.tag == "Wall")
+            this.IsTouchingWall = true;
+
+        if (otherObj.tag == "Floor" && this.CanDetectFloors)
+            this.IsTouchingFloorEdge = true;
+    }
+    
+
     public virtual void OnTriggerExit(Collider otherObj)
     {
-        if (otherObj.tag == "Wall" || otherObj.tag == "Floor")
-        {
-            //Debug.Log("Not walled");
+        if (otherObj.tag == "Wall")
             this.IsTouchingWall = false;
-        }
+
+        if (otherObj.tag == "Floor" && this.CanDetectFloors)
+            this.IsTouchingFloorEdge = false;
+
         if (otherObj.tag == "MovingWall")
         {
             this.IsTouchingWall = false;
@@ -250,11 +248,11 @@ public class S_Actor : MonoBehaviour
     /// <param name="yContactPosition"></param>
     public virtual void Snap(Collider obstacleCollider, string obstaclePosition, float yContactPosition)
     {
-        var colliderWidth = collider.bounds.size.x / 2;
+        var colliderWidth = GetComponent<CapsuleCollider>().bounds.size.x / 2;
         var obstacleWidth = obstacleCollider.bounds.size.x / 2;
         var snapOffsetX = colliderWidth + obstacleWidth;
 
-        var colliderHeight = collider.bounds.size.y / 2;
+        var colliderHeight = GetComponent<CapsuleCollider>().bounds.size.y / 2;
         var obstacleHeight = obstacleCollider.transform.localScale.y / 2;
         var snapOffsetY = (colliderHeight / Mathf.Cos(this.ActiveFloorRotation)) + obstacleHeight;
 
@@ -262,11 +260,9 @@ public class S_Actor : MonoBehaviour
         {
             case "Right":
                 this.ActorTransform.position = new Vector3(obstacleCollider.transform.position.x - snapOffsetX, this.ActorTransform.position.y);
-                //Debug.Log("Snapping wall");
                 break;
             case "Left":
                 this.ActorTransform.position = new Vector3(obstacleCollider.transform.position.x + snapOffsetX, this.ActorTransform.position.y);
-                //Debug.Log("Snapping wall");
                 break;
             case "Floor":
                 //Debug object
@@ -293,20 +289,15 @@ public class S_Actor : MonoBehaviour
     {
         //Scale the running animation's speed based on player speed
         //spriteAnim.GetAnimation("Lavender_Run").speed = (HorizontalSpeed/MaxHorizontalSpeed);
-        //TODO: See if I can do this with animator
+        //TODO: See if I can scale animation speed with animator
 
         //Manage HorizontalSpeed min and max
         if (this.HorizontalSpeed <= 0)
-        {
             this.HorizontalSpeed = 0;
-        }
-        else if (this.HorizontalSpeed >= this.MaxHorizontalSpeed)
-        {
-            this.HorizontalSpeed = this.MaxHorizontalSpeed;
-        }
 
-        //Change facing direction based on sign of input
-        //Face left
+        else if (this.HorizontalSpeed >= this.MaxHorizontalSpeed)
+            this.HorizontalSpeed = this.MaxHorizontalSpeed;
+        
         if (moveInput < 0)
         {
             if (FacingRight)
@@ -329,7 +320,6 @@ public class S_Actor : MonoBehaviour
             //}
 
         }
-        //Face right
         else if (moveInput > 0)
         {
             if (!FacingRight)
@@ -350,9 +340,7 @@ public class S_Actor : MonoBehaviour
         {
             //Maintain horizontal momentum while in the air
             if (this.CurrentVerticalState == VerticalState.Grounded)
-            {
                 Decelerate();
-            }
 
             spriteAnimator.SetBool("Running", false);
         }
@@ -361,7 +349,7 @@ public class S_Actor : MonoBehaviour
         if (!this.IsHanging)
         {
             //Allow movement in both directions if not against a wall
-            if (!this.IsTouchingWall)
+            if (!this.IsTouchingWall && !this.IsTouchingFloorEdge)
             {
                 Vector3 test = Quaternion.Euler(0, 0, this.ActiveFloorRotation * Mathf.Rad2Deg) * Vector3.right;
                 this.ActorTransform.Translate(test * moveInput * this.HorizontalSpeed * Time.fixedDeltaTime);
@@ -371,20 +359,14 @@ public class S_Actor : MonoBehaviour
                 //Wall is on the right
                 if (this.WallPosition > 0)
                 {
-                    //Debug.Log("Walled Right");
                     if (moveInput < 0)
-                    {
                         this.ActorTransform.Translate(Vector3.right * moveInput * this.HorizontalSpeed * Time.fixedDeltaTime);
-                    }
                 }
                 //Wall is on the left
                 else if (this.WallPosition < 0)
                 {
-                    //Debug.Log("Walled Left");
                     if (moveInput > 0)
-                    {
                         this.ActorTransform.Translate(Vector3.right * moveInput * this.HorizontalSpeed * Time.fixedDeltaTime);
-                    }
                 }
             }
         }        
@@ -395,20 +377,16 @@ public class S_Actor : MonoBehaviour
         if (this.IsHanging)
         {
             if (moveInput > 0)
-            {
                 WallJump(this.JumpForce / 1.5f, 75);
-            }
+
             else if (moveInput < 0)
-            {
                 WallJump(0, 0);
-            }
         }
         else
         {
             if (moveInput > 0)
-            {
                 Jump(this.JumpForce);
-            }
+            
             else if (moveInput < 0)
             {
                 //Drop down through platform
@@ -418,18 +396,13 @@ public class S_Actor : MonoBehaviour
 
     protected virtual void Accelerate()
     {
-        Debug.Log("Acceling");
-
         //Accelerate faster on ground
         if (this.CurrentVerticalState == VerticalState.Grounded)
-        {
             this.HorizontalSpeed += this.Acceleration;
-        }
+        
         //Accelerate slower in the air
         else
-        {
-            this.HorizontalSpeed += this.Acceleration * (float)0.6666667;
-        }
+            this.HorizontalSpeed += this.Acceleration * 0.67f;
     }
 
     /// <summary>
@@ -441,10 +414,9 @@ public class S_Actor : MonoBehaviour
         if (this.CurrentVerticalState == VerticalState.Grounded)
         {
             this.HorizontalSpeed -= 20f;
+
             if (HorizontalSpeed <= 0)
-            {
                 HorizontalSpeed = 0;
-            }
         }
     }
 
@@ -456,8 +428,7 @@ public class S_Actor : MonoBehaviour
     /// </param>
     public void Jump(float jumpAmount)
     {
-        //s_animEngine.PlaySpriteAnimation("Lavender_Jump", false);
-        
+        VerticalSpeed = 0;
 
         if (this.CurrentVerticalState == VerticalState.Grounded && this.CanJump)
         {
@@ -467,7 +438,7 @@ public class S_Actor : MonoBehaviour
         //Double Jump
         else if (this.CurrentVerticalState == VerticalState.Airborn && this.CanJump)
         {
-            this.VerticalSpeed = jumpAmount * (0.75f);
+            this.VerticalSpeed = jumpAmount;// * (0.9f);
             this.CanJump = false;
         }
     }
@@ -483,7 +454,6 @@ public class S_Actor : MonoBehaviour
         this.HorizontalSpeed = horzJumpAmount;// *go_actorSprite.transform.localScale.x;
         Jump(vertJumpAmount / 0.75f);
     }
-
 
     /// <summary>
     /// Subtract the specified number of hit points from this Actor's health.
@@ -503,20 +473,17 @@ public class S_Actor : MonoBehaviour
 
         //HP check for death
         if (this.HitPoints <= 0)
-        {
             this.CurrentActorState = ActorState.Dead;
-        }
     }
 
     void OnGUI()
     {
         if (GUI.Button(new Rect(50, 50, 100, 60), "Clear MarkerObjects"))
         {
-            foreach (GameObject marker in this.MarkerObjects)
+            foreach (var marker in this.MarkerObjects)
             {
                 Destroy(marker);
             }
         }
     }
-
 }

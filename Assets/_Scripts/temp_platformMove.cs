@@ -28,31 +28,4 @@ public class temp_platformMove : MonoBehaviour
         iTween.MoveTo(this.gameObject, iTween.Hash("x", v_standardPosition.x + fl_x, "y", v_standardPosition.y + fl_y, "z", v_standardPosition.z + fl_z, "islocal", true, "time", f_timeToMove, "looptype", "pingpong", "easetype", "easeInOutQuad"));
 
     }
-
-
-
-
-
-
-    ////Initial platform position
-    //public Vector3 v3_initPos;
-    ////position to move to
-    //public Vector3 v3_movePos;
-    ////Time to move between positions
-    //public float f_timeToMove;
-
-    //// Use this for initialization
-    //void Start()
-    //{
-    //    v3_initPos = this.gameObject.transform.position;
-    //    //Vector3 temp = v3_initPos + v3_movePos;
-    //    Debug.Log("Starting");
-    //    //iTween.MoveTo(this.gameObject, iTween.Hash("postion", temp, "time", 5, "loopType", "pingpong", "easeType", "easeInOutQuad"));
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    iTween.MoveTo(this.gameObject, iTween.Hash("postion", v3_initPos + v3_movePos, "time", f_timeToMove, "loopType", "pingpong", "easeType", "easeInOutQuad", "isLocal", true));
-    //}
 }
