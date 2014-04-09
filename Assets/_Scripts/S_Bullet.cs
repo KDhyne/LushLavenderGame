@@ -50,7 +50,7 @@ public class S_Bullet : MonoBehaviour
     public string[] stuffToShake;
 
 
-    bool b_powerShot = false;
+    bool b_powerShot;
 
     //How much damage the bullet deals
     public int i_bulletDamage = 1;
@@ -107,7 +107,7 @@ public class S_Bullet : MonoBehaviour
                     Debug.DrawRay(T_bulletTransform.position, v2_trajectory * (15 / f_bulletMaxSpeed) * f_bulletSpeed, Color.red);
                 }
                 //Move the bullet with the player
-                T_bulletTransform.position = (T_playerTransform.position + s_player.v3_bulletOffset);
+                T_bulletTransform.position = (T_playerTransform.position + s_player.BulletOffset);
                 //Tween the bullet speed between the default value and the max value
                 f_bulletSpeed = iTween.FloatUpdate(f_bulletSpeed, f_bulletMaxSpeed, f_chargeSpeed);
                 //Debug.Log(f_bulletSpeed);
@@ -240,7 +240,7 @@ public class S_Bullet : MonoBehaviour
         //Make the bullet disappear
         renderer.enabled = false;
         //Create an explosion prefab
-        GameObject explosion = (GameObject)Instantiate(go_explosion, T_bulletTransform.position, Quaternion.identity);
+        var explosion = (GameObject)Instantiate(go_explosion, T_bulletTransform.position, Quaternion.identity);
 
         //Shake the things to shake
         //foreach (string objName in stuffToShake)
@@ -272,12 +272,13 @@ public class S_Bullet : MonoBehaviour
         //If it hits and enemy, deal damage to them and explode
         if (otherObj.tag == "Enemy")
         {
-            S_Enemy enemy = (S_Enemy)otherObj.GetComponent("S_Enemy");
+            //TODO: plug the new enemy script in here
+            /*S_Enemy enemy = (S_Enemy)otherObj.GetComponent("S_Enemy");
             enemy.TakeDamage(i_bulletDamage);
             if (!b_powerShot)
             {
                 DestroyBullet();
-            }
+            }*/
         }
     }
 }

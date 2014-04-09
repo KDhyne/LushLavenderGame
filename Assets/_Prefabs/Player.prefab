@@ -34,7 +34,7 @@ GameObject:
   - 136: {fileID: 13600000}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 86.7387466, y: 16.2541122, z: 0}
+  m_LocalPosition: {x: -.555223227, y: 19.7643108, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -181,11 +181,11 @@ MonoBehaviour:
   MarkerObject: {fileID: 0}
   MarkerObjects: []
   TestForPostitions: 0
-  isAlwaysRunning: 0
-  v3_bulletOffset: {x: 0, y: 0, z: 0}
-  go_targetPrefab: {fileID: 0}
-  go_bulletPrefab: {fileID: 100000, guid: 5556ee4209a5be145a219a3667032c41, type: 2}
-  mousePos: {x: 0, y: 0}
+  IsAlwaysRunning: 0
+  BulletOffset: {x: 0, y: 0, z: 0}
+  TargetPrefab: {fileID: 0}
+  BulletPrefab: {fileID: 0}
+  MousePosition2D: {x: 0, y: 0}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

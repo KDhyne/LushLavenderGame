@@ -1,27 +1,21 @@
 using UnityEngine;
-using System.Collections;
-using System.IO;
 
 public class S_Player : S_Actor
 {
-    public bool isAlwaysRunning;
+    public bool IsAlwaysRunning;
 
 	enum PlayerState
 	{
-		normal,
-		aiming
+		Normal,
+		Aiming
 	}
-    //Cache the PlayerState
-	PlayerState st_currentPlayerState;
-    public Vector3 v3_bulletOffset;
-	//The target ridicule
-	public GameObject go_targetPrefab;
-    //Bullets
-    public GameObject go_bulletPrefab;
-	//Cache the mouse position vector
-	public Vector2 mousePos;
 
-    
+	PlayerState currentPlayerState;
+
+    public Vector3 BulletOffset;
+	public GameObject TargetPrefab;
+    public GameObject BulletPrefab;
+	public Vector2 MousePosition2D;
 
 	// Use this for initialization
 	public override void Start() 
@@ -36,29 +30,25 @@ public class S_Player : S_Actor
 	{
         #region Player Movement
 
-        if(isAlwaysRunning)
+        if(this.IsAlwaysRunning)
             this.MoveHorizontal(1);
-        else
-        {
-            //Use the Horizontal movement axis for input
-            MoveHorizontal(Input.GetAxis("Horizontal"));   
-        }
 
-        //Jump
+        else //Use the Horizontal movement axis for input
+            MoveHorizontal(Input.GetAxis("Horizontal"));
+
+        //Jumping/Sliding
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
             MoveVertical(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
+
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) 
             MoveVertical(-1);
-        }
+
         #endregion
 
         #region Aim and Shoot
         /*//Move the target with the mouse
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        go_targetPrefab.transform.position = mousePos;
+        MousePosition2D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        TargetPrefab.transform.position = MousePosition2D;
 
         //Fire a projectile whenever the left mouse button is clicked
         if (Input.GetMouseButtonDown(0))
@@ -68,14 +58,14 @@ public class S_Player : S_Actor
             //Build the bullet's position
             if (this.FacingRight)
             {
-                v3_bulletOffset = new Vector3(-1.7f, .6f);
+                BulletOffset = new Vector3(-1.7f, .6f);
             }
             else
             {
-                v3_bulletOffset = new Vector3(1.7f, .6f);
+                BulletOffset = new Vector3(1.7f, .6f);
             }
             //Create a bullet at the player's position
-            Instantiate(go_bulletPrefab, this.ActorTransform.position + v3_bulletOffset, Quaternion.identity);
+            Instantiate(BulletPrefab, this.ActorTransform.position + BulletOffset, Quaternion.identity);
         }
         if (Input.GetMouseButtonUp(0))
         {
