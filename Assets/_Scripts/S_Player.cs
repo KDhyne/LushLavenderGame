@@ -56,7 +56,7 @@ public class S_Player : S_Actor
         #endregion
 
         #region Aim and Shoot
-        //Move the target with the mouse
+        /*//Move the target with the mouse
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         go_targetPrefab.transform.position = mousePos;
 
@@ -81,7 +81,7 @@ public class S_Player : S_Actor
         {
             this.CanLookLeftRight = true;
         }
-
+*/
         #endregion
 
         base.Update();
