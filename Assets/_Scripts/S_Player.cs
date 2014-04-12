@@ -4,13 +4,13 @@ public class S_Player : S_Actor
 {
     public bool IsAlwaysRunning;
 
-	enum PlayerState
+	/*enum PlayerState
 	{
 		Normal,
 		Aiming
-	}
+	}*/
 
-	PlayerState currentPlayerState;
+	//PlayerState currentPlayerState;
 
     public Vector3 BulletOffset;
 	public GameObject TargetPrefab;
@@ -76,6 +76,22 @@ public class S_Player : S_Actor
 
         base.Update();
 	}
+
+    public override void OnTriggerEnter(Collider otherObj)
+    {
+        base.OnTriggerEnter(otherObj);
+
+        if (otherObj.tag == "Silver Bell")
+        {
+            Debug.Log("+1 Silver Bell");
+            var bell = otherObj.GetComponent<S_Collectable>();
+
+            //TODO: Tell the level manager that the player has collected a silver bell
+            //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
+
+            bell.DestroyCollectable();
+        }
+    }
 
     protected override void DestroyActor()
     {
