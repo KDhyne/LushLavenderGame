@@ -1,3 +1,5 @@
+using System.Collections;
+
 using UnityEngine;
 
 public class S_Player : S_Actor
@@ -91,13 +93,24 @@ public class S_Player : S_Actor
 
             bell.DestroyCollectable();
         }
+        if (otherObj.tag == "DeathVolume")
+        {
+            this.DestroyActor();
+        }
     }
 
-    public override void DestroyActor()
+    public override IEnumerator DestroyActor()
     {
         this.CurrentHitPoints = 10;
-        this.ActorTransform.position = SpawnLocation.transform.position;
+        //this.ActorTransform.position = SpawnLocation.transform.position;
+
+        //Kill any velocity the player has
+        VerticalSpeed = 0f;
+        HorizontalSpeed = 0f;
+        //Move them to the current spawnpoint
+        ActorTransform.position = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<S_CheckpointManager>().GetPlayerSpawnLocation();
         this.CurrentActorState = ActorState.Alive;
+        return null;
     }
 
     protected override void Decelerate()

@@ -55,12 +55,14 @@ public class S_ActorBase : MonoBehaviour
     /// <summary>
     /// Handle actor destruction gracefully. Add actor scoreValue to total score.
     /// </summary>
-    public virtual void DestroyActor()
+    public virtual IEnumerator DestroyActor()
     {
         var manager = GameObject.Find("GUI Manager").GetComponent<S_GUI>();
         manager.i_score += this.ScoreValue;
         Debug.Log("Hit");
+        yield return new WaitForSeconds(1.0f);
         Destroy(this.gameObject);
+        
     }
 
     /// <summary>
