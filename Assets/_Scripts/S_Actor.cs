@@ -1,14 +1,10 @@
+using System.Collections;
+
 using UnityEngine;
 using System.Collections.Generic;
 
-public class S_Actor : MonoBehaviour
+public class S_Actor : S_ActorBase
 {
-    public enum ActorState
-    {
-        Alive,
-        Dead
-    }
-
     public enum VerticalState
     {
         Airborn,
@@ -16,38 +12,23 @@ public class S_Actor : MonoBehaviour
         Grounded
     }
 
-    public Transform ActorTransform;
-    private Animator spriteAnimator;
-    public GameObject SpawnLocation;
-    public ActorState CurrentActorState = ActorState.Alive;
     public VerticalState CurrentVerticalState = VerticalState.Airborn;
 
-    //Set Hit Points
-    public int HitPoints = 10;
-    //determines whether or not the actor can be hit
-    public bool CanBeHit = true;
-    //Score Value
-    int ScoreValue = 1;
-
     #region Horizontal vars
-
     protected bool CanLookLeftRight = true;
     public bool FacingRight = true;
     public float HorizontalSpeed;
     public float Acceleration;
     public float MaxHorizontalSpeed;
-    //Stores the position of the wall, L or R
     public float WallPosition;
     public bool IsTouchingWall = false;
     public bool IsTouchingFloorEdge = false;
     public bool CanDetectFloors = true;
     public float ContactPositionY;
     public float ActiveFloorRotation;
-
     #endregion
 
     #region Vertical vars
-
     //TODO: Animation needs some work. Either here or in the animator window
     public float VerticalSpeed;
     public float MaxVerticalSpeed;
@@ -55,7 +36,6 @@ public class S_Actor : MonoBehaviour
     public bool CanJump = true;
     public bool IsHanging = false;
     public float JumpForce;
-
     #endregion
 
     //Children GameObjects
@@ -67,10 +47,9 @@ public class S_Actor : MonoBehaviour
     public bool TestForPostitions = false;
 
     // Use this for initialization
-    public virtual void Start()
+    public override void Start()
     {
-        //Cache the transform
-        this.ActorTransform = transform;
+        base.Start();
 
         //Find and set the actor mesh
         foreach (Transform child in this.ActorTransform)
@@ -79,67 +58,68 @@ public class S_Actor : MonoBehaviour
                 this.ActorFoot = child.gameObject;
         }
 
-        //Set the animation object
-        spriteAnimator = this.GetComponent<Animator>();
-
         //Position the foot at the bottom of the actor collider
-        this.ActorFoot.transform.localPosition = new Vector3(this.ActorFoot.transform.localPosition.x, -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2), this.ActorFoot.transform.localPosition.z);
+        this.ActorFoot.transform.localPosition = new Vector3(
+            this.ActorFoot.transform.localPosition.x, 
+            -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2),
+            this.ActorFoot.transform.localPosition.z);
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    public override void Update()
     {
+        base.Update();
+
         //ActorState checks
-        switch (this.CurrentActorState)
+        if (this.CurrentActorState == ActorState.Alive)
         {
-            case ActorState.Dead:
-                this.DestroyActor();
-                break;
+            if (this.VerticalSpeed > 0)
+            {
+                this.ActorFoot.transform.localPosition = new Vector3(
+                    this.ActorFoot.transform.localPosition.x,
+                    this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2,
+                    this.ActorFoot.transform.localPosition.z);
+            }
+            else
+            {
+                this.ActorFoot.transform.localPosition = new Vector3(
+                    this.ActorFoot.transform.localPosition.x,
+                    -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2),
+                    this.ActorFoot.transform.localPosition.z);
+            }
 
-            case ActorState.Alive:
-                if (this.VerticalSpeed > 0)
-                {
-                    this.ActorFoot.transform.localPosition = new Vector3(
-                        this.ActorFoot.transform.localPosition.x,
-                        this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2,
-                        this.ActorFoot.transform.localPosition.z);
-                }
-                else
-                {
-                    this.ActorFoot.transform.localPosition = new Vector3(
-                        this.ActorFoot.transform.localPosition.x,
-                        -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2),
-                        this.ActorFoot.transform.localPosition.z);
-                }
-                if (this.CurrentVerticalState == VerticalState.Airborn && !this.IsHanging)
-                {
-                    //Apply gravity
-                    this.VerticalSpeed -= (this.Gravity * Time.fixedDeltaTime);
-                    this.ActorTransform.Translate(Vector3.up * this.VerticalSpeed, Space.World);
+            if (this.CurrentVerticalState == VerticalState.Airborn && !this.IsHanging)
+            {
+                //Apply gravity
+                this.VerticalSpeed -= (this.Gravity * Time.fixedDeltaTime);
+                this.ActorTransform.Translate(Vector3.up * this.VerticalSpeed, Space.World);
 
-                    if (this.VerticalSpeed < this.MaxVerticalSpeed)
-                        this.VerticalSpeed = this.MaxVerticalSpeed;
+                if (this.VerticalSpeed < this.MaxVerticalSpeed)
+                    this.VerticalSpeed = this.MaxVerticalSpeed;
 
-                    //If you fall below the Death Volume, die or respawn
-                    //if (T_actorTransform.position.y < obj_deathVolume.transform.position.y)
-                    //{
-                    //    st_charState = S_Char.CharState.Dead;
-                    //}
+                //If you fall below the Death Volume, die or respawn
+                //if (T_actorTransform.position.y < obj_deathVolume.transform.position.y)
+                //{
+                //    st_charState = S_Char.CharState.Dead;
+                //}
 
-                    spriteAnimator.SetFloat("vSpeed", VerticalSpeed * 10);
-                    spriteAnimator.SetBool("Grounded", false);
-                }
-                if (this.CurrentVerticalState == VerticalState.Grounded)
-                {
-                    //Allow the actor to jump again
-                    this.VerticalSpeed = 0f;
-                    this.CanJump = true;
-                    spriteAnimator.SetBool("Grounded", true);
-                }
-                break;
+                this.SpriteAnimator.SetFloat("vSpeed", VerticalSpeed * 10);
+                this.SpriteAnimator.SetBool("Grounded", false);
+            }
+
+            if (this.CurrentVerticalState == VerticalState.Grounded)
+            {
+                //Allow the actor to jump again
+                this.VerticalSpeed = 0f;
+                this.CanJump = true;
+                this.SpriteAnimator.SetBool("Grounded", true);
+            }
         }
     }
 
+    /// <summary>
+    /// Change the actor's local x scale to opposite values.
+    /// </summary>
     void Flip()
     {
         //If the actor can face L or R, change direction appropriately
@@ -150,14 +130,6 @@ public class S_Actor : MonoBehaviour
             theScale.x *= -1;
             this.transform.localScale = theScale;
         }
-    }
-
-    protected virtual void DestroyActor()
-    {
-        var manager = (S_GUI)GameObject.Find("GUI Manager").GetComponent("S_GUI");
-        manager.i_score += this.ScoreValue;
-        Debug.Log("Hit");
-        Destroy(this.gameObject);
     }
 
     #region Trigger Events
@@ -221,7 +193,6 @@ public class S_Actor : MonoBehaviour
         if (otherObj.tag == "Floor" && this.CanDetectFloors)
             this.IsTouchingFloorEdge = true;
     }
-    
 
     public virtual void OnTriggerExit(Collider otherObj)
     {
@@ -310,7 +281,7 @@ public class S_Actor : MonoBehaviour
                 var activeFloor = ActorFoot.GetComponent<S_ActorFoot>().ChooseActiveFloor(this.FacingRight);
                 this.ActiveFloorRotation = (activeFloor.transform.eulerAngles.z * Mathf.Deg2Rad);
 
-                spriteAnimator.SetBool("Running", true);
+                this.SpriteAnimator.SetBool("Running", true);
             }
             
             ////If the actor's speed is more then 2/3 the max speed, stop and skid
@@ -332,7 +303,7 @@ public class S_Actor : MonoBehaviour
                 var activeFloor = ActorFoot.GetComponent<S_ActorFoot>().ChooseActiveFloor(this.FacingRight);
                 this.ActiveFloorRotation = (activeFloor.transform.eulerAngles.z * Mathf.Deg2Rad);
 
-                spriteAnimator.SetBool("Running", true);
+                this.SpriteAnimator.SetBool("Running", true);
             }
         }
         //If moveInput == 0, Decelerate
@@ -342,7 +313,7 @@ public class S_Actor : MonoBehaviour
             if (this.CurrentVerticalState == VerticalState.Grounded)
                 Decelerate();
 
-            spriteAnimator.SetBool("Running", false);
+            this.SpriteAnimator.SetBool("Running", false);
         }
 
         //Allow horizontal movement if the actor isn't hanging on a wall
@@ -372,6 +343,10 @@ public class S_Actor : MonoBehaviour
         }        
     }
 
+    /// <summary>
+    /// Move the actor vertically.
+    /// </summary>
+    /// <param name="moveInput">Determines the direction in which the actor moves</param>
     public virtual void MoveVertical(float moveInput)
     {
         if (this.IsHanging)
@@ -394,6 +369,9 @@ public class S_Actor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Accelerate actor horizontally determined by ground state.
+    /// </summary>
     protected virtual void Accelerate()
     {
         //Accelerate faster on ground
@@ -455,35 +433,15 @@ public class S_Actor : MonoBehaviour
         Jump(vertJumpAmount / 0.75f);
     }
 
-    /// <summary>
-    /// Subtract the specified number of hit points from this Actor's health.
-    /// </summary>
-    /// <param name="damageAmount">Number of hit points to subtract</param>
-    public void TakeDamage(int damageAmount)
-    {
-        if (this.CanBeHit)
-        {
-            //subtract hit points
-            this.HitPoints -= damageAmount;
-            //Temporary invincibility
-            this.CanBeHit = false;
-            //Wait a given time, then make the actor hittable again
-            Invoke("CanHit", 1.5f);
-        }
-
-        //HP check for death
-        if (this.HitPoints <= 0)
-            this.CurrentActorState = ActorState.Dead;
-    }
-
+    //Draw the GUI every frame
     void OnGUI()
     {
-        if (GUI.Button(new Rect(50, 50, 100, 60), "Clear MarkerObjects"))
+        /*if (GUI.Button(new Rect(50, 50, 100, 60), "Clear MarkerObjects"))
         {
             foreach (var marker in this.MarkerObjects)
             {
                 Destroy(marker);
             }
-        }
+        }*/
     }
 }

@@ -20,7 +20,7 @@ public class S_Player : S_Actor
 	// Use this for initialization
 	public override void Start() 
 	{
-        this.HitPoints = 15;
+        this.MaxHitPoints = 15;
         SpawnLocation = GameObject.Find("Spawn");
         base.Start();
 	}
@@ -93,9 +93,9 @@ public class S_Player : S_Actor
         }
     }
 
-    protected override void DestroyActor()
+    public override void DestroyActor()
     {
-        this.HitPoints = 10;
+        this.CurrentHitPoints = 10;
         this.ActorTransform.position = SpawnLocation.transform.position;
         this.CurrentActorState = ActorState.Alive;
     }

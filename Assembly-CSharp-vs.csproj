@@ -55,6 +55,7 @@
      <Compile Include="Assets\_Scripts\Beat scripts\S_BeatObject.cs" />
      <Compile Include="Assets\_Scripts\Example.cs" />
      <Compile Include="Assets\_Scripts\S_Actor.cs" />
+     <Compile Include="Assets\_Scripts\S_ActorBase.cs" />
      <Compile Include="Assets\_Scripts\S_ActorFoot.cs" />
      <Compile Include="Assets\_Scripts\S_AnimationEngine.cs" />
      <Compile Include="Assets\_Scripts\S_Bullet.cs" />
