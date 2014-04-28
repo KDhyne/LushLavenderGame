@@ -19,6 +19,8 @@ public class S_Player : S_Actor
     public GameObject BulletPrefab;
 	public Vector2 MousePosition2D;
 
+	public bool CanPlayerMove = true;
+
 	// Use this for initialization
 	public override void Start() 
 	{
@@ -30,12 +32,14 @@ public class S_Player : S_Actor
     public override void Update() 
 	{
         #region Player Movement
-
-        if(this.IsAlwaysRunning)
-            this.MoveHorizontal(1);
-
-        else //Use the Horizontal movement axis for input
-            MoveHorizontal(Input.GetAxis("Horizontal"));
+		if (CanPlayerMove)
+		{
+			if(this.IsAlwaysRunning)
+				this.MoveHorizontal(1);
+			
+			else //Use the Horizontal movement axis for input
+				MoveHorizontal(Input.GetAxis("Horizontal"));
+		}        
 
         //Jumping/Sliding
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))

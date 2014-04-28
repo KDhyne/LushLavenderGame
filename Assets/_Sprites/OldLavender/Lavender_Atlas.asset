@@ -12,209 +12,183 @@ MonoBehaviour:
   m_Name: Lavender_Atlas
   m_EditorClassIdentifier: 
   elements:
-  - name: Fall1
+  - name: 46616c6c31
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 30
       y: 0
       width: 195
       height: 227
     coords:
-      serializedVersion: 2
       x: .784179688
       y: .52734375
       width: .190429688
       height: .221679688
     rotated: 0
-  - name: Fall2
+  - name: 46616c6c32
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 33
       y: 0
       width: 193
       height: 242
     coords:
-      serializedVersion: 2
       x: .522460938
       y: .76171875
       width: .188476562
       height: .236328125
     rotated: 0
-  - name: Fall3
+  - name: 46616c6c33
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 33
       y: 0
       width: 197
       height: 253
     coords:
-      serializedVersion: 2
       x: .001953125
       y: .750976562
       width: .192382812
       height: .247070312
     rotated: 0
-  - name: Jump1
+  - name: 4a756d7031
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 56
       y: 0
       width: 170
       height: 247
     coords:
-      serializedVersion: 2
       x: .196289062
       y: .756835938
       width: .166015625
       height: .241210938
     rotated: 0
-  - name: Jump2
+  - name: 4a756d7032
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 66
       y: 3
       width: 160
       height: 247
     coords:
-      serializedVersion: 2
       x: .364257812
       y: .756835938
       width: .15625
       height: .241210938
     rotated: 0
-  - name: Jump3
+  - name: 4a756d7033
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 27
       y: 0
       width: 199
       height: 229
     coords:
-      serializedVersion: 2
       x: .375976562
       y: .525390625
       width: .194335938
       height: .223632812
     rotated: 0
-  - name: Landing1
+  - name: 4c616e64696e6731
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 38
       y: 18
       width: 217
       height: 222
     coords:
-      serializedVersion: 2
       x: .4140625
       y: .302734375
       width: .211914062
       height: .216796875
     rotated: 0
-  - name: Lavi_Idle1
+  - name: 4c6176695f49646c6531
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 56
       y: 0
       width: 173
       height: 233
     coords:
-      serializedVersion: 2
       x: .712890625
       y: .770507812
       width: .168945312
       height: .227539062
     rotated: 0
-  - name: Lavi_Idle2
+  - name: 4c6176695f49646c6532
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 56
       y: 0
       width: 173
       height: 233
     coords:
-      serializedVersion: 2
       x: .001953125
       y: .521484375
       width: .168945312
       height: .227539062
     rotated: 0
-  - name: Lavi_Run1
+  - name: 4c6176695f52756e31
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 11
       y: 4
       width: 208
       height: 222
     coords:
-      serializedVersion: 2
       x: .208984375
       y: .302734375
       width: .203125
       height: .216796875
     rotated: 0
-  - name: Lavi_Run2
+  - name: 4c6176695f52756e32
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 8
       y: 1
       width: 215
       height: 227
     coords:
-      serializedVersion: 2
       x: .572265625
       y: .52734375
       width: .209960938
       height: .221679688
     rotated: 0
-  - name: Lavi_Run3
+  - name: 4c6176695f52756e33
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 14
       y: 3
       width: 210
       height: 223
     coords:
-      serializedVersion: 2
       x: .001953125
       y: .301757812
       width: .205078125
       height: .217773438
     rotated: 0
-  - name: Lavi_Run4
+  - name: 4c6176695f52756e34
     originalWidth: 256
     originalHeight: 256
     trimRect:
-      serializedVersion: 2
       x: 14
       y: 2
       width: 206
       height: 229
     coords:
-      serializedVersion: 2
       x: .172851562
       y: .525390625
       width: .201171875

@@ -20,7 +20,7 @@ public class S_ActorBase : MonoBehaviour
     public int ScoreValue = 1;      //Score Value
 
     public Transform ActorTransform;
-    protected Animator SpriteAnimator;
+    public Animator SpriteAnimator;
     public GameObject SpawnLocation;
     public ActorState CurrentActorState = ActorState.Alive;
 
