@@ -22,7 +22,6 @@ public class S_Player : S_Actor
 	// Use this for initialization
 	public override void Start() 
 	{
-        this.MaxHitPoints = 15;
         SpawnLocation = GameObject.Find("Spawn");
         base.Start();
 	}
@@ -101,9 +100,7 @@ public class S_Player : S_Actor
 
     public override IEnumerator DestroyActor()
     {
-        this.CurrentHitPoints = 10;
-        //this.ActorTransform.position = SpawnLocation.transform.position;
-
+        this.CurrentHitPoints = MaxHitPoints;
         //Kill any velocity the player has
         VerticalSpeed = 0f;
         HorizontalSpeed = 0f;

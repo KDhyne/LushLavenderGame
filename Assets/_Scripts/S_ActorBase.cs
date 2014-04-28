@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 using System.Collections;
 
 public class S_ActorBase : MonoBehaviour
@@ -9,7 +11,10 @@ public class S_ActorBase : MonoBehaviour
         Dead
     }
 
-    public int MaxHitPoints = 10;   //Set Hit Points
+    public int AttackValue = 1;
+    public float InvincibilityTime = 1f;
+
+    public int MaxHitPoints = 4;   //Set Hit Points
     public int CurrentHitPoints;    
     public bool CanBeHit = true;    //determines whether or not the actor can be hit
     public int ScoreValue = 1;      //Score Value
@@ -70,8 +75,13 @@ public class S_ActorBase : MonoBehaviour
     /// </summary>
     /// <param name="damageAmount">Number of hit points to subtract</param>
     /// <param name="invincibileTime">Time in seconds actor is invincible after hit</param>
-    public virtual IEnumerator TakeDamage(int damageAmount, float invincibileTime)
+    public virtual IEnumerator TakeDamage(int damageAmount, float invincibileTime = -1f)
     {
+        if (Math.Abs(invincibileTime - (-1f)) < .01)
+        {
+            invincibileTime = InvincibilityTime;
+        }
+
         //Break out immediately if actor can't be hit
         if (!this.CanBeHit)
             yield break;
