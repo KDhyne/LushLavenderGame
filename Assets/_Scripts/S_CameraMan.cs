@@ -15,6 +15,10 @@ public class S_CameraMan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        iTween.MoveUpdate(cameraManTransform.gameObject, cameraTarget.transform.position - (Vector3.forward * 15), .2f);
+        iTween.MoveUpdate(cameraManTransform.gameObject, 
+            new Vector3(cameraTarget.transform.position.x - (Vector3.forward.x * 15),
+                2.5f,
+                -10f), 
+            .2f);
     }
 }
