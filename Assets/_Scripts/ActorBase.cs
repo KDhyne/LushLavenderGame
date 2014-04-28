@@ -3,7 +3,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class S_ActorBase : MonoBehaviour
+public class ActorBase : MonoBehaviour
 {
     public enum ActorState
     {
@@ -62,7 +62,7 @@ public class S_ActorBase : MonoBehaviour
     /// </summary>
     public virtual IEnumerator DestroyActor()
     {
-        var manager = GameObject.Find("GUI Manager").GetComponent<S_GUI>();
+        var manager = GameObject.Find("GUI Manager").GetComponent<GUI>();
         manager.i_score += this.ScoreValue;
         Debug.Log("Hit");
         yield return new WaitForSeconds(1.0f);

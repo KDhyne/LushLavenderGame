@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class S_EnemyGenerator : MonoBehaviour 
+public class EnemyGenerator : MonoBehaviour 
 {
     //
     public GameObject[] go_enemyTypeArray;

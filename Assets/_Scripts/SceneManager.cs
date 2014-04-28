@@ -16,7 +16,7 @@ public class SceneManager : MonoBehaviour
 
 	public float CountdownTimer;
 
-	private S_Player player;
+	private Player player;
 
 	LevelState currentlevelState;
 
@@ -24,7 +24,7 @@ public class SceneManager : MonoBehaviour
 	void Start ()
 	{
 		currentlevelState = LevelState.Start;
-		player = GameObject.Find("Player").GetComponent<S_Player>();
+		player = GameObject.Find("Player").GetComponent<Player>();
 	}
 	
 	// Update is called once per frame
@@ -72,7 +72,7 @@ public class SceneManager : MonoBehaviour
 	{
 		if (currentlevelState == LevelState.Start)
 		{
-			GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), (Mathf.CeilToInt(CountdownTimer)).ToString());
+			UnityEngine.GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), (Mathf.CeilToInt(CountdownTimer)).ToString());
 		}
 
 	}

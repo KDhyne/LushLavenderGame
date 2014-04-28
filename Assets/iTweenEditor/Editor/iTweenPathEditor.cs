@@ -72,7 +72,7 @@ public class iTweenPathEditor : Editor
 		}
 		
 		//update and redraw:
-		if(GUI.changed){
+		if(UnityEngine.GUI.changed){
 			EditorUtility.SetDirty(_target);			
 		}
 	}

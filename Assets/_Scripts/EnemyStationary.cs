@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyStationary : S_ActorBase 
+public class EnemyStationary : ActorBase 
 {
     void OnTriggerEnter(Collider collider)
     {
@@ -9,7 +9,7 @@ public class EnemyStationary : S_ActorBase
         {
             Debug.Log("Butts");
             //Player takes damamge
-            StartCoroutine(collider.gameObject.GetComponent<S_Player>().TakeDamage(this.AttackValue));
+            StartCoroutine(collider.gameObject.GetComponent<Player>().TakeDamage(this.AttackValue));
         }
         if (collider.tag == "Projectile")
         {

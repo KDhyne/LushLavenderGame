@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class S_ActorFoot : MonoBehaviour 
+public class ActorFoot : MonoBehaviour 
 {
     //Actor to whom the foot is attached
-    private S_Actor parentActor;
+    private Actor parentActor;
 
     //Number of contact floors
     private int numFloorsTouching;
@@ -21,7 +21,7 @@ public class S_ActorFoot : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        this.parentActor = transform.parent.gameObject.GetComponent<S_Actor>();
+        this.parentActor = transform.parent.gameObject.GetComponent<Actor>();
 	}
 
     void OnTriggerEnter(Collider otherObj)
@@ -40,7 +40,7 @@ public class S_ActorFoot : MonoBehaviour
             this.parentActor.CanDetectFloors = false;
 
             //Ground the actor and stop vertical velocity
-            this.parentActor.CurrentVerticalState = S_Actor.VerticalState.Grounded;
+            this.parentActor.CurrentVerticalState = Actor.VerticalState.Grounded;
             this.parentActor.VerticalSpeed = 0;
             
             //Get the center of contact, located at the middle of the platform directly under the actor's feet
@@ -81,7 +81,7 @@ public class S_ActorFoot : MonoBehaviour
                 this.LeftFloor = null;
                 this.RightFloor = null;
 
-                this.parentActor.CurrentVerticalState = S_Actor.VerticalState.Airborn;
+                this.parentActor.CurrentVerticalState = Actor.VerticalState.Airborn;
                 this.parentActor.CanDetectFloors = true;
                 this.parentActor.gameObject.transform.parent = null;
                 this.parentActor.ActiveFloorRotation = 0;
@@ -189,7 +189,7 @@ public class S_ActorFoot : MonoBehaviour
         else if (relativeFloorPosition < 0)
         {
             this.parentActor.Snap(floor, "Ceiling", contactPositionY);
-            this.parentActor.CurrentVerticalState = S_Actor.VerticalState.Airborn;
+            this.parentActor.CurrentVerticalState = Actor.VerticalState.Airborn;
         }
 
         //inherit a moving floor's momentum

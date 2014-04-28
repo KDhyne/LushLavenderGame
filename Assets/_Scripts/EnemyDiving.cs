@@ -3,7 +3,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyDiving : S_ActorBase 
+public class EnemyDiving : ActorBase 
 {
     enum DiveState
     {
@@ -43,7 +43,7 @@ public class EnemyDiving : S_ActorBase
         if (collider.tag == "Player")
         {
             Debug.Log("Player got hit");
-            StartCoroutine(collider.GetComponent<S_Player>().TakeDamage(1));
+            StartCoroutine(collider.GetComponent<Player>().TakeDamage(1));
         }
     }
 

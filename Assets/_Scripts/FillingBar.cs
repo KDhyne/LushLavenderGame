@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 
-public class S_FillingBar : MonoBehaviour 
+public class FillingBar : MonoBehaviour 
 {
 	
 	public float powerLevel;
@@ -55,7 +55,7 @@ public class S_FillingBar : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUI.Label(new Rect(20, 20, 100, 30),  ((int)powerLevel).ToString());
+		UnityEngine.GUI.Label(new Rect(20, 20, 100, 30),  ((int)powerLevel).ToString());
 		//GUI.Label(new Rect(Screen.width/2 - bar.transform.position.x, Screen.cameraHeight/2 - bar.transform.position.y, 100, 30), powerLevel.ToString());
 	}
 }

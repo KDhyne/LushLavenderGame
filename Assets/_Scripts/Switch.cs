@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class S_Switch : MonoBehaviour 
+public class Switch : MonoBehaviour 
 {
 
 	public bool b_activated;

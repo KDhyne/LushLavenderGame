@@ -2,9 +2,9 @@
 
 using UnityEngine;
 
-public class S_CheckpointManager : MonoBehaviour
+public class CheckpointManager : MonoBehaviour
 {
-    private readonly List<GameObject> Checkpoints = new List<GameObject>();
+    private readonly List<GameObject> checkpoints = new List<GameObject>();
 
     private GameObject activeCheckpoint;
 
@@ -14,10 +14,10 @@ public class S_CheckpointManager : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             var c = transform.GetChild(i).gameObject;
-            Checkpoints.Add(c);
+            this.checkpoints.Add(c);
         }
         //Set active checkpoint to first in list
-        this.SetActiveCheckpoint(Checkpoints[0]);
+        this.SetActiveCheckpoint(this.checkpoints[0]);
     }
 
     public void SetActiveCheckpoint(GameObject gameObject)
@@ -32,7 +32,7 @@ public class S_CheckpointManager : MonoBehaviour
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(50f, 100f, 100f, 50f), "Respawn"))
+        if (UnityEngine.GUI.Button(new Rect(50f, 100f, 100f, 50f), "Respawn"))
         {
             GameObject.FindGameObjectWithTag("Player").transform.position = this.GetPlayerSpawnLocation();
         }

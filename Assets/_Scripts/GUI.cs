@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 
-public class S_GUI : MonoBehaviour 
+public class GUI : MonoBehaviour 
 {
     public int i_waveCount;
     public float f_enemySpeed = 1f;
@@ -52,12 +52,12 @@ public class S_GUI : MonoBehaviour
 
         if (i_score >= 100)
         {
-            GUI.Label(new Rect(Screen.width/2, Screen.height/2, 200, 50), "You win!", GS_style);
+            UnityEngine.GUI.Label(new Rect(Screen.width/2, Screen.height/2, 200, 50), "You win!", GS_style);
         }
 
         if (i_loseScore >= 15)
         {
-            GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height / 2, 200, 100), "Lose. Press F5 to restart", GS_style);
+            UnityEngine.GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height / 2, 200, 100), "Lose. Press F5 to restart", GS_style);
         }
         
     }

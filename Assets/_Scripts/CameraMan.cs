@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class S_CameraMan : MonoBehaviour
+public class CameraMan : MonoBehaviour
 {
     private Transform cameraManTransform;
     private Transform cameraTarget;

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 
-public class S_Bullet : MonoBehaviour 
+public class Bullet : MonoBehaviour 
 {
     //States
     enum BulletState
@@ -17,7 +17,7 @@ public class S_Bullet : MonoBehaviour
     //Target position
     Transform T_targetTransform;
     //Player
-    S_Player s_player;
+    Player player;
     //Player position
     Transform T_playerTransform;
     //Explosion Prefab
@@ -69,7 +69,7 @@ public class S_Bullet : MonoBehaviour
         //Get the target object's transform
         T_targetTransform = GameObject.Find("Target Prefab").transform;
 
-        s_player = (S_Player)GameObject.Find("Player").GetComponent("S_Player");
+        this.player = (Player)GameObject.Find("Player").GetComponent("Player");
         //Get the Player transform
         T_playerTransform = GameObject.Find("Player").transform;
         //Get the power bar
@@ -107,7 +107,7 @@ public class S_Bullet : MonoBehaviour
                     Debug.DrawRay(T_bulletTransform.position, v2_trajectory * (15 / f_bulletMaxSpeed) * f_bulletSpeed, Color.red);
                 }
                 //Move the bullet with the player
-                T_bulletTransform.position = (T_playerTransform.position + s_player.BulletOffset);
+                T_bulletTransform.position = (T_playerTransform.position + this.player.BulletOffset);
                 //Tween the bullet speed between the default value and the max value
                 f_bulletSpeed = iTween.FloatUpdate(f_bulletSpeed, f_bulletMaxSpeed, f_chargeSpeed);
                 //Debug.Log(f_bulletSpeed);

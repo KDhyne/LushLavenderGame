@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class S_Collectable : MonoBehaviour
+public class Collectable : MonoBehaviour
 {
     public GameObject IdleParticleEffect;
     public GameObject CollectedParticleEffect;

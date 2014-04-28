@@ -2,7 +2,7 @@ using System.Collections;
 
 using UnityEngine;
 
-public class S_Player : S_Actor
+public class Player : Actor
 {
     public bool IsAlwaysRunning;
 
@@ -89,7 +89,7 @@ public class S_Player : S_Actor
         if (otherObj.tag == "Silver Bell")
         {
             Debug.Log("+1 Silver Bell");
-            var bell = otherObj.GetComponent<S_Collectable>();
+            var bell = otherObj.GetComponent<Collectable>();
 
             //TODO: Tell the level manager that the player has collected a silver bell
             //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
@@ -109,7 +109,7 @@ public class S_Player : S_Actor
         VerticalSpeed = 0f;
         HorizontalSpeed = 0f;
         //Move them to the current spawnpoint
-        ActorTransform.position = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<S_CheckpointManager>().GetPlayerSpawnLocation();
+        ActorTransform.position = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>().GetPlayerSpawnLocation();
         this.CurrentActorState = ActorState.Alive;
         return null;
     }

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class S_Actor : S_ActorBase
+public class Actor : ActorBase
 {
     public enum VerticalState
     {
@@ -278,7 +278,7 @@ public class S_Actor : S_ActorBase
 
             if (this.CurrentVerticalState == VerticalState.Grounded)
             {
-                var activeFloor = ActorFoot.GetComponent<S_ActorFoot>().ChooseActiveFloor(this.FacingRight);
+                var activeFloor = ActorFoot.GetComponent<ActorFoot>().ChooseActiveFloor(this.FacingRight);
                 this.ActiveFloorRotation = (activeFloor.transform.eulerAngles.z * Mathf.Deg2Rad);
 
                 this.SpriteAnimator.SetBool("Running", true);
@@ -300,7 +300,7 @@ public class S_Actor : S_ActorBase
 
             if (this.CurrentVerticalState == VerticalState.Grounded)
             {
-                var activeFloor = ActorFoot.GetComponent<S_ActorFoot>().ChooseActiveFloor(this.FacingRight);
+                var activeFloor = ActorFoot.GetComponent<ActorFoot>().ChooseActiveFloor(this.FacingRight);
                 this.ActiveFloorRotation = (activeFloor.transform.eulerAngles.z * Mathf.Deg2Rad);
 
                 this.SpriteAnimator.SetBool("Running", true);
