@@ -783,6 +783,8 @@ MonoBehaviour:
   m_Script: {fileID: -894469397, guid: 86da5fbf2fdd742fabee71203cfbdca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprites: []
+  softClips: []
 --- !u!114 &406945887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -798,6 +800,11 @@ MonoBehaviour:
   customResolution: 1
   width: 480
   height: 320
+  lastScreenWidth: 0
+  lastScreenHeight: 0
+  lastOrthographicSize: 25
+  lastFieldOfView: 60
+  lastOrthographic: 1
 --- !u!1 &408041250
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,6 +2143,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1083782557}
   - 114: {fileID: 1083782558}
+  - 114: {fileID: 1083782559}
   m_Layer: 0
   m_Name: GUI Manager
   m_TagString: Untagged
@@ -2160,7 +2168,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1083782556}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebdfb29902c825a44a5c228fa1079f3d, type: 3}
   m_Name: 
@@ -2230,6 +2238,21 @@ MonoBehaviour:
     m_StretchHeight: 0
   go_player: {fileID: 0}
   go_floor: {fileID: 88509330}
+--- !u!114 &1083782559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1083782556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b69baebcea71e41959c03decedc20f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalSilverBellCount: 0
+  CurrentSilverBellCount: 0
+  bellcount: 0
+  CountdownTimer: 0
 --- !u!1 &1103681433
 GameObject:
   m_ObjectHideFlags: 0
@@ -2828,6 +2851,7 @@ MonoBehaviour:
   CanBeHit: 1
   ScoreValue: 1
   ActorTransform: {fileID: 0}
+  SpriteAnimator: {fileID: 0}
   SpawnLocation: {fileID: 0}
   CurrentActorState: 0
   CurrentVerticalState: 0

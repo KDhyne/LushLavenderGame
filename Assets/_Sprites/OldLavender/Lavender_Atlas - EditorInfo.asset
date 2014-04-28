@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: -2055322909, guid: 77f72665dddd347bba153c5cb5a2df66, type: 3}
   m_Name: Lavender_Atlas - EditorInfo
   m_EditorClassIdentifier: 
-  atlasName: Lavender_Atlas
+  atlasName: 4c6176656e6465725f41746c6173
   width: 1024
   height: 1024
   elements:
@@ -21,7 +21,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 228bdd3655e1c7448bccadb409d03d65, type: 3}
     coord: 2303000001010000
     trimRect:
-      serializedVersion: 2
       x: 30
       y: 0
       width: 195
@@ -46,7 +45,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: f94c147582c0c7c4cb634cd3e3f58e07, type: 3}
     coord: 1702000002000000
     trimRect:
-      serializedVersion: 2
       x: 33
       y: 0
       width: 193
@@ -71,7 +69,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 34643ce2d40c5e54da567ff65d53a6fc, type: 3}
     coord: 0200000002000000
     trimRect:
-      serializedVersion: 2
       x: 33
       y: 0
       width: 197
@@ -96,7 +93,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: e82556d0f2540a943afdf394c13a6ade, type: 3}
     coord: c900000002000000
     trimRect:
-      serializedVersion: 2
       x: 56
       y: 0
       width: 170
@@ -121,7 +117,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 8234e75083f4e234ea5379ad03f6af81, type: 3}
     coord: 7501000002000000
     trimRect:
-      serializedVersion: 2
       x: 66
       y: 3
       width: 160
@@ -146,7 +141,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 70b890c3ee29f07428ee12e12065c051, type: 3}
     coord: 8101000001010000
     trimRect:
-      serializedVersion: 2
       x: 27
       y: 0
       width: 199
@@ -171,7 +165,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 6ddf20463cc457346a7b21b33fc47361, type: 3}
     coord: a8010000ec010000
     trimRect:
-      serializedVersion: 2
       x: 38
       y: 18
       width: 217
@@ -196,7 +189,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: fe1b6fdf1de5c6945bd8ea90102699c2, type: 3}
     coord: da02000002000000
     trimRect:
-      serializedVersion: 2
       x: 56
       y: 0
       width: 173
@@ -221,7 +213,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 735a8ed585ff2684c908f0a90b169d41, type: 3}
     coord: 0200000001010000
     trimRect:
-      serializedVersion: 2
       x: 56
       y: 0
       width: 173
@@ -246,7 +237,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 9a03d97850a895940994da266b19d1f9, type: 3}
     coord: d6000000ec010000
     trimRect:
-      serializedVersion: 2
       x: 11
       y: 4
       width: 208
@@ -271,7 +261,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 30d51eeb596aa934ab1311f068c5f157, type: 3}
     coord: 4a02000001010000
     trimRect:
-      serializedVersion: 2
       x: 8
       y: 1
       width: 215
@@ -296,7 +285,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 2bf5b48ca62d85749a07fd4452592c97, type: 3}
     coord: 02000000ec010000
     trimRect:
-      serializedVersion: 2
       x: 14
       y: 3
       width: 210
@@ -321,7 +309,6 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 83f80a0970438a44cbd852ea8e23e34a, type: 3}
     coord: b100000001010000
     trimRect:
-      serializedVersion: 2
       x: 14
       y: 2
       width: 206
@@ -344,9 +331,17 @@ MonoBehaviour:
   texture: {fileID: 2800000, guid: 6e6692310912ddc4b9d5c9161e52ed5e, type: 3}
   material: {fileID: 2100000, guid: ce7214a22e6c31f4087d7cb08ac4555e, type: 2}
   useBuildColor: 0
-  buildColor: {r: 1, g: 1, b: 1, a: 0}
+  buildColor:
+    r: 1
+    g: 1
+    b: 1
+    a: 0
   foldCanvas: 1
-  bgColor: {r: 1, g: 1, b: 1, a: 1}
+  bgColor:
+    r: 1
+    g: 1
+    b: 1
+    a: 1
   showCheckerboard: 1
   foldLayout: 1
   algorithm: 1
@@ -355,16 +350,24 @@ MonoBehaviour:
   padding: 2
   allowRotate: 0
   foldElement: 1
-  elementBgColor: {r: 1, g: 1, b: 1, a: 0}
-  elementSelectColor: {r: 0, g: 0, b: 1, a: 1}
+  elementBgColor:
+    r: 1
+    g: 1
+    b: 1
+    a: 0
+  elementSelectColor:
+    r: 0
+    g: 0
+    b: 1
+    a: 1
   scale: .504929602
   bitmapFonts: []
   rebuildAnimClipGUIDs:
-  - f522e4db1ea1c944abe77d64721d878c
-  - 9c1df203f1706e24ba1547d05dd15e7e
-  - 42a5b42b8a952e444af200b20d8acc1c
-  - 6b7a84b1a13c66146aeb3c59c0910297
-  - 2922c608bf139214f9886b6355c7ee31
+  - 6635323265346462316561316339343461626537376436343732316438373863
+  - 3963316466323033663137303665323462613135343764303564643135653765
+  - 3432613562343262386139353265343434616632303062323064386163633163
+  - 3662376138346231613133633636313436616562336335396330393130323937
+  - 3239323263363038626631333932313466393838366236333535633765653331
   needUpdateAnimClips: 0
   needRebuild: 0
   needLayout: 0
