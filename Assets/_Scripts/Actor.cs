@@ -406,16 +406,16 @@ public class Actor : ActorBase
     /// </param>
     public void Jump(float jumpAmount)
     {
-        VerticalSpeed = 0;
-
         if (this.CurrentVerticalState == VerticalState.Grounded && this.CanJump)
         {
+            VerticalSpeed = 0;
             this.VerticalSpeed = jumpAmount;
             this.CurrentVerticalState = VerticalState.Airborn;
         }
         //Double Jump
         else if (this.CurrentVerticalState == VerticalState.Airborn && this.CanJump)
         {
+            VerticalSpeed = 0;
             this.VerticalSpeed = jumpAmount;// * (0.9f);
             this.CanJump = false;
         }

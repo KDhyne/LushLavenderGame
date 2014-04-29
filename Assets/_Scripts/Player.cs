@@ -34,8 +34,12 @@ public class Player : Actor
         #region Player Movement
 		if (CanPlayerMove)
 		{
-			if(this.IsAlwaysRunning)
-				this.MoveHorizontal(1);
+		    if (this.IsAlwaysRunning)
+		    {
+                //Always move at max speed
+                HorizontalSpeed = MaxHorizontalSpeed;
+                this.MoveHorizontal(1);
+		    }
 			
 			else //Use the Horizontal movement axis for input
 				MoveHorizontal(Input.GetAxis("Horizontal"));
@@ -109,7 +113,7 @@ public class Player : Actor
         VerticalSpeed = 0f;
         HorizontalSpeed = 0f;
         //Move them to the current spawnpoint
-        ActorTransform.position = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>().GetPlayerSpawnLocation();
+        ActorTransform.position = GameObject.Find("SceneManager").GetComponent<SceneManager>().GetPlayerSpawnLocation();
         this.CurrentActorState = ActorState.Alive;
         return null;
     }

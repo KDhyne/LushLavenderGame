@@ -735,25 +735,14 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 627826783}
-  - 114: {fileID: 627826782}
+  - 114: {fileID: 627826784}
   m_Layer: 0
-  m_Name: CheckpointManager
+  m_Name: SceneManager
   m_TagString: CheckpointManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &627826782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 627826781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2806369cd5123448bde0a2298dc673e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &627826783
 Transform:
   m_ObjectHideFlags: 0
@@ -769,6 +758,21 @@ Transform:
   - {fileID: 2035620952}
   - {fileID: 1467718942}
   m_Father: {fileID: 0}
+--- !u!114 &627826784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 627826781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b69baebcea71e41959c03decedc20f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalSilverBellCount: 2
+  CurrentSilverBellCount: 0
+  bellcount: 0
+  CountdownTimer: 3
 --- !u!1 &666185517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,7 +1819,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1558928006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.5, y: 5.25, z: -10}
+  m_LocalPosition: {x: 1.92685795, y: 9.50133514, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 602256135}
@@ -1886,6 +1890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0a6a9f2d9051f45b90d823652b0463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsFollowingPlayer: 0
 --- !u!1 &1693867854
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,10 +2388,10 @@ MonoBehaviour:
   ActiveFloorRotation: 0
   VerticalSpeed: 0
   MaxVerticalSpeed: -1.60000002
-  Gravity: 15
+  Gravity: 11
   CanJump: 1
   IsHanging: 0
-  JumpForce: 1.5
+  JumpForce: 1
   ActorFoot: {fileID: 882820599}
   MarkerObject: {fileID: 0}
   MarkerObjects: []
@@ -2595,7 +2600,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2069727527}
   m_LocalRotation: {x: 0, y: 0, z: -.217381477, w: .976086795}
-  m_LocalPosition: {x: 96.5368652, y: -18.6117134, z: 0}
-  m_LocalScale: {x: 32.1660233, y: 1, z: 1}
+  m_LocalPosition: {x: 86.812851, y: -14.0544682, z: 0}
+  m_LocalScale: {x: 10.6974058, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1817525918}
