@@ -16,7 +16,7 @@ public class EnemyDiving : ActorBase
         //Wait
         yield return new WaitForSeconds(1f);
         //Dive toward player
-        iTween.MoveTo(this.gameObject, iTween.Hash("position", new Vector3(-60, -30, 10), "islocal", true, "time", 1f, "easetype", iTween.EaseType.easeInBack));
+        iTween.MoveTo(this.gameObject, iTween.Hash("position", new Vector3(-75, -20, 10), "islocal", true, "time", 1f, "easetype", iTween.EaseType.easeInBack));
         //Wait then destroy
         yield return new WaitForSeconds(5f);
         Destroy(this.gameObject);

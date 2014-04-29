@@ -69,6 +69,8 @@
      <Compile Include="Assets\_Scripts\GUI.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\SceneManager.cs" />
+     <Compile Include="Assets\_Scripts\SilverBell.cs" />
+     <Compile Include="Assets\_Scripts\SpeedUp.cs" />
      <Compile Include="Assets\_Scripts\Switch.cs" />
      <Compile Include="Assets\_Scripts\TriggerDiving.cs" />
      <Compile Include="Assets\_Scripts\temp_platformMove.cs" />

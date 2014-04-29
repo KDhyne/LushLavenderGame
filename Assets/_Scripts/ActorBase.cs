@@ -67,7 +67,6 @@ public class ActorBase : MonoBehaviour
         Debug.Log("Hit");
         yield return new WaitForSeconds(1.0f);
         Destroy(this.gameObject);
-        
     }
 
     /// <summary>
