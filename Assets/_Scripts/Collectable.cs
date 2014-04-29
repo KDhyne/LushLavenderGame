@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 
-public class Collectable : MonoBehaviour
+public abstract class Collectable : MonoBehaviour
 {
     public GameObject IdleParticleEffect;
     public GameObject CollectedParticleEffect;
+    public AudioClip CollectedAudioClip;
 
     private GameObject idleParticle;
 
@@ -12,12 +13,8 @@ public class Collectable : MonoBehaviour
 	{
 	    idleParticle = (GameObject)Instantiate(IdleParticleEffect, this.transform.position, Quaternion.identity);
 	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        
-	}
+
+    public abstract void OnTriggerEnter(Collider otherObj);
 
     /// <summary>
     /// Disable the renderer and instantiate the collected particle effect.
@@ -28,7 +25,9 @@ public class Collectable : MonoBehaviour
         //Hide and explode
         renderer.enabled = false;
         var particle = (GameObject)Instantiate(CollectedParticleEffect, this.transform.position, Quaternion.identity);
-        
+        //TODO: Add SoundManager.PlaySFX(CollectedAudioClip);
+
+
         //Destroy the particles
         Destroy(idleParticle);
         Destroy(particle.gameObject, .5f);

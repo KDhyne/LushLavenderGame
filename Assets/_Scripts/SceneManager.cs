@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+
 using UnityEngine;
 
 public class SceneManager : MonoBehaviour
@@ -12,7 +14,7 @@ public class SceneManager : MonoBehaviour
 
 	public int TotalSilverBellCount;
 	public int CurrentSilverBellCount;
-	public float bellcount = 0f; //Used for animating the counting at the end
+	public float Bellcount = 0f; //Used for animating the counting at the end
 
 	public float CountdownTimer;
 
@@ -33,11 +35,12 @@ public class SceneManager : MonoBehaviour
 	    cameraMan = Camera.main.GetComponent<CameraMan>();
 
         //Get all child gameobjects and add them to the checkpoint list
-        for (int i = 0; i < transform.childCount; i++)
+        for (var i = 0; i < transform.childCount; i++)
         {
             var c = transform.GetChild(i).gameObject;
             this.checkpoints.Add(c);
         }
+
         //Set active checkpoint to first in list
         this.SetActiveCheckpoint(this.checkpoints[0]);
 	}
@@ -69,23 +72,45 @@ public class SceneManager : MonoBehaviour
 
 		    case LevelState.GameLoop:
 			    //general upkeep things
+
+
+
+                //If the player passes the last checkpoint in the collection of all checkpoints,
+                //change to the end state
+		        if (checkpoints.IndexOf(activeCheckpoint) == (checkpoints.Count - 1))
+		        {
+		            currentlevelState = LevelState.End;
+		        }
 			    break;
 
 		    case LevelState.End:
-			    //Stop player and center the camera
-			    player.MoveHorizontal(0);
-			    //Add up current bells over total bells
-			    bellcount = iTween.FloatUpdate(bellcount,(float)CurrentSilverBellCount, 0.1f);
-			    //Walk player off the stage
-			    player.MoveHorizontal(1);
+		        StartCoroutine(PlayEndSequence());
 			    break;
 		}
 	
 	}
 
-    public void SetActiveCheckpoint(GameObject gameObject)
+    private IEnumerator PlayEndSequence()
     {
-        activeCheckpoint = gameObject;
+        //Stop player and center the camera
+
+        player.CanPlayerMove = false;
+		player.MoveHorizontal(0);
+        cameraMan.IsFollowingPlayer = false;
+        iTween.MoveUpdate(cameraMan.gameObject, new Vector3(player.transform.position.x, 2.5f, -10f), 1f);
+		//Add up current bells
+		this.Bellcount = Mathf.CeilToInt(iTween.FloatUpdate(this.Bellcount, CurrentSilverBellCount, 0.1f));
+
+        //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
+        yield return new WaitForSeconds(2f);
+
+		//Walk player off the stage
+		player.MoveHorizontal(1);
+    }
+
+    public void SetActiveCheckpoint(GameObject newActiveCheckpoint)
+    {
+        activeCheckpoint = newActiveCheckpoint;
     }
 
     public Vector2 GetPlayerSpawnLocation()
@@ -95,15 +120,22 @@ public class SceneManager : MonoBehaviour
 
 	public void OnGUI()
 	{
-		if (currentlevelState == LevelState.Start)
-		{
-			UnityEngine.GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), (Mathf.CeilToInt(CountdownTimer)).ToString());
-		}
+	    switch (this.currentlevelState)
+	    {
+	        case LevelState.Start:
+	            UnityEngine.GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), (Mathf.CeilToInt(this.CountdownTimer)).ToString());
+	            break;
 
-        if (UnityEngine.GUI.Button(new Rect(50f, 100f, 100f, 50f), "Respawn"))
+            case LevelState.GameLoop:
+                break;
+
+            case LevelState.End:
+                break;
+	    }
+
+	    if (UnityEngine.GUI.Button(new Rect(50f, 100f, 100f, 50f), "Respawn"))
         {
             GameObject.FindGameObjectWithTag("Player").transform.position = this.GetPlayerSpawnLocation();
         }
-
 	}
 }
