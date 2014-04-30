@@ -15,8 +15,8 @@ public class SceneManager : MonoBehaviour
 	public int TotalSilverBellCount;
 	public int CurrentSilverBellCount;
 	public float Bellcount = 0f; //Used for animating the counting at the end
-
 	public float CountdownTimer;
+    public bool ShowEndGUI;
 
     private readonly List<GameObject> checkpoints = new List<GameObject>();
 
@@ -97,12 +97,15 @@ public class SceneManager : MonoBehaviour
         player.CanPlayerMove = false;
 		player.MoveHorizontal(0);
         cameraMan.IsFollowingPlayer = false;
-        iTween.MoveUpdate(cameraMan.gameObject, new Vector3(player.transform.position.x, 2.5f, -10f), 1f);
+        iTween.MoveTo(cameraMan.gameObject, new Vector3(player.transform.position.x, 2.5f, -10f), 1f);
+
+        yield return new WaitForSeconds(4f);
 		//Add up current bells
+        ShowEndGUI = true;
 		this.Bellcount = Mathf.CeilToInt(iTween.FloatUpdate(this.Bellcount, CurrentSilverBellCount, 0.1f));
 
         //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(10f);
 
 		//Walk player off the stage
 		player.MoveHorizontal(1);
@@ -123,13 +126,17 @@ public class SceneManager : MonoBehaviour
 	    switch (this.currentlevelState)
 	    {
 	        case LevelState.Start:
-	            UnityEngine.GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), (Mathf.CeilToInt(this.CountdownTimer)).ToString());
+	            GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), (Mathf.CeilToInt(this.CountdownTimer)).ToString());
 	            break;
 
             case LevelState.GameLoop:
                 break;
 
             case LevelState.End:
+	            if (ShowEndGUI)
+	            {
+	                GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), "Silver Bells Collected: " + CurrentSilverBellCount + "/" + TotalSilverBellCount);
+	            }
                 break;
 	    }
 

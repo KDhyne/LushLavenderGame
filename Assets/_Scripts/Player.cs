@@ -45,14 +45,12 @@ public class Player : Actor
 			
 			else //Use the Horizontal movement axis for input
 				MoveHorizontal(Input.GetAxis("Horizontal"));
+
+            //Jumping/Sliding
+            MoveVertical(Input.GetAxis("Vertical"));
 		}        
 
-        //Jumping/Sliding
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            MoveVertical(1);
-
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) 
-            MoveVertical(-1);
+        
 
         #endregion
 

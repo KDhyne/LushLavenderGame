@@ -42,6 +42,12 @@ public class Actor : ActorBase
     //Children GameObjects
     public GameObject ActorFoot;
 
+    //Colliders
+    private CapsuleCollider standardCollider;
+    private BoxCollider slidingCollider;
+    private Collider currentCollider;
+    private Vector3 colliderCenter;
+
     //Debug object
     public GameObject MarkerObject;
     public List<GameObject> MarkerObjects = new List<GameObject>();
@@ -59,10 +65,15 @@ public class Actor : ActorBase
                 this.ActorFoot = child.gameObject;
         }
 
+        //Find and set colliders
+        standardCollider = this.gameObject.GetComponent<CapsuleCollider>();
+        slidingCollider = this.gameObject.GetComponent<BoxCollider>();
+        currentCollider = standardCollider;
+
         //Position the foot at the bottom of the actor collider
         this.ActorFoot.transform.localPosition = new Vector3(
-            this.ActorFoot.transform.localPosition.x, 
-            -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2),
+            this.ActorFoot.transform.localPosition.x,
+            -(this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y),
             this.ActorFoot.transform.localPosition.z);
     }
 
@@ -71,6 +82,11 @@ public class Actor : ActorBase
     {
         base.Update();
 
+        if (currentCollider == standardCollider)
+            colliderCenter = standardCollider.center;
+        else
+            colliderCenter = -slidingCollider.center;
+
         //ActorState checks
         if (this.CurrentActorState == ActorState.Alive)
         {
@@ -78,14 +94,14 @@ public class Actor : ActorBase
             {
                 this.ActorFoot.transform.localPosition = new Vector3(
                     this.ActorFoot.transform.localPosition.x,
-                    this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2,
+                    this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y,
                     this.ActorFoot.transform.localPosition.z);
             }
             else
             {
                 this.ActorFoot.transform.localPosition = new Vector3(
                     this.ActorFoot.transform.localPosition.x,
-                    -(this.ActorTransform.GetComponent<CapsuleCollider>().bounds.size.y / 2),
+                    -(this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y),
                     this.ActorFoot.transform.localPosition.z);
             }
 
@@ -97,12 +113,6 @@ public class Actor : ActorBase
 
                 if (this.VerticalSpeed < this.MaxVerticalSpeed)
                     this.VerticalSpeed = this.MaxVerticalSpeed;
-
-                //If you fall below the Death Volume, die or respawn
-                //if (T_actorTransform.position.y < obj_deathVolume.transform.position.y)
-                //{
-                //    st_charState = S_Char.CharState.Dead;
-                //}
 
                 this.SpriteAnimator.SetFloat("vSpeed", VerticalSpeed * 10);
                 this.SpriteAnimator.SetBool("Grounded", false);
@@ -390,12 +400,25 @@ public class Actor : ActorBase
         }
         else
         {
-            if (moveInput > 0)
-                Jump(this.JumpForce);
-            
-            else if (moveInput < 0)
+            if (moveInput < 0)
             {
-                //Drop down through platform
+                //Slide
+                slidingCollider.enabled = true;
+                currentCollider = slidingCollider;
+                standardCollider.enabled = false;
+
+                SpriteAnimator.SetBool("Sliding", true);
+            }
+            else
+            {
+                if (moveInput > 0)
+                    Jump(this.JumpForce);
+
+                standardCollider.enabled = true;
+                currentCollider = standardCollider;
+                slidingCollider.enabled = false;
+
+                SpriteAnimator.SetBool("Sliding", false);
             }
         }
     }

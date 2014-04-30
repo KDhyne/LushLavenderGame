@@ -792,7 +792,7 @@ Transform:
   m_GameObject: {fileID: 491476440}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 179.295593, y: -25.3684406, z: 0}
-  m_LocalScale: {x: 243.719391, y: 1, z: 1}
+  m_LocalScale: {x: 396.044006, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1817525918}
 --- !u!1 &527222591
@@ -1000,6 +1000,7 @@ MonoBehaviour:
   CurrentSilverBellCount: 0
   Bellcount: 0
   CountdownTimer: 3
+  ShowEndGUI: 0
 --- !u!1 &644450299
 GameObject:
   m_ObjectHideFlags: 0
@@ -3103,6 +3104,7 @@ GameObject:
   - 212: {fileID: 2034326404}
   - 95: {fileID: 2034326403}
   - 136: {fileID: 2034326402}
+  - 65: {fileID: 2034326408}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3236,11 +3238,23 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2034326401}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.9772453, y: 3.32091594, z: 0}
+  m_LocalPosition: {x: 265.108765, y: 5.86873436, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 882820600}
   m_Father: {fileID: 0}
+--- !u!65 &2034326408
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2034326401}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.5, y: 2, z: 2}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!1 &2035620947
 GameObject:
   m_ObjectHideFlags: 0

@@ -66,7 +66,6 @@
      <Compile Include="Assets\_Scripts\EnemyStationary.cs" />
      <Compile Include="Assets\_Scripts\Example.cs" />
      <Compile Include="Assets\_Scripts\FillingBar.cs" />
-     <Compile Include="Assets\_Scripts\GUI.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\SceneManager.cs" />
      <Compile Include="Assets\_Scripts\SilverBell.cs" />
