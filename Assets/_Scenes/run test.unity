@@ -3205,6 +3205,7 @@ MonoBehaviour:
   FacingRight: 1
   HorizontalSpeed: 0
   Acceleration: 3
+  Deceleration: 2
   MaxHorizontalSpeed: 100
   WallPosition: 0
   IsTouchingWall: 0
@@ -3222,7 +3223,7 @@ MonoBehaviour:
   MarkerObject: {fileID: 0}
   MarkerObjects: []
   TestForPostitions: 0
-  IsAlwaysRunning: 1
+  IsAlwaysRunning: 0
   BulletOffset: {x: 0, y: 0, z: 0}
   TargetPrefab: {fileID: 0}
   BulletPrefab: {fileID: 0}

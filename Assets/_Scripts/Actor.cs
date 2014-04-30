@@ -19,6 +19,7 @@ public class Actor : ActorBase
     public bool FacingRight = true;
     public float HorizontalSpeed;
     public float Acceleration;
+    public float Deceleration;
     public float MaxHorizontalSpeed;
     public float WallPosition;
     public bool IsTouchingWall = false;
@@ -264,8 +265,11 @@ public class Actor : ActorBase
 
         //Manage HorizontalSpeed min and max
         if (this.HorizontalSpeed <= 0)
+        {
             this.HorizontalSpeed = 0;
-
+            this.SpriteAnimator.SetBool("Running", false);
+        }
+            
         else if (this.HorizontalSpeed >= this.MaxHorizontalSpeed)
             this.HorizontalSpeed = this.MaxHorizontalSpeed;
         
@@ -312,35 +316,62 @@ public class Actor : ActorBase
             //Maintain horizontal momentum while in the air
             if (this.CurrentVerticalState == VerticalState.Grounded)
                 Decelerate();
-
-            this.SpriteAnimator.SetBool("Running", false);
         }
 
         //Allow horizontal movement if the actor isn't hanging on a wall
-        if (!this.IsHanging)
+        if (this.IsHanging)
+            return;
+
+        //Allow movement in both directions if not against a wall
+        if (!this.IsTouchingWall && !this.IsTouchingFloorEdge)
         {
-            //Allow movement in both directions if not against a wall
-            if (!this.IsTouchingWall && !this.IsTouchingFloorEdge)
+            Vector3 test = Quaternion.Euler(0, 0, this.ActiveFloorRotation * Mathf.Rad2Deg) * Vector3.right;
+            this.ActorTransform.Translate(test * this.HorizontalSpeed * Time.fixedDeltaTime);
+        }
+        else //Restrict movement to one side
+        {
+            //Wall is on the right
+            if (this.WallPosition > 0)
             {
-                Vector3 test = Quaternion.Euler(0, 0, this.ActiveFloorRotation * Mathf.Rad2Deg) * Vector3.right;
-                this.ActorTransform.Translate(test * moveInput * this.HorizontalSpeed * Time.fixedDeltaTime);
+                if (moveInput < 0)
+                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * Time.fixedDeltaTime);
             }
-            else //Restrict movement to one side
-            {
-                //Wall is on the right
-                if (this.WallPosition > 0)
-                {
-                    if (moveInput < 0)
-                        this.ActorTransform.Translate(Vector3.right * moveInput * this.HorizontalSpeed * Time.fixedDeltaTime);
-                }
                 //Wall is on the left
-                else if (this.WallPosition < 0)
-                {
-                    if (moveInput > 0)
-                        this.ActorTransform.Translate(Vector3.right * moveInput * this.HorizontalSpeed * Time.fixedDeltaTime);
-                }
+            else if (this.WallPosition < 0)
+            {
+                if (moveInput > 0)
+                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * Time.fixedDeltaTime);
             }
-        }        
+        }
+    }
+
+    /// <summary>
+    /// Accelerate actor horizontally determined by ground state.
+    /// </summary>
+    protected virtual void Accelerate()
+    {
+        //Accelerate faster on ground
+        if (this.CurrentVerticalState == VerticalState.Grounded)
+            this.HorizontalSpeed += this.Acceleration;
+
+        //Accelerate slower in the air
+        else
+            this.HorizontalSpeed += this.Acceleration * 0.67f;
+    }
+
+    /// <summary>
+    /// Decelerate to zero movement speed. Only decelerate main player if no input received.
+    /// </summary>
+    protected virtual void Decelerate()
+    {
+        //Maintain horizontal momentum while in the air
+        if (this.CurrentVerticalState == VerticalState.Grounded)
+        {
+            this.HorizontalSpeed -= this.Deceleration;
+
+            if (HorizontalSpeed <= 0)
+                HorizontalSpeed = 0;
+        }
     }
 
     /// <summary>
@@ -366,35 +397,6 @@ public class Actor : ActorBase
             {
                 //Drop down through platform
             }
-        }
-    }
-
-    /// <summary>
-    /// Accelerate actor horizontally determined by ground state.
-    /// </summary>
-    protected virtual void Accelerate()
-    {
-        //Accelerate faster on ground
-        if (this.CurrentVerticalState == VerticalState.Grounded)
-            this.HorizontalSpeed += this.Acceleration;
-        
-        //Accelerate slower in the air
-        else
-            this.HorizontalSpeed += this.Acceleration * 0.67f;
-    }
-
-    /// <summary>
-    /// Decelerate to zero movement speed. Only decelerate main player if no input received.
-    /// </summary>
-    protected virtual void Decelerate()
-    {
-        //Maintain horizontal momentum while in the air
-        if (this.CurrentVerticalState == VerticalState.Grounded)
-        {
-            this.HorizontalSpeed -= 20f;
-
-            if (HorizontalSpeed <= 0)
-                HorizontalSpeed = 0;
         }
     }
 

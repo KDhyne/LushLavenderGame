@@ -29,8 +29,10 @@ public class Player : Actor
 	}
 	
 	// Update is called once per frame
-    public override void Update() 
-	{
+    public override void Update()
+    {
+        base.Update();
+
         #region Player Movement
 		if (CanPlayerMove)
 		{
@@ -83,7 +85,6 @@ public class Player : Actor
 */
         #endregion
 
-        base.Update();
 	}
 
     public override void OnTriggerEnter(Collider otherObj)
@@ -116,12 +117,12 @@ public class Player : Actor
         ActorTransform.position = GameObject.Find("SceneManager").GetComponent<SceneManager>().GetPlayerSpawnLocation();
         this.CurrentActorState = ActorState.Alive;
         return null;
-    }
+    }/*
 
     protected override void Decelerate()
     {
         //If no horizontal movement key is pushed, Decelerate
         if (!(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
-            this.HorizontalSpeed -= 1f;
-    }
+            this.HorizontalSpeed -= Deceleration;
+    }*/
 }
