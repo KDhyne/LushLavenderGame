@@ -39,10 +39,10 @@ public class Player : Actor
     {
         base.Update();
 
+        #region Player Movement
+
         //Change the max speed based on speed up level
         this.MaxHorizontalSpeed = (initialMaxHorizontalSpeed + (SpeedUpAmount * SpeedUpLevel));
-
-        #region Player Movement
 
         //Return if player can't move
         if (!this.CanPlayerMove)
@@ -111,42 +111,17 @@ public class Player : Actor
 
 	}
 
-    public override void OnTriggerEnter(Collider otherObj)
-    {
-        base.OnTriggerEnter(otherObj);
-
-        if (otherObj.tag == "Silver Bell")
-        {
-            Debug.Log("+1 Silver Bell");
-            var bell = otherObj.GetComponent<Collectable>();
-
-            //TODO: Tell the level manager that the player has collected a silver bell
-            //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
-
-            bell.DestroyCollectable();
-        }
-        if (otherObj.tag == "DeathVolume")
-        {
-            this.DestroyActor();
-        }
-    }
-
     public override IEnumerator DestroyActor()
     {
         this.CurrentHitPoints = MaxHitPoints;
+
         //Kill any velocity the player has
         VerticalSpeed = 0f;
         HorizontalSpeed = 0f;
+
         //Move them to the current spawnpoint
         ActorTransform.position = GameObject.Find("SceneManager").GetComponent<SceneManager>().GetPlayerSpawnLocation();
         this.CurrentActorState = ActorState.Alive;
         return null;
-    }/*
-
-    protected override void Decelerate()
-    {
-        //If no horizontal movement key is pushed, Decelerate
-        if (!(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
-            this.HorizontalSpeed -= Deceleration;
-    }*/
+    }
 }

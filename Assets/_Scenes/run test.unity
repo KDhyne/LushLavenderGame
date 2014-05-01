@@ -463,6 +463,7 @@ GameObject:
   - 33: {fileID: 274259013}
   - 65: {fileID: 274259012}
   - 23: {fileID: 274259011}
+  - 114: {fileID: 274259015}
   m_Layer: 0
   m_Name: DETHCUBE
   m_TagString: DeathVolume
@@ -521,6 +522,17 @@ Transform:
   m_LocalScale: {x: 1000, y: 30, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &274259015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 274259010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff1eb95bbc8c374b9cae5798dd8a866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &305104809
 Prefab:
   m_ObjectHideFlags: 0
@@ -666,6 +678,7 @@ GameObject:
   - 33: {fileID: 427426588}
   - 65: {fileID: 427426587}
   - 23: {fileID: 427426586}
+  - 114: {fileID: 427426590}
   m_Layer: 0
   m_Name: DETHCUBE2
   m_TagString: DeathVolume
@@ -724,6 +737,17 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &427426590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 427426585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff1eb95bbc8c374b9cae5798dd8a866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &491476440
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,7 +1018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87b69baebcea71e41959c03decedc20f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TotalSilverBellCount: 2
+  TotalSilverBellCount: 1
   CurrentSilverBellCount: 0
   Bellcount: 0
   CountdownTimer: 3
@@ -1453,6 +1477,7 @@ GameObject:
   - 33: {fileID: 783482326}
   - 65: {fileID: 783482325}
   - 23: {fileID: 783482324}
+  - 114: {fileID: 783482328}
   m_Layer: 0
   m_Name: DETHCUBE2
   m_TagString: DeathVolume
@@ -1511,6 +1536,17 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &783482328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 783482323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff1eb95bbc8c374b9cae5798dd8a866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &882820599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,6 +1844,7 @@ GameObject:
   - 33: {fileID: 1173786699}
   - 65: {fileID: 1173786698}
   - 23: {fileID: 1173786697}
+  - 114: {fileID: 1173786701}
   m_Layer: 0
   m_Name: DETHCUBE2
   m_TagString: DeathVolume
@@ -1866,6 +1903,17 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &1173786701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1173786696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff1eb95bbc8c374b9cae5798dd8a866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1179369856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1951,7 +1999,7 @@ Transform:
   m_PrefabInternal: {fileID: 1924797820}
   m_GameObject: {fileID: 1179369856}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.73774767, y: 4.00644779, z: 0}
+  m_LocalPosition: {x: 2.73774767, y: 4.6170702, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2535,6 +2583,7 @@ GameObject:
   - 33: {fileID: 1654204079}
   - 65: {fileID: 1654204078}
   - 23: {fileID: 1654204077}
+  - 114: {fileID: 1654204081}
   m_Layer: 0
   m_Name: DETHCUBE2
   m_TagString: DeathVolume
@@ -2593,6 +2642,17 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &1654204081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1654204076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff1eb95bbc8c374b9cae5798dd8a866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1693867854
 GameObject:
   m_ObjectHideFlags: 0
@@ -2991,7 +3051,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d41b9b5fe9d4bc84f8cae8de6efc144a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 4.00644779
+      value: 4.6170702
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d41b9b5fe9d4bc84f8cae8de6efc144a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -3218,6 +3278,7 @@ MonoBehaviour:
   IsHanging: 0
   JumpForce: 1
   ActorFoot: {fileID: 882820599}
+  CurrentCollider: {fileID: 0}
   MarkerObject: {fileID: 0}
   MarkerObjects: []
   TestForPostitions: 0
@@ -3236,7 +3297,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2034326401}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.0265923, y: 10.7243586, z: 0}
+  m_LocalPosition: {x: -20, y: 2.54999995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 882820600}
@@ -3345,6 +3406,7 @@ GameObject:
   - 33: {fileID: 2040563418}
   - 65: {fileID: 2040563417}
   - 23: {fileID: 2040563416}
+  - 114: {fileID: 2040563420}
   m_Layer: 0
   m_Name: DETHCUBE2
   m_TagString: DeathVolume
@@ -3403,6 +3465,17 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &2040563420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2040563415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff1eb95bbc8c374b9cae5798dd8a866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2064379702
 Prefab:
   m_ObjectHideFlags: 0

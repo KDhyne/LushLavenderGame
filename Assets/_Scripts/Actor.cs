@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -11,6 +9,14 @@ public class Actor : ActorBase
         Airborn,
         Landing,
         Grounded
+    }
+
+    public enum ObstaclePosition
+    {
+        Left,
+        Right,
+        Floor,
+        Ceiling
     }
 
     public VerticalState CurrentVerticalState = VerticalState.Airborn;
@@ -32,7 +38,6 @@ public class Actor : ActorBase
     #endregion
 
     #region Vertical vars
-    //TODO: Animation needs some work. Either here or in the animator window
     public float VerticalSpeed;
     public float MaxVerticalSpeed;
     public float Gravity;
@@ -47,8 +52,7 @@ public class Actor : ActorBase
     //Colliders
     private CapsuleCollider standardCollider;
     private BoxCollider slidingCollider;
-    private Collider currentCollider;
-    private Vector3 colliderCenter;
+    public Collider CurrentCollider;
 
     //Debug object
     public GameObject MarkerObject;
@@ -70,12 +74,12 @@ public class Actor : ActorBase
         //Find and set colliders
         standardCollider = this.gameObject.GetComponent<CapsuleCollider>();
         slidingCollider = this.gameObject.GetComponent<BoxCollider>();
-        currentCollider = standardCollider;
+        CurrentCollider = standardCollider;
 
         //Position the foot at the bottom of the actor collider
         this.ActorFoot.transform.localPosition = new Vector3(
             this.ActorFoot.transform.localPosition.x,
-            -(this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y),
+            -(this.standardCollider.bounds.size.y / 2),
             this.ActorFoot.transform.localPosition.z);
     }
 
@@ -83,11 +87,6 @@ public class Actor : ActorBase
     public override void Update()
     {
         base.Update();
-
-        if (currentCollider == standardCollider)
-            colliderCenter = standardCollider.center;
-        else
-            colliderCenter = -slidingCollider.center;
 
         //Return if not alive
         if (this.CurrentActorState != ActorState.Alive)
@@ -97,12 +96,12 @@ public class Actor : ActorBase
         if (this.VerticalSpeed > 0)
             this.ActorFoot.transform.localPosition = new Vector3(
                 this.ActorFoot.transform.localPosition.x,
-                this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y,
+                this.standardCollider.bounds.size.y / 2,
                 this.ActorFoot.transform.localPosition.z);
         else
             this.ActorFoot.transform.localPosition = new Vector3(
                 this.ActorFoot.transform.localPosition.x,
-                -(this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y),
+                -(this.standardCollider.bounds.size.y / 2),
                 this.ActorFoot.transform.localPosition.z);
 
         //Apply airborn properties and gravity
@@ -156,10 +155,10 @@ public class Actor : ActorBase
 
             //Stop player from moving on appropriate side and snap smoothly
             if (this.WallPosition > 0)
-                Snap(otherObj, "Right", 0);
+                Snap(otherObj, ObstaclePosition.Right, 0);
 
             else if (this.WallPosition < 0)
-                Snap(otherObj, "Left", 0);
+                Snap(otherObj, ObstaclePosition.Left, 0);
 
             if (otherObj.tag == "MovingWall")
 	        {
@@ -187,10 +186,10 @@ public class Actor : ActorBase
 
                     //Stop player from moving on appropriate side and snap smoothly
                     if (this.WallPosition > 0)
-                        Snap(otherObj, "Right", 0);
+                        Snap(otherObj, ObstaclePosition.Right, 0);
 
                     else if (this.WallPosition < 0)
-                        Snap(otherObj, "Left", 0);
+                        Snap(otherObj, ObstaclePosition.Left, 0);
                 }
             }
         }
@@ -228,7 +227,7 @@ public class Actor : ActorBase
     /// <param name="obstacleCollider"></param>
     /// <param name="obstaclePosition">String description of where the obstacle is in relation the Actor</param>
     /// <param name="yContactPosition"></param>
-    public virtual void Snap(Collider obstacleCollider, string obstaclePosition, float yContactPosition)
+    public virtual void Snap(Collider obstacleCollider, ObstaclePosition obstaclePosition, float yContactPosition)
     {
         var colliderWidth = GetComponent<CapsuleCollider>().bounds.size.x / 2;
         var obstacleWidth = obstacleCollider.bounds.size.x / 2;
@@ -240,13 +239,15 @@ public class Actor : ActorBase
 
         switch (obstaclePosition)
         {
-            case "Right":
+            case ObstaclePosition.Right:
                 this.ActorTransform.position = new Vector3(obstacleCollider.transform.position.x - snapOffsetX, this.ActorTransform.position.y);
                 break;
-            case "Left":
+
+            case ObstaclePosition.Left:
                 this.ActorTransform.position = new Vector3(obstacleCollider.transform.position.x + snapOffsetX, this.ActorTransform.position.y);
                 break;
-            case "Floor":
+
+            case ObstaclePosition.Floor:
                 //Debug object
                 if (TestForPostitions)
                 {
@@ -256,7 +257,8 @@ public class Actor : ActorBase
                 
                 this.ActorTransform.position = new Vector3(this.ActorTransform.position.x, yContactPosition + snapOffsetY);
                 break;
-            case "Ceiling":
+
+            case ObstaclePosition.Ceiling:
                 //Debug.Log(snapOffsetY);
                 this.ActorTransform.position = new Vector3(this.ActorTransform.position.x, yContactPosition - snapOffsetY);
                 break;
@@ -389,7 +391,7 @@ public class Actor : ActorBase
     /// Move the actor vertically.
     /// </summary>
     /// <param name="moveInput">Determines the direction in which the actor moves</param>
-    public virtual void MoveVertical(float moveInput)
+    public virtual void MoveVertical(int moveInput)
     {
         if (this.IsHanging)
         {
@@ -404,22 +406,20 @@ public class Actor : ActorBase
             if (moveInput < 0 && CurrentVerticalState == VerticalState.Grounded)
             {
                 //Slide
-                slidingCollider.enabled = true;
-                currentCollider = slidingCollider;
-                standardCollider.enabled = false;
+                CurrentCollider = slidingCollider;
 
-                SpriteAnimator.SetBool("Sliding", true);
+                if (Math.Abs(this.HorizontalSpeed) > 0.01f)
+                    SpriteAnimator.SetBool("Sliding", true);
             }
             else
             {
                 if (moveInput > 0)
                     Jump(this.JumpForce);
 
-                standardCollider.enabled = true;
-                currentCollider = standardCollider;
-                slidingCollider.enabled = false;
+                CurrentCollider = standardCollider;
 
-                SpriteAnimator.SetBool("Sliding", false);
+                if (moveInput == 0)
+                    SpriteAnimator.SetBool("Sliding", false);
             }
         }
     }

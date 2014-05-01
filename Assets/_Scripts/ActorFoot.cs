@@ -181,14 +181,14 @@ public class ActorFoot : MonoBehaviour
         //if actor is above floor
         if (this.relativeFloorPosition > 0)
         {//TODO: Figure out why this is snapping up if the floor is above the player??
-            this.parentActor.Snap(floor, "Floor", this.contactPositionY);
+            this.parentActor.Snap(floor, Actor.ObstaclePosition.Floor, this.contactPositionY);
             Debug.Log("Snapping up");
         }
             
         //else if actor is below floor
         else if (relativeFloorPosition < 0)
         {
-            this.parentActor.Snap(floor, "Ceiling", contactPositionY);
+            this.parentActor.Snap(floor, Actor.ObstaclePosition.Ceiling, contactPositionY);
             this.parentActor.CurrentVerticalState = Actor.VerticalState.Airborn;
         }
 
