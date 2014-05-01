@@ -95,7 +95,7 @@ public class SceneManager : MonoBehaviour
         //Stop player and center the camera
 
         player.CanPlayerMove = false;
-		player.MoveHorizontal(0);
+		player.MoveHorizontal(0, false);
         cameraMan.IsFollowingPlayer = false;
         iTween.MoveTo(cameraMan.gameObject, new Vector3(player.transform.position.x, 2.5f, -10f), 1f);
 
@@ -108,7 +108,7 @@ public class SceneManager : MonoBehaviour
         yield return new WaitForSeconds(10f);
 
 		//Walk player off the stage
-		player.MoveHorizontal(1);
+		player.MoveHorizontal(1, true);
     }
 
     public void SetActiveCheckpoint(GameObject newActiveCheckpoint)

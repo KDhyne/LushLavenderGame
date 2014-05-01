@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 using UnityEngine;
@@ -17,6 +18,7 @@ public class Actor : ActorBase
     #region Horizontal vars
     protected bool CanLookLeftRight = true;
     public bool FacingRight = true;
+    private int latestInputValue = 0;
     public float HorizontalSpeed;
     public float Acceleration;
     public float Deceleration;
@@ -87,44 +89,42 @@ public class Actor : ActorBase
         else
             colliderCenter = -slidingCollider.center;
 
-        //ActorState checks
-        if (this.CurrentActorState == ActorState.Alive)
+        //Return if not alive
+        if (this.CurrentActorState != ActorState.Alive)
+            return;
+
+        //Manage actorfoot position
+        if (this.VerticalSpeed > 0)
+            this.ActorFoot.transform.localPosition = new Vector3(
+                this.ActorFoot.transform.localPosition.x,
+                this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y,
+                this.ActorFoot.transform.localPosition.z);
+        else
+            this.ActorFoot.transform.localPosition = new Vector3(
+                this.ActorFoot.transform.localPosition.x,
+                -(this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y),
+                this.ActorFoot.transform.localPosition.z);
+
+        //Apply airborn properties and gravity
+        if (this.CurrentVerticalState == VerticalState.Airborn && !this.IsHanging)
         {
-            if (this.VerticalSpeed > 0)
-            {
-                this.ActorFoot.transform.localPosition = new Vector3(
-                    this.ActorFoot.transform.localPosition.x,
-                    this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y,
-                    this.ActorFoot.transform.localPosition.z);
-            }
-            else
-            {
-                this.ActorFoot.transform.localPosition = new Vector3(
-                    this.ActorFoot.transform.localPosition.x,
-                    -(this.currentCollider.bounds.size.y / 2 + this.colliderCenter.y),
-                    this.ActorFoot.transform.localPosition.z);
-            }
+            this.VerticalSpeed -= (this.Gravity * Time.fixedDeltaTime);
+            this.ActorTransform.Translate(Vector3.up * this.VerticalSpeed, Space.World);
 
-            if (this.CurrentVerticalState == VerticalState.Airborn && !this.IsHanging)
-            {
-                //Apply gravity
-                this.VerticalSpeed -= (this.Gravity * Time.fixedDeltaTime);
-                this.ActorTransform.Translate(Vector3.up * this.VerticalSpeed, Space.World);
+            if (this.VerticalSpeed < this.MaxVerticalSpeed)
+                this.VerticalSpeed = this.MaxVerticalSpeed;
 
-                if (this.VerticalSpeed < this.MaxVerticalSpeed)
-                    this.VerticalSpeed = this.MaxVerticalSpeed;
+            this.SpriteAnimator.SetFloat("vSpeed", this.VerticalSpeed * 10);
+            this.SpriteAnimator.SetBool("Grounded", false);
+        }
 
-                this.SpriteAnimator.SetFloat("vSpeed", VerticalSpeed * 10);
-                this.SpriteAnimator.SetBool("Grounded", false);
-            }
-
-            if (this.CurrentVerticalState == VerticalState.Grounded)
-            {
-                //Allow the actor to jump again
-                this.VerticalSpeed = 0f;
-                this.CanJump = true;
-                this.SpriteAnimator.SetBool("Grounded", true);
-            }
+        //Apply ground properties
+        if (this.CurrentVerticalState == VerticalState.Grounded)
+        {
+            //Allow the actor to jump again
+            this.VerticalSpeed = 0f;
+            this.CanJump = true;
+            this.SpriteAnimator.SetBool("Grounded", true);
         }
     }
 
@@ -133,13 +133,13 @@ public class Actor : ActorBase
     /// </summary>
     void Flip()
     {
-        //If the actor can face L or R, change direction appropriately
+        //If the actor can't change direction, return
         if (this.CanLookLeftRight)
         {
             this.FacingRight = !this.FacingRight;
             var theScale = this.transform.localScale;
             theScale.x *= -1;
-            this.transform.localScale = theScale;
+            this.transform.localScale = theScale;   
         }
     }
 
@@ -266,22 +266,16 @@ public class Actor : ActorBase
     /// <summary>
     /// Move the actor horizontally.
     /// </summary>
-    /// <param name="moveInput">Determines the direction and speed at which the actor moves</param>
-    public virtual void MoveHorizontal(float moveInput)
+    /// <param name="moveInput">Determines the direction at which the actor moves</param>
+    /// <param name="setInput">True will cause the player to flip if a different signed value is given</param>
+    public virtual void MoveHorizontal(int moveInput, bool setInput)
     {
         //Scale the running animation's speed based on player speed
         //spriteAnim.GetAnimation("Lavender_Run").speed = (HorizontalSpeed/MaxHorizontalSpeed);
         //TODO: See if I can scale animation speed with animator
 
-        //Manage HorizontalSpeed min and max
-        if (this.HorizontalSpeed <= 0)
-        {
-            this.HorizontalSpeed = 0;
-            this.SpriteAnimator.SetBool("Running", false);
-        }
-            
-        else if (this.HorizontalSpeed >= this.MaxHorizontalSpeed)
-            this.HorizontalSpeed = this.MaxHorizontalSpeed;
+        if (setInput)
+            latestInputValue = moveInput;
         
         if (moveInput < 0)
         {
@@ -336,7 +330,7 @@ public class Actor : ActorBase
         if (!this.IsTouchingWall && !this.IsTouchingFloorEdge)
         {
             Vector3 test = Quaternion.Euler(0, 0, this.ActiveFloorRotation * Mathf.Rad2Deg) * Vector3.right;
-            this.ActorTransform.Translate(test * this.HorizontalSpeed * Time.fixedDeltaTime);
+            this.ActorTransform.Translate(test * this.HorizontalSpeed * latestInputValue * Time.fixedDeltaTime);
         }
         else //Restrict movement to one side
         {
@@ -344,13 +338,13 @@ public class Actor : ActorBase
             if (this.WallPosition > 0)
             {
                 if (moveInput < 0)
-                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * Time.fixedDeltaTime);
+                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * latestInputValue * Time.fixedDeltaTime);
             }
                 //Wall is on the left
             else if (this.WallPosition < 0)
             {
                 if (moveInput > 0)
-                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * Time.fixedDeltaTime);
+                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * latestInputValue * Time.fixedDeltaTime);
             }
         }
     }
@@ -367,6 +361,9 @@ public class Actor : ActorBase
         //Accelerate slower in the air
         else
             this.HorizontalSpeed += this.Acceleration * 0.67f;
+
+        if (this.HorizontalSpeed >= this.MaxHorizontalSpeed)
+            this.HorizontalSpeed = this.MaxHorizontalSpeed;
     }
 
     /// <summary>
@@ -378,9 +375,13 @@ public class Actor : ActorBase
         if (this.CurrentVerticalState == VerticalState.Grounded)
         {
             this.HorizontalSpeed -= this.Deceleration;
+        }
 
-            if (HorizontalSpeed <= 0)
-                HorizontalSpeed = 0;
+        if (this.HorizontalSpeed <= 0)
+        {
+            this.HorizontalSpeed = 0;
+            this.SpriteAnimator.SetBool("Running", false);
+            this.SpriteAnimator.SetBool("Sliding", false);
         }
     }
 
@@ -400,7 +401,7 @@ public class Actor : ActorBase
         }
         else
         {
-            if (moveInput < 0)
+            if (moveInput < 0 && CurrentVerticalState == VerticalState.Grounded)
             {
                 //Slide
                 slidingCollider.enabled = true;

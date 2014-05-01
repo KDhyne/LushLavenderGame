@@ -5,6 +5,10 @@ using UnityEngine;
 public class Player : Actor
 {
     public bool IsAlwaysRunning;
+    public float SpeedUpAmount;
+    public int SpeedUpLevel;
+
+    private float initialMaxHorizontalSpeed;
 
 	/*enum PlayerState
 	{
@@ -25,6 +29,8 @@ public class Player : Actor
 	public override void Start() 
 	{
         SpawnLocation = GameObject.Find("Spawn");
+	    SpeedUpLevel = 0;
+	    this.initialMaxHorizontalSpeed = this.MaxHorizontalSpeed;
         base.Start();
 	}
 	
@@ -33,24 +39,44 @@ public class Player : Actor
     {
         base.Update();
 
+        //Change the max speed based on speed up level
+        this.MaxHorizontalSpeed = (initialMaxHorizontalSpeed + (SpeedUpAmount * SpeedUpLevel));
+
         #region Player Movement
-		if (CanPlayerMove)
-		{
-		    if (this.IsAlwaysRunning)
-		    {
-                //Always move at max speed
-                HorizontalSpeed = MaxHorizontalSpeed;
-                this.MoveHorizontal(1);
-		    }
-			
-			else //Use the Horizontal movement axis for input
-				MoveHorizontal(Input.GetAxis("Horizontal"));
 
-            //Jumping/Sliding
-            MoveVertical(Input.GetAxis("Vertical"));
-		}        
+        //Return if player can't move
+        if (!this.CanPlayerMove)
+            return;
 
-        
+        if (this.IsAlwaysRunning) //Always move at max speed
+        {
+            this.HorizontalSpeed = this.MaxHorizontalSpeed;
+            this.MoveHorizontal(1, true);
+        }
+
+        else //Use the Horizontal movement axis for input
+        {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) 
+                this.MoveHorizontal(-1, true);
+		        
+            else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) 
+                this.MoveHorizontal(1, true);
+            
+            else
+            {
+                this.MoveHorizontal(0, false);
+            }
+        }
+
+        //Jumping/Sliding
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) 
+            this.MoveVertical(-1);
+		    
+        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) 
+            this.MoveVertical(1);
+
+        else 
+            this.MoveVertical(0);
 
         #endregion
 
