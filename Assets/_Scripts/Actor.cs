@@ -179,7 +179,6 @@ public class Actor : ActorBase
                     && otherObj.bounds.min.y < (this.ActorTransform.GetComponent<CapsuleCollider>().bounds.max.y - .125f))
                 {
                     this.IsTouchingFloorEdge = true;
-                    //HorizontalSpeed = 0;
 
                     //Check wall position
                     this.WallPosition = otherObj.transform.position.x - this.ActorTransform.position.x;
@@ -202,6 +201,9 @@ public class Actor : ActorBase
 
         if (otherObj.tag == "Floor" && this.CanDetectFloors)
             this.IsTouchingFloorEdge = true;
+
+        else
+            this.IsTouchingFloorEdge = false;
     }
 
     public virtual void OnTriggerExit(Collider otherObj)
@@ -405,7 +407,6 @@ public class Actor : ActorBase
         {
             if (moveInput < 0 && CurrentVerticalState == VerticalState.Grounded)
             {
-
                 if (Math.Abs(this.HorizontalSpeed) > 0.01f)
                 {
                     //Slide
@@ -415,7 +416,6 @@ public class Actor : ActorBase
 
                 else
                     CurrentCollider = standardCollider;
-                    
             }
             else
             {
