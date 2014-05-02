@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class SceneManager : MonoBehaviour
@@ -12,20 +11,20 @@ public class SceneManager : MonoBehaviour
 		End
 	}
 
-	public int TotalSilverBellCount;
+    LevelState currentlevelState;
+
 	public int CurrentSilverBellCount;
 	public float Bellcount = 0f; //Used for animating the counting at the end
 	public float CountdownTimer;
     public bool ShowEndGUI;
 
-    private readonly List<GameObject> checkpoints = new List<GameObject>();
+    private int totalSilverBellCount;
 
+    private readonly List<GameObject> checkpoints = new List<GameObject>();
     private GameObject activeCheckpoint;
 
 	private Player player;
     private CameraMan cameraMan;
-
-	LevelState currentlevelState;
 
 	// Use this for initialization
 	void Start ()
@@ -33,6 +32,9 @@ public class SceneManager : MonoBehaviour
 		currentlevelState = LevelState.Start;
 		player = GameObject.Find("Player").GetComponent<Player>();
 	    cameraMan = Camera.main.GetComponent<CameraMan>();
+
+        //Get the total silver bell length depending on the number in the scene
+	    this.totalSilverBellCount = FindObjectsOfType<SilverBell>().Length;
 
         //Get all child gameobjects and add them to the checkpoint list
         for (var i = 0; i < transform.childCount; i++)
@@ -54,8 +56,6 @@ public class SceneManager : MonoBehaviour
 			    //TODO: Add intro sequence
 			    //Stop player
 			    player.CanPlayerMove = false;
-                cameraMan.IsFollowingPlayer = false;
-                iTween.MoveUpdate(cameraMan.gameObject, new Vector3(player.transform.position.x, 2.5f, -10f), 1f);
 			    player.SpriteAnimator.SetBool("Ready Stance",true);
 			
 			    //CountdownTimer
@@ -99,13 +99,13 @@ public class SceneManager : MonoBehaviour
         cameraMan.IsFollowingPlayer = false;
         iTween.MoveTo(cameraMan.gameObject, new Vector3(player.transform.position.x, 2.5f, -10f), 1f);
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(1f);
 		//Add up current bells
         ShowEndGUI = true;
-		this.Bellcount = Mathf.CeilToInt(iTween.FloatUpdate(this.Bellcount, CurrentSilverBellCount, 0.1f));
+		this.Bellcount = iTween.FloatUpdate(this.Bellcount, CurrentSilverBellCount, 1f);
 
         //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(3f);
 
 		//Walk player off the stage
 		player.MoveHorizontal(1, true);
@@ -126,7 +126,7 @@ public class SceneManager : MonoBehaviour
 	    switch (this.currentlevelState)
 	    {
 	        case LevelState.Start:
-	            GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), (Mathf.CeilToInt(this.CountdownTimer)).ToString());
+	            GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), Mathf.CeilToInt(this.CountdownTimer).ToString());
 	            break;
 
             case LevelState.GameLoop:
@@ -135,14 +135,12 @@ public class SceneManager : MonoBehaviour
             case LevelState.End:
 	            if (ShowEndGUI)
 	            {
-	                GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), "Silver Bells Collected: " + CurrentSilverBellCount + "/" + TotalSilverBellCount);
+	                GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), "Silver Bells Collected: " + Mathf.CeilToInt(CurrentSilverBellCount) + "/" + this.totalSilverBellCount);
 	            }
                 break;
 	    }
 
-	    if (UnityEngine.GUI.Button(new Rect(50f, 100f, 100f, 50f), "Respawn"))
-        {
+	    if (GUI.Button(new Rect(50f, 100f, 100f, 50f), "Respawn"))
             GameObject.FindGameObjectWithTag("Player").transform.position = this.GetPlayerSpawnLocation();
-        }
 	}
 }
