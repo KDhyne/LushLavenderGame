@@ -405,11 +405,17 @@ public class Actor : ActorBase
         {
             if (moveInput < 0 && CurrentVerticalState == VerticalState.Grounded)
             {
-                //Slide
-                CurrentCollider = slidingCollider;
 
                 if (Math.Abs(this.HorizontalSpeed) > 0.01f)
+                {
+                    //Slide
+                    CurrentCollider = slidingCollider;
                     SpriteAnimator.SetBool("Sliding", true);
+                }
+
+                else
+                    CurrentCollider = standardCollider;
+                    
             }
             else
             {

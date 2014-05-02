@@ -6,11 +6,6 @@ public class SilverBell : Collectable
     {
         if (otherObj.tag == "Player")
         {
-            if (otherObj.GetComponent<Player>().CurrentCollider is BoxCollider && otherObj is CapsuleCollider)
-            {
-                return;
-            }
-            
             Debug.Log("+1 Silver Bell");
             var sceneManager = GameObject.Find("SceneManager").GetComponent<SceneManager>();
             sceneManager.CurrentSilverBellCount++;
