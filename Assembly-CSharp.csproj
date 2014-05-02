@@ -46,9 +46,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\PlatformBuilder\PlatformDemo\Scripts\CameraFollow.cs" />
-     <Compile Include="Assets\PlatformBuilder\PlatformDemo\Scripts\GradientBackground.cs" />
-     <Compile Include="Assets\PlatformBuilder\PlatformDemo\Scripts\RestartLevel.cs" />
      <Compile Include="Assets\_Scripts\Actor.cs" />
      <Compile Include="Assets\_Scripts\ActorBase.cs" />
      <Compile Include="Assets\_Scripts\ActorFoot.cs" />
@@ -82,9 +79,6 @@
      <Compile Include="Assets\iTweenEditor\iTweenEvent.cs" />
      <Compile Include="Assets\iTweenEditor\iTweenPath.cs" />
      <None Include="Assets\iTweenEditor\README.txt" />
- <Reference Include="Platform">
- <HintPath>Assets\PlatformBuilder\Scripts\Platform.dll</HintPath>
- </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

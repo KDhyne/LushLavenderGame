@@ -32,6 +32,7 @@ GameObject:
   - 212: {fileID: 21200000}
   - 95: {fileID: 9500000}
   - 136: {fileID: 13600000}
+  - 65: {fileID: 6500000}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -57,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.555223227, y: 19.7643108, z: 0}
+  m_LocalPosition: {x: -20, y: 2.54999995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -105,6 +106,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6500000
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.5, y: 2, z: 2}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!65 &6500002
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -139,7 +152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b2bd1fe5f9d1041aaa41db6e62d3d1, type: 3}
+  m_Script: {fileID: 11500000, guid: ec4e0cd305c45354d83b5c95289f5c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LeftFloor: {fileID: 0}
@@ -152,18 +165,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7103ad35653d6cb4890aefa08c71c86a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a8bc345c0d0a30428b44fb307ebf3e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttackValue: 1
+  InvincibilityTime: 1
+  MaxHitPoints: 4
+  CurrentHitPoints: 0
+  CanBeHit: 1
+  ScoreValue: 1
   ActorTransform: {fileID: 0}
+  SpriteAnimator: {fileID: 0}
   SpawnLocation: {fileID: 0}
   CurrentActorState: 0
   CurrentVerticalState: 0
-  HitPoints: 10
-  CanBeHit: 1
   FacingRight: 1
   HorizontalSpeed: 0
   Acceleration: 3
+  Deceleration: 2
   MaxHorizontalSpeed: 100
   WallPosition: 0
   IsTouchingWall: 0
@@ -173,19 +192,23 @@ MonoBehaviour:
   ActiveFloorRotation: 0
   VerticalSpeed: 0
   MaxVerticalSpeed: -1.60000002
-  Gravity: 15
+  Gravity: 11
   CanJump: 1
   IsHanging: 0
-  JumpForce: 1.5
-  ActorFoot: {fileID: 0}
+  JumpForce: 1
+  ActorFoot: {fileID: 100002}
+  CurrentCollider: {fileID: 0}
   MarkerObject: {fileID: 0}
   MarkerObjects: []
   TestForPostitions: 0
   IsAlwaysRunning: 0
+  SpeedUpAmount: 20
+  SpeedUpLevel: 0
   BulletOffset: {x: 0, y: 0, z: 0}
   TargetPrefab: {fileID: 0}
   BulletPrefab: {fileID: 0}
   MousePosition2D: {x: 0, y: 0}
+  CanPlayerMove: 1
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
