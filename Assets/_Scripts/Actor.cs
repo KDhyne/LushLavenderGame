@@ -199,8 +199,8 @@ public class Actor : ActorBase
         if (otherObj.tag == "Wall")
             this.IsTouchingWall = true;
 
-        if (otherObj.tag == "Floor" && this.CanDetectFloors)
-            this.IsTouchingFloorEdge = true;
+        //if (otherObj.tag == "Floor" && this.CanDetectFloors)
+            //this.IsTouchingFloorEdge = true;
 
         else
             this.IsTouchingFloorEdge = false;

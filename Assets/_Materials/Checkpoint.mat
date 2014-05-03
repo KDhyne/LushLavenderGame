@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: marekr
+  m_Name: Checkpoint
   m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
@@ -17,7 +17,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 97d744132c1c65c45ad58485999b6ca8, type: 3}
+          m_Texture: {fileID: 2800000, guid: cde80db9dd3cdf84ea34d44b06c282da, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats: {}
@@ -25,4 +25,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: .701492548, g: .949900806, b: 1, a: 1}
+        second: {r: 1, g: .441176474, b: .948524296, a: 1}

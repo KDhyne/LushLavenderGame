@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyDiving : ActorBase 
+public class EnemyDiving : ActorBase
 {
+    private Vector3 flyInPoint;
+
     public override void Start()
     {
         base.Start();
+        flyInPoint = Camera.main.transform.FindChild("DiveFlyInPoint").transform.localPosition;
+
         StartCoroutine(Run());
     }
 
     public IEnumerator Run()
     {
         //Approach
-        iTween.MoveTo(this.gameObject, iTween.Hash("position", new Vector3(30,15,10), "islocal", true, "time", 1f));
+        iTween.MoveTo(this.gameObject, iTween.Hash("position", flyInPoint, "islocal", true, "time", 1f));
         //Wait
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.75f);
         //Dive toward player
         iTween.MoveTo(this.gameObject, iTween.Hash("position", new Vector3(-75, -20, 10), "islocal", true, "time", 1f, "easetype", iTween.EaseType.easeInBack));
         //Wait then destroy

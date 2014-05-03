@@ -50,7 +50,7 @@ public class Bullet : MonoBehaviour
     public string[] stuffToShake;
 
 
-    bool b_powerShot;
+    //bool b_powerShot;
 
     //How much damage the bullet deals
     public int i_bulletDamage = 1;
@@ -141,7 +141,7 @@ public class Bullet : MonoBehaviour
                     if (f_bulletSpeed >= 2f && f_bulletSpeed <= 2.25f)
                     {
                         St_currentBulletState = BulletState.PowerShot;
-                        b_powerShot = true;
+                        //b_powerShot = true;
                         
                     }
                     //Else change to b_beatFired state to release the bullet

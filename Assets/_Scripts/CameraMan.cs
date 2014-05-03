@@ -8,7 +8,8 @@ public class CameraMan : MonoBehaviour
     public float VerticalPosition;
     public bool IsFollowingPlayer;
 
-    private float verticalAdjustment = 0f;
+    public float VerticalAdjustment = 0f;
+    public float AdjustmentSpeed;
 
     // Use this for initialization
     void Start()
@@ -23,28 +24,32 @@ public class CameraMan : MonoBehaviour
         if (!IsFollowingPlayer)
             return;
 
-        iTween.MoveUpdate(cameraManTransform.gameObject,
-                    new Vector3(cameraTarget.transform.position.x + 15f, VerticalPosition + verticalAdjustment, -10f), .6f);
-
-        //TODO: un-psuedocode this block
-        //Move the camera up or down based on the player's location on screen.
-        this.SafeFrameCheck();
+        iTween.MoveUpdate(cameraManTransform.gameObject, new Vector3(cameraTarget.transform.position.x + 25f, VerticalPosition + this.VerticalAdjustment, -10f), .6f);
+        
+        VerticalPan();
     }
 
-    void SafeFrameCheck()
+    /// <summary>
+    /// Move the camera up or down based on the player's location on screen. 
+    /// </summary>
+    public void VerticalPan()
     {
-        var screenPos = Camera.main.WorldToScreenPoint(cameraTarget.transform.position);
-        var ratio = screenPos.y / Camera.main.pixelHeight;
+        var playerScreenPos = Camera.main.WorldToScreenPoint(cameraTarget.transform.position);
+        var ratio = playerScreenPos.y / Camera.main.pixelHeight;
 
-        if (ratio < 0.3f) // if we're below our safe frame
-            verticalAdjustment -= .1f;
+        if (ratio < 0.3f) // if we're below our safe frame, lower VerticalAdjustment
+        {
+            if (ratio < 0f)
+                this.VerticalAdjustment -= Time.deltaTime * AdjustmentSpeed * 3;
 
-        if (ratio > 0.7f) // if we're above our safe frame, return false       
-            verticalAdjustment += .1f;
-    }
-
-    void OnGUI()
-    {
-        //GUI.Box(playerSafeFrame, "Safe Frame");
+            else //Lower VerticalAdjustment dramatically if the player is completely below the screen
+                this.VerticalAdjustment -= Time.deltaTime * AdjustmentSpeed;
+        }
+            
+        else if (ratio > 0.5f) // if we're above our safe frame, raise VerticalAdjustment    
+            this.VerticalAdjustment += Time.deltaTime * AdjustmentSpeed;
+        
+        //else
+            //VerticalAdjustment = iTween.FloatUpdate(cameraTarget.transform.position.y, 0f, 2f);
     }
 }
