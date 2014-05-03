@@ -18,7 +18,7 @@ public class SceneManager : MonoBehaviour
 	public float CountdownTimer;
     public bool ShowEndGUI;
 
-    private int totalSilverBellCount;
+    public int TotalSilverBellCount;
 
     private readonly List<GameObject> checkpoints = new List<GameObject>();
     private GameObject activeCheckpoint;
@@ -34,7 +34,7 @@ public class SceneManager : MonoBehaviour
 	    cameraMan = Camera.main.GetComponent<CameraMan>();
 
         //Get the total silver bell length depending on the number in the scene
-	    this.totalSilverBellCount = FindObjectsOfType<SilverBell>().Length;
+	    //this.TotalSilverBellCount = FindObjectsOfType<SilverBell>().Length;
 
         //Get all child gameobjects and add them to the checkpoint list
         for (var i = 0; i < transform.childCount; i++)
@@ -72,9 +72,6 @@ public class SceneManager : MonoBehaviour
 
 		    case LevelState.GameLoop:
 			    //general upkeep things
-
-
-
                 //If the player passes the last checkpoint in the collection of all checkpoints,
                 //change to the end state
 		        if (checkpoints.IndexOf(activeCheckpoint) == (checkpoints.Count - 1))
@@ -87,7 +84,6 @@ public class SceneManager : MonoBehaviour
 		        StartCoroutine(PlayEndSequence());
 			    break;
 		}
-	
 	}
 
     private IEnumerator PlayEndSequence()
@@ -135,7 +131,7 @@ public class SceneManager : MonoBehaviour
             case LevelState.End:
 	            if (ShowEndGUI)
 	            {
-	                GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), "Silver Bells Collected: " + Mathf.CeilToInt(CurrentSilverBellCount) + "/" + this.totalSilverBellCount);
+	                GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), "Silver Bells Collected: " + Mathf.CeilToInt(CurrentSilverBellCount) + "/" + this.TotalSilverBellCount);
 	            }
                 break;
 	    }

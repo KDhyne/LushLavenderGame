@@ -24,7 +24,7 @@ public class Actor : ActorBase
     #region Horizontal vars
     protected bool CanLookLeftRight = true;
     public bool FacingRight = true;
-    private int latestInputValue = 0;
+    private int latestInputValue;
     public float HorizontalSpeed;
     public float Acceleration;
     public float Deceleration;

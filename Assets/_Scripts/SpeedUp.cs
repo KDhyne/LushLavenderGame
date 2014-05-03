@@ -1,15 +1,7 @@
-﻿using UnityEngine;
-
-public class SpeedUp : Collectable
+﻿public class SpeedUp : Collectable
 {
-    public override void OnTriggerEnter(Collider otherObj)
+    public override void ApplyCollectedEffect(Player player)
     {
-        if (otherObj.tag == "Player")
-        {
-            var player = otherObj.GetComponent<Player>();
-            player.SpeedUpLevel++;
-
-            this.DestroyCollectable();
-        }
+        player.SpeedUpLevel++;
     }
 }

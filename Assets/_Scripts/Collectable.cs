@@ -8,13 +8,36 @@ public abstract class Collectable : MonoBehaviour
 
     private GameObject idleParticle;
 
+    public bool Collected;
+    public bool PartOfGroup;
+
 	// Use this for initialization
 	void Start ()
 	{
 	    idleParticle = (GameObject)Instantiate(IdleParticleEffect, this.transform.position, Quaternion.identity);
 	}
 
-    public abstract void OnTriggerEnter(Collider otherObj);
+    public virtual void OnTriggerEnter(Collider otherObj)
+    {
+        if (Collected)
+            return;
+
+        if (otherObj.tag == "Player")
+        {
+            this.ApplyCollectedEffect(otherObj.GetComponent<Player>());
+        }
+
+        if (PartOfGroup)
+            this.gameObject.transform.parent.GetComponent<CollectableGroup>().DestroyGroup();
+
+        else
+            this.DestroyCollectable();
+    }
+
+    /// <summary>
+    /// Do whatever the collectable does. A template for child classes.
+    /// </summary>
+    public abstract void ApplyCollectedEffect(Player player);
 
     /// <summary>
     /// Disable the renderer and instantiate the collected particle effect.
@@ -22,6 +45,8 @@ public abstract class Collectable : MonoBehaviour
     /// </summary>
     public void DestroyCollectable()
     {
+        this.Collected = true;
+
         //Hide and explode
         renderer.enabled = false;
         var particle = (GameObject)Instantiate(CollectedParticleEffect, this.transform.position, Quaternion.identity);

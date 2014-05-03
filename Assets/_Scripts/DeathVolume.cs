@@ -1,20 +1,17 @@
 ﻿using UnityEngine;
 
-namespace Assets._Scripts
+public class DeathVolume : MonoBehaviour
 {
-    class DeathVolume : MonoBehaviour
+    void OnTriggerStay(Collider otherCollider)
     {
-        void OnTriggerStay(Collider otherCollider)
+        if (otherCollider.tag == "Player")
         {
-            if (otherCollider.tag == "Player")
-            {
-                var player = otherCollider.GetComponent<Player>();
+            var player = otherCollider.GetComponent<Player>();
 
-                if (player.CurrentCollider is BoxCollider && otherCollider is CapsuleCollider)
-                    return;
+            if (player.CurrentCollider is BoxCollider && otherCollider is CapsuleCollider)
+                return;
 
-                player.DestroyActor();
-            }
+            player.DestroyActor();
         }
     }
 }

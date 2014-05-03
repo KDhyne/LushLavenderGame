@@ -58,6 +58,7 @@
      <Compile Include="Assets\_Scripts\Checkpoint.cs" />
      <Compile Include="Assets\_Scripts\CheckpointManager.cs" />
      <Compile Include="Assets\_Scripts\Collectable.cs" />
+     <Compile Include="Assets\_Scripts\CollectableGroup.cs" />
      <Compile Include="Assets\_Scripts\DeathVolume.cs" />
      <Compile Include="Assets\_Scripts\EnemyDiving.cs" />
      <Compile Include="Assets\_Scripts\EnemyOverhead.cs" />
