@@ -59,7 +59,7 @@ public class ActorFoot : MonoBehaviour
 
     void OnTriggerExit(Collider otherObj)
     {
-        Debug.Log("Exiting floor");
+        //Debug.Log("Exiting floor");
         if (otherObj.tag == "Floor" || otherObj.tag == "MovingFloor")
         {
             //Reduce number of contact floors by 1
@@ -149,9 +149,11 @@ public class ActorFoot : MonoBehaviour
             //Facing right
             if (facingRight)
                 return this.RightFloor ?? this.LeftFloor;
-            else
+
+            //else
                 return this.LeftFloor ?? this.RightFloor;
         }
+
         //Otherwise use the appropriate floor
         if (this.numFloorsTouching > 1)
         {
@@ -161,14 +163,13 @@ public class ActorFoot : MonoBehaviour
             if(!facingRight && this.LeftFloor != null)
                 return this.LeftFloor;
             
-            else
-            {
-                Debug.Log("Something is null");
-                return this.gameObject;
-            }
-        }
-        else
+            //else
+            Debug.Log("Something is null");
             return this.gameObject;
+        }
+
+        //else
+        return this.gameObject;
     }
 
     /// <summary>
@@ -182,7 +183,7 @@ public class ActorFoot : MonoBehaviour
         if (this.relativeFloorPosition > 0)
         {//TODO: Figure out why this is snapping up if the floor is above the player??
             this.parentActor.Snap(floor, Actor.ObstaclePosition.Floor, this.contactPositionY);
-            Debug.Log("Snapping up");
+            //Debug.Log("Snapping up");
         }
             
         //else if actor is below floor

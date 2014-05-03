@@ -60,6 +60,7 @@
      <Compile Include="Assets\_Scripts\Collectable.cs" />
      <Compile Include="Assets\_Scripts\DeathVolume.cs" />
      <Compile Include="Assets\_Scripts\EnemyDiving.cs" />
+     <Compile Include="Assets\_Scripts\EnemyOverhead.cs" />
      <Compile Include="Assets\_Scripts\EnemyStationary.cs" />
      <Compile Include="Assets\_Scripts\Misc Unused\Bullet.cs" />
      <Compile Include="Assets\_Scripts\Misc Unused\FillingBar.cs" />

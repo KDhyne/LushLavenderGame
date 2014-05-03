@@ -1,35 +1,27 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Switch : MonoBehaviour 
 {
 
-	public bool b_activated;
+	public bool Activated;
 
 	// Use this for initialization
 	void Start () 
 	{
-		b_activated = false;
+		this.Activated = false;
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void Update ()
 	{
-		if (b_activated)
-		{
-			renderer.material.color = Color.green;
-		}
-		else
-		{
-			renderer.material.color = Color.red;
-		}
+	    this.renderer.material.color = this.Activated ? Color.green : Color.red;
 	}
 
-	void OnTriggerEnter (Collider otherObj)
+    void OnTriggerEnter (Collider otherObj)
 	{
 		if (otherObj.tag == "Projectile")
 		{
-			b_activated = !b_activated;
+			this.Activated = !this.Activated;
 		}
 	}
 }

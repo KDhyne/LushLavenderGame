@@ -20,9 +20,9 @@ public class CheckpointManager : MonoBehaviour
         this.SetActiveCheckpoint(this.checkpoints[0]);
     }
 
-    public void SetActiveCheckpoint(GameObject gameObject)
+    public void SetActiveCheckpoint(GameObject newCheckpoint)
     {
-        activeCheckpoint = gameObject;
+        activeCheckpoint = newCheckpoint;
     }
 
     public Vector2 GetPlayerSpawnLocation()

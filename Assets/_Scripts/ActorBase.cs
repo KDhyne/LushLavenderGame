@@ -14,7 +14,7 @@ public class ActorBase : MonoBehaviour
     public int AttackValue = 1;
     public float InvincibilityTime = 1f;
 
-    public int MaxHitPoints = 4;   //Set Hit Points
+    public int MaxHitPoints = 4;    //Set Hit Points
     public int CurrentHitPoints;    
     public bool CanBeHit = true;    //determines whether or not the actor can be hit
     public int ScoreValue = 1;      //Score Value
@@ -63,7 +63,10 @@ public class ActorBase : MonoBehaviour
     public virtual IEnumerator DestroyActor()
     {
         Debug.Log("Hit");
+
+        //Animation time buffer
         yield return new WaitForSeconds(1.0f);
+        
         Destroy(this.gameObject);
     }
 
@@ -74,6 +77,7 @@ public class ActorBase : MonoBehaviour
     /// <param name="invincibileTime">Time in seconds actor is invincible after hit</param>
     public virtual IEnumerator TakeDamage(int damageAmount, float invincibileTime = -1f)
     {
+        //Use actor-specified invincibility time if none is supplied via parameters
         if (Math.Abs(invincibileTime - (-1f)) < .01)
         {
             invincibileTime = InvincibilityTime;
@@ -85,6 +89,7 @@ public class ActorBase : MonoBehaviour
 
         //subtract hit points
         this.CurrentHitPoints -= damageAmount;
+
         //Temporary invincibility
         this.CanBeHit = false;
         //Wait a given time, then make the actor hittable again

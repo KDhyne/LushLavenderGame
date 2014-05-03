@@ -8,12 +8,12 @@ public class Checkpoint : MonoBehaviour
     public void Activate()
     {
         renderer.material.color = Color.magenta;
-        transform.parent.GetComponent<SceneManager>().SetActiveCheckpoint(gameObject);
+        transform.parent.GetComponent<SceneManager>().SetActiveCheckpoint(this.gameObject);
     }
 
-    public void OnTriggerEnter(Collider collider)
+    public void OnTriggerEnter(Collider otherCollider)
     {
-        if (collider.tag == "Player")
+        if (otherCollider.tag == "Player")
         {
             this.Activate();
         }

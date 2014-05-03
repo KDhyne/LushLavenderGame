@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class EnemyStationary : ActorBase 
 {
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter(Collider otherCollider)
     {
-        if (collider.tag == "Player")
+        if (otherCollider.tag == "Player")
         {
-            Debug.Log("Butts");
             //Player takes damamge
-            StartCoroutine(collider.gameObject.GetComponent<Player>().TakeDamage(this.AttackValue));
+            StartCoroutine(otherCollider.gameObject.GetComponent<Player>().TakeDamage(this.AttackValue));
         }
-        if (collider.tag == "Projectile")
+        if (otherCollider.tag == "Projectile")
         {
             StartCoroutine(this.TakeDamage(1));
         }

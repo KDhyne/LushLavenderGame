@@ -40,14 +40,14 @@ public class CameraMan : MonoBehaviour
         if (ratio < 0.3f) // if we're below our safe frame, lower VerticalAdjustment
         {
             if (ratio < 0f)
-                this.VerticalAdjustment -= Time.deltaTime * AdjustmentSpeed * 3;
+                this.VerticalAdjustment -= Time.deltaTime * AdjustmentSpeed * 3f;
 
             else //Lower VerticalAdjustment dramatically if the player is completely below the screen
                 this.VerticalAdjustment -= Time.deltaTime * AdjustmentSpeed;
         }
             
         else if (ratio > 0.5f) // if we're above our safe frame, raise VerticalAdjustment    
-            this.VerticalAdjustment += Time.deltaTime * AdjustmentSpeed;
+            this.VerticalAdjustment += Time.deltaTime * AdjustmentSpeed * 0.75f;
         
         //else
             //VerticalAdjustment = iTween.FloatUpdate(cameraTarget.transform.position.y, 0f, 2f);

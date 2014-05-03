@@ -171,7 +171,7 @@ public class Actor : ActorBase
         //Check position of the floor. If the center of the floor 
         //is between the top and bottom of the collider, treat the
         //floor as a wall
-        if (otherObj.tag == "Floor" && this.CurrentVerticalState == VerticalState.Airborn && this.CanDetectFloors)
+        /*if (otherObj.tag == "Floor" && this.CurrentVerticalState == VerticalState.Airborn && this.CanDetectFloors)
         {
             if (this.ActorTransform.position.x < otherObj.bounds.min.x || this.ActorTransform.position.x > otherObj.bounds.max.x)
             {
@@ -179,6 +179,7 @@ public class Actor : ActorBase
                     && otherObj.bounds.min.y < (this.ActorTransform.GetComponent<CapsuleCollider>().bounds.max.y - .125f))
                 {
                     this.IsTouchingFloorEdge = true;
+                    Debug.Log("Stuck here");
 
                     //Check wall position
                     this.WallPosition = otherObj.transform.position.x - this.ActorTransform.position.x;
@@ -191,7 +192,7 @@ public class Actor : ActorBase
                         Snap(otherObj, ObstaclePosition.Left, 0);
                 }
             }
-        }
+        }*/
     }
 
     public virtual void OnTriggerStay(Collider otherObj)
