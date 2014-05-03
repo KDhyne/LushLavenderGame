@@ -7,5 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: Assets/_Scenes/Test level.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/_ProtoypeScenes/beat test.unity
+  - enabled: 1
+    path: Assets/_Scenes/1_Flowery Fields.unity
