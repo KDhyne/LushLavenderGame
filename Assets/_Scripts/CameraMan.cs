@@ -28,13 +28,23 @@ public class CameraMan : MonoBehaviour
 
         //TODO: un-psuedocode this block
         //Move the camera up or down based on the player's location on screen.
-        /*if (cameraTarget.transform.position.y >= CameraBounds.top - ScreenPadding)
-        {
-            verticalAdjustment++;
-        }
-        else if (cameraTarget.transform.position.y <= CameraBounds.bottom + ScreenPadding)
-        {
-            verticalAdjustment--;
-        }*/
+        this.SafeFrameCheck();
+    }
+
+    void SafeFrameCheck()
+    {
+        var screenPos = Camera.main.WorldToScreenPoint(cameraTarget.transform.position);
+        var ratio = screenPos.y / Camera.main.pixelHeight;
+
+        if (ratio < 0.3f) // if we're below our safe frame
+            verticalAdjustment -= .1f;
+
+        if (ratio > 0.7f) // if we're above our safe frame, return false       
+            verticalAdjustment += .1f;
+    }
+
+    void OnGUI()
+    {
+        //GUI.Box(playerSafeFrame, "Safe Frame");
     }
 }
