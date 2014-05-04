@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/_Scenes/Test level.unity
+    path: Assets/_Scenes/_ProtoypeScenes/Test level.unity
   - enabled: 0
     path: Assets/_Scenes/_ProtoypeScenes/beat test.unity
   - enabled: 1

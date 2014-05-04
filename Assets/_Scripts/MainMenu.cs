@@ -4,6 +4,7 @@ public class MainMenu : MonoBehaviour
 {
 	enum MenuState
 	{
+        Intro,
 		Main,
 		Levels,
 		Credits
@@ -15,7 +16,6 @@ public class MainMenu : MonoBehaviour
     private GameObject soundManager;
 
     public bool Muted = false;
-
 
 	// Use this for initialization
 	void Start ()
@@ -34,8 +34,11 @@ public class MainMenu : MonoBehaviour
 	{
 		switch (currentMenuState)
 		{
+            case MenuState.Intro:
+                break;
+
 			case MenuState.Main:
-                GUI.Label(new Rect(Screen.width/2 - 276, 50, 553, 103), "", GuiSkin.GetStyle("Title") );
+                /*GUI.Label(new Rect(Screen.width/2 - 276, 50, 553, 103), "", GuiSkin.GetStyle("Title") );
 
                 if (GUI.Button(new Rect((Screen.width / 2f) - 211, (Screen.height / 2f) - 50, 422, 63), "", GuiSkin.GetStyle("Start Button")))
 					currentMenuState = MenuState.Levels;
@@ -46,11 +49,11 @@ public class MainMenu : MonoBehaviour
 				{
 					currentMenuState = MenuState.Credits;
 				    iTween.MoveTo(Credits, new Vector3(0, 0, -5), 2.5f);
-				}
+				}*/
 				break;
 
 			case MenuState.Levels:
-                GUI.Label(new Rect(Screen.width / 2 - 276, 50, 553, 103), "", GuiSkin.GetStyle("Title"));
+                /*GUI.Label(new Rect(Screen.width / 2 - 276, 50, 553, 103), "", GuiSkin.GetStyle("Title"));
 
                 if (GUI.Button(new Rect((Screen.width / 2f) - 211, (Screen.height / 2f) - 50, 422, 63), "", GuiSkin.GetStyle("Easy Button")))
                     Application.LoadLevel("Invasive Easy");
@@ -62,24 +65,19 @@ public class MainMenu : MonoBehaviour
                     Application.LoadLevel("Invasive Hard");
 
                 if (GUI.Button(new Rect((Screen.width / 2f) - 211, (Screen.height / 2f) + 175, 422, 63), "", GuiSkin.GetStyle("Back Button")))
-					currentMenuState = MenuState.Main;
+					currentMenuState = MenuState.Main;*/
 
 				break;
 
 			case MenuState.Credits:
-				if (GUI.Button(new Rect((Screen.width / 2f) - 105, Screen.height - 50, 211, 32), "", GuiSkin.GetStyle("Back Button")))
+				/*if (GUI.Button(new Rect((Screen.width / 2f) - 105, Screen.height - 50, 211, 32), "", GuiSkin.GetStyle("Back Button")))
 				{
 					currentMenuState = MenuState.Main;
                     iTween.MoveTo(Credits, new Vector3(120, 0, -5), 2.5f);
-				}
+				}*/
 				break;
 		}
 
-	    this.Muted = GUI.Toggle(new Rect(Screen.width - 180, 10, 50, 50), Muted, "", GuiSkin.GetStyle("Mute Button"));
-        
-        if (GUI.Button(new Rect(Screen.width - 80, 10, 50, 50), "Meta"))
-        {
-            //TODO: Go to the Metagame
-        }
+	    //this.Muted = GUI.Toggle(new Rect(Screen.width - 180, 10, 50, 50), Muted, "", GuiSkin.GetStyle("Mute Button"));
 	}
 }
