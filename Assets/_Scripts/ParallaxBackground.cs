@@ -31,8 +31,7 @@ public class ParallaxBackground : MonoBehaviour
 	{
 	    var camPosition = mainCamera.transform.position;
 
-        transform.position = new Vector3(camPosition.x, mainCamera.camera.ViewportToWorldPoint(new Vector3(0,0.1f,0)).y, transform.position.z);
-
+        //transform.position = new Vector3(camPosition.x, mainCamera.camera.ViewportToWorldPoint(new Vector3(0,0,0)).y, transform.position.z);
 
 	    foreach (var childElement in childElements)
 	    {

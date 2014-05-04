@@ -1236,75 +1236,6 @@ Prefab:
   m_RootGameObject: {fileID: 245097383}
   m_IsPrefabParent: 0
   m_IsExploded: 1
---- !u!1 &83731208
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 83731209}
-  - 33: {fileID: 83731212}
-  - 65: {fileID: 83731211}
-  - 23: {fileID: 83731210}
-  m_Layer: 0
-  m_Name: Horizon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &83731209
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 83731208}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 251.577728, y: 2.3395462, z: 1}
-  m_LocalScale: {x: 500, y: 6.05999994, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1466956151}
---- !u!23 &83731210
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 83731208}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_SortingLayerID: 0
---- !u!65 &83731211
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 83731208}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &83731212
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 83731208}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &88198595
 GameObject:
   m_ObjectHideFlags: 0
@@ -8752,6 +8683,7 @@ Transform:
   - {fileID: 1537378821}
   - {fileID: 950990590}
   - {fileID: 1858432627}
+  - {fileID: 1466956151}
   m_Father: {fileID: 0}
 --- !u!114 &508674372
 MonoBehaviour:
@@ -24184,13 +24116,12 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1466956150}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -51.7953568, y: 32.6057053, z: 10}
+  m_LocalPosition: {x: -51.7953568, y: -14.2104874, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1840632363}
-  - {fileID: 83731209}
   - {fileID: 1623182670}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 508674371}
 --- !u!114 &1466956152
 MonoBehaviour:
   m_ObjectHideFlags: 0
