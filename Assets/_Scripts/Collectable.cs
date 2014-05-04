@@ -14,7 +14,7 @@ public abstract class Collectable : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	    idleParticle = (GameObject)Instantiate(IdleParticleEffect, this.transform.position, Quaternion.identity);
+	    idleParticle = (GameObject)Instantiate(IdleParticleEffect, this.transform.position + new Vector3(0,0,-5f), Quaternion.identity);
 	}
 
     public virtual void OnTriggerEnter(Collider otherObj)

@@ -126,6 +126,12 @@ public class Actor : ActorBase
             this.VerticalSpeed = 0f;
             this.CanJump = true;
             this.SpriteAnimator.SetBool("Grounded", true);
+
+            if (!IsTouchingWall)
+            {
+                this.SpriteAnimator.SetBool("Pushing", false);
+            }
+
         }
     }
 
@@ -179,6 +185,7 @@ public class Actor : ActorBase
             {
                 Debug.Log("Going under");
                 this.IsTouchingWall = false;
+                SpriteAnimator.SetBool("Pushing", false);
                 this.CanToggleSliding = false;
                 return;
             }
@@ -394,14 +401,32 @@ public class Actor : ActorBase
             //Wall is on the right
             if (this.WallPosition > 0)
             {
+                //If input is negative, allow the player to move right
                 if (moveInput < 0)
+                {
+                    this.SpriteAnimator.SetBool("Pushing", false);
                     this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * this.latestHorzInputValue * Time.fixedDeltaTime);
+                }
+                //If input is positive, make player push against wall
+                else if (moveInput > 0)
+                {
+                    this.SpriteAnimator.SetBool("Pushing", true);
+                }
             }
-                //Wall is on the left
+            //Wall is on the left
             else if (this.WallPosition < 0)
             {
+                //If input is positive, allow the player to move right
                 if (moveInput > 0)
+                {
+                    this.SpriteAnimator.SetBool("Pushing", false);
                     this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * this.latestHorzInputValue * Time.fixedDeltaTime);
+                }
+                //If input is negative, make player push against wall
+                else if (moveInput < 0)
+                {
+                    this.SpriteAnimator.SetBool("Pushing", true);
+                }
             }
         }
     }
@@ -439,6 +464,7 @@ public class Actor : ActorBase
             this.HorizontalSpeed = 0;
             this.SpriteAnimator.SetBool("Running", false);
             this.SpriteAnimator.SetBool("Sliding", false);
+            this.SpriteAnimator.SetBool("Pushing", false);
         }
     }
 
@@ -449,7 +475,7 @@ public class Actor : ActorBase
     public virtual void MoveVertical(int moveInput)
     {
         if (CanToggleSliding)
-            latestVertInputValue = moveInput;
+            this.latestVertInputValue = moveInput;
 
         if (this.IsHanging)
         {
@@ -466,12 +492,13 @@ public class Actor : ActorBase
                 if (Math.Abs(this.HorizontalSpeed) > 0.01f)
                 {
                     //Slide
-                    CurrentCollider = slidingCollider;
-                    SpriteAnimator.SetBool("Sliding", true);
+                    this.CurrentCollider = slidingCollider;
+                    this.SpriteAnimator.SetBool("Sliding", true);
+                    this.SpriteAnimator.SetBool("Pushing", false);
                 }
 
                 else
-                    CurrentCollider = standardCollider;
+                    this.CurrentCollider = standardCollider;
             }
             else
             {
@@ -481,7 +508,7 @@ public class Actor : ActorBase
                 CurrentCollider = standardCollider;
 
                 if (latestVertInputValue == 0)
-                    SpriteAnimator.SetBool("Sliding", false);
+                    this.SpriteAnimator.SetBool("Sliding", false);
             }
         }
     }
