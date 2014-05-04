@@ -24,7 +24,7 @@ public class Actor : ActorBase
     #region Horizontal vars
     protected bool CanLookLeftRight = true;
     public bool FacingRight = true;
-    private int latestInputValue;
+    private int latestHorzInputValue;
     public float HorizontalSpeed;
     public float Acceleration;
     public float Deceleration;
@@ -42,7 +42,9 @@ public class Actor : ActorBase
     public float MaxVerticalSpeed;
     public float Gravity;
     public bool CanJump = true;
+    public bool CanToggleSliding = true;
     public bool IsHanging = false;
+    private int latestVertInputValue;
     public float JumpForce;
     #endregion
 
@@ -145,7 +147,7 @@ public class Actor : ActorBase
     #region Trigger Events
     public virtual void OnTriggerEnter(Collider otherObj)
     {
-        if (otherObj.tag == "Wall" || otherObj.tag == "MovingWall")
+        if ((otherObj.tag == "Wall" || otherObj.tag == "MovingWall") && CurrentCollider == standardCollider)
         {
             this.IsTouchingWall = true;
             //HorizontalSpeed = 0;
@@ -168,6 +170,41 @@ public class Actor : ActorBase
                 this.CanJump = true;
 	        }      
         }
+        else if ((otherObj.tag == "Wall" || otherObj.tag == "MovingWall") && CurrentCollider == slidingCollider)
+        {
+            Debug.Log("wall: " + otherObj.bounds.min.y);
+            Debug.Log("player: " + CurrentCollider.bounds.max.y);
+
+            if (otherObj.bounds.min.y > CurrentCollider.bounds.max.y)
+            {
+                Debug.Log("Going under");
+                this.IsTouchingWall = false;
+                this.CanToggleSliding = false;
+                return;
+            }
+            //this.IsTouchingWall = true;
+            //HorizontalSpeed = 0;
+
+            //Check wall position
+            this.WallPosition = otherObj.transform.position.x - this.ActorTransform.position.x;
+
+            //Stop player from moving on appropriate side and snap smoothly
+            if (this.WallPosition > 0)
+                Snap(otherObj, ObstaclePosition.Right, 0);
+
+            else if (this.WallPosition < 0)
+                Snap(otherObj, ObstaclePosition.Left, 0);
+
+            if (otherObj.tag == "MovingWall")
+            {
+                this.ActorTransform.parent = otherObj.transform;
+                //CurrentVerticalState = VerticalState.Grounded;
+                this.IsHanging = true;
+                this.CanJump = true;
+            }
+        }
+
+
         //Check position of the floor. If the center of the floor 
         //is between the top and bottom of the collider, treat the
         //floor as a wall
@@ -197,8 +234,20 @@ public class Actor : ActorBase
 
     public virtual void OnTriggerStay(Collider otherObj)
     {
-        if (otherObj.tag == "Wall")
+        if (otherObj.tag == "Wall" && CurrentCollider == standardCollider)
             this.IsTouchingWall = true;
+
+        else if (otherObj.tag == "Wall" && CurrentCollider == slidingCollider)
+        {
+            if (otherObj.bounds.min.y > CurrentCollider.bounds.max.y)
+            {
+                this.IsTouchingWall = false;
+                this.CanToggleSliding = false;
+            }
+
+            else
+                this.IsTouchingWall = true;   
+        }
 
         //if (otherObj.tag == "Floor" && this.CanDetectFloors)
             //this.IsTouchingFloorEdge = true;
@@ -210,8 +259,11 @@ public class Actor : ActorBase
     public virtual void OnTriggerExit(Collider otherObj)
     {
         if (otherObj.tag == "Wall")
+        {
             this.IsTouchingWall = false;
-
+            this.CanToggleSliding = true;
+        }
+            
         if (otherObj.tag == "Floor" && this.CanDetectFloors)
             this.IsTouchingFloorEdge = false;
 
@@ -280,7 +332,7 @@ public class Actor : ActorBase
         //TODO: See if I can scale animation speed with animator
 
         if (setInput)
-            latestInputValue = moveInput;
+            this.latestHorzInputValue = moveInput;
         
         if (moveInput < 0)
         {
@@ -335,7 +387,7 @@ public class Actor : ActorBase
         if (!this.IsTouchingWall && !this.IsTouchingFloorEdge)
         {
             Vector3 test = Quaternion.Euler(0, 0, this.ActiveFloorRotation * Mathf.Rad2Deg) * Vector3.right;
-            this.ActorTransform.Translate(test * this.HorizontalSpeed * latestInputValue * Time.fixedDeltaTime);
+            this.ActorTransform.Translate(test * this.HorizontalSpeed * this.latestHorzInputValue * Time.fixedDeltaTime);
         }
         else //Restrict movement to one side
         {
@@ -343,13 +395,13 @@ public class Actor : ActorBase
             if (this.WallPosition > 0)
             {
                 if (moveInput < 0)
-                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * latestInputValue * Time.fixedDeltaTime);
+                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * this.latestHorzInputValue * Time.fixedDeltaTime);
             }
                 //Wall is on the left
             else if (this.WallPosition < 0)
             {
                 if (moveInput > 0)
-                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * latestInputValue * Time.fixedDeltaTime);
+                    this.ActorTransform.Translate(Vector3.right * this.HorizontalSpeed * this.latestHorzInputValue * Time.fixedDeltaTime);
             }
         }
     }
@@ -396,17 +448,20 @@ public class Actor : ActorBase
     /// <param name="moveInput">Determines the direction in which the actor moves</param>
     public virtual void MoveVertical(int moveInput)
     {
+        if (CanToggleSliding)
+            latestVertInputValue = moveInput;
+
         if (this.IsHanging)
         {
-            if (moveInput > 0)
+            if (latestVertInputValue > 0)
                 WallJump(this.JumpForce / 1.5f, 75);
 
-            else if (moveInput < 0)
+            else if (latestVertInputValue < 0)
                 WallJump(0, 0);
         }
         else
         {
-            if (moveInput < 0 && CurrentVerticalState == VerticalState.Grounded)
+            if (latestVertInputValue < 0 && CurrentVerticalState == VerticalState.Grounded)
             {
                 if (Math.Abs(this.HorizontalSpeed) > 0.01f)
                 {
@@ -420,12 +475,12 @@ public class Actor : ActorBase
             }
             else
             {
-                if (moveInput > 0)
+                if (latestVertInputValue > 0)
                     Jump(this.JumpForce);
 
                 CurrentCollider = standardCollider;
 
-                if (moveInput == 0)
+                if (latestVertInputValue == 0)
                     SpriteAnimator.SetBool("Sliding", false);
             }
         }
