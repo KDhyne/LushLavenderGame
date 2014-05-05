@@ -9884,11 +9884,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400004, guid: a91e066b1931148409cfcf1814cc6d68, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -35
+      value: -36.0882912
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: a91e066b1931148409cfcf1814cc6d68, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 16.3420906
+      value: 2.33460212
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: a91e066b1931148409cfcf1814cc6d68, type: 2}
       propertyPath: m_LocalPosition.z
@@ -22832,7 +22832,7 @@ Transform:
   m_PrefabInternal: {fileID: 721672852}
   m_GameObject: {fileID: 1518870063}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35, y: 16.3420906, z: 0}
+  m_LocalPosition: {x: -36.0882912, y: 2.33460212, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 813754739}
@@ -25202,6 +25202,7 @@ MonoBehaviour:
   CountdownTimer: 3
   ShowEndGUI: 0
   AddBells: 0
+  GoldenBellAwarded: 0
   GoldenBell: {fileID: 100000, guid: a9c809a5e6956c948b63aa5a68407a81, type: 2}
   TotalSilverBellCount: 17
 --- !u!4 &1669581444

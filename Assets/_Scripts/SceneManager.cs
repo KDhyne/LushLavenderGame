@@ -17,7 +17,8 @@ public class SceneManager : MonoBehaviour
 	public float Bellcount = 0f; //Used for animating the counting at the end
 	public float CountdownTimer;
     public bool ShowEndGUI;
-    public bool AddBells ;
+    public bool AddBells;
+    public bool GoldenBellAwarded;
     public GameObject GoldenBell;
 
     public int TotalSilverBellCount;
@@ -91,11 +92,6 @@ public class SceneManager : MonoBehaviour
 
     private IEnumerator PlayEndSequence()
     {
-        if (ShowEndGUI)
-        {
-            yield break;
-        }
-
         //Stop player and center the camera
 
         player.CanPlayerMove = false;
@@ -104,17 +100,19 @@ public class SceneManager : MonoBehaviour
         iTween.MoveTo(cameraMan.gameObject, new Vector3(player.transform.position.x, player.transform.position.y + 10f, -10f), 1f);
 
         yield return new WaitForSeconds(1.5f);
-		//Add up current bells
+
+		//Allow Update to add up current bells
         AddBells = true;
 		
+        yield return new WaitForSeconds(3f);
 
-        //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
-        yield return new WaitForSeconds(4f);
+        if (CurrentSilverBellCount == TotalSilverBellCount && !GoldenBellAwarded)
+        {
+            Instantiate(this.GoldenBell, this.player.transform.position + new Vector3(0, 12, 0), Quaternion.identity);
+            GoldenBellAwarded = true;
+        }
 
-        var goldenBell = (GameObject)Instantiate(GoldenBell, player.transform.position + new Vector3(0, 12, 0), Quaternion.identity);
-
-
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
 
 		//Walk player off the stage
 		player.MoveHorizontal(1, true);
