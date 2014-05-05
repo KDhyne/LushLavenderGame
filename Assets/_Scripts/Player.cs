@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Security.Permissions;
 
@@ -9,6 +10,9 @@ public class Player : Actor
     public float SpeedUpAmount;
     public int SpeedUpLevel;
     public GameObject AngerVein;
+    private float blinkRate = .1f;
+    private int numberOfTimesToBlink = 5;
+    private int blinkCount;
 
     private float initialMaxHorizontalSpeed;
 
@@ -115,15 +119,42 @@ public class Player : Actor
 
     public override IEnumerator TakeDamage(int damageAmount, float invincibileTime = -1)
     {
+        //Use actor-specified invincibility time if none is supplied via parameters
+        if (Math.Abs(invincibileTime - (-1f)) < .01)
+        {
+            invincibileTime = InvincibilityTime;
+        }
+        Debug.Log(invincibileTime);
+
+        //Break out immediately if actor can't be hit
+        if (!this.CanBeHit)
+            yield break;
+
+        //subtract hit points
+        this.CurrentHitPoints -= damageAmount;
+
         //If the player isn't invincible and won't die, add the anger vein
-        if (this.CanBeHit && this.CurrentHitPoints > 1)
+        if (this.CanBeHit && this.CurrentHitPoints > 0)
         {
             var angerVein = (GameObject)Instantiate(AngerVein, this.transform.position + new Vector3(0, 1.5f, -1), Quaternion.identity);
             angerVein.transform.parent = this.gameObject.transform;
-            Debug.Log("made soemthing" + angerVein.transform.position);
             Destroy(angerVein, this.InvincibilityTime);
         }
-        return base.TakeDamage(damageAmount, invincibileTime);
+
+        //Temporary invincibility
+        this.CanBeHit = false;
+
+        while (blinkCount < numberOfTimesToBlink)
+        {
+            this.renderer.enabled = !this.renderer.enabled;
+
+            if (gameObject.renderer.enabled)
+                blinkCount++;
+
+            yield return new WaitForSeconds(invincibileTime / numberOfTimesToBlink);
+        }
+        blinkCount = 0;
+        this.CanBeHit = true;
     }
 
     public override IEnumerator DestroyActor()

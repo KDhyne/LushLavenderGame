@@ -11,9 +11,11 @@ public class TriggerDiving : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
-
         spawnpoint = Camera.main.transform.FindChild("DiveSpawnPoint").transform;
+        
+        //Set the trigger as true and hide its mesh
         Active = true;
+        this.renderer.enabled = false;
     }
 
     void Update()
