@@ -46,11 +46,19 @@ public class ParallaxBackground : MonoBehaviour
 
     float GetHoriziontalPosition(float z)
     {
-        if (z <= 1)
+        if (z >= 0)
         {
-            z = 1;
+			//Let's not get weird with super high speeds as z approaches 0
+			if (z < 1)
+			{
+				z = 1;
+			}
+		
+			//If the object is in the background (z is +) have it move z times faster than the player
+            return (initialPositionX - transform.position.x) * 1/z;
         }
-
-        return (initialPositionX - transform.position.x) * 1/z;
+		
+		//If the object is in the foreground (z is negative) have it move z times faster than the player
+		return (initialPositionX - transform.position.x) * -z;
     }
 }
