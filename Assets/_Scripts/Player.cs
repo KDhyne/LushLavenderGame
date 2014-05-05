@@ -69,9 +69,7 @@ public class Player : Actor
                 this.MoveHorizontal(1, true);
             
             else
-            {
                 this.MoveHorizontal(0, false);
-            }
         }
 
         //Jumping/Sliding
@@ -121,9 +119,8 @@ public class Player : Actor
     {
         //Use actor-specified invincibility time if none is supplied via parameters
         if (Math.Abs(invincibileTime - (-1f)) < .01)
-        {
             invincibileTime = InvincibilityTime;
-        }
+
         Debug.Log(invincibileTime);
 
         //Break out immediately if actor can't be hit
