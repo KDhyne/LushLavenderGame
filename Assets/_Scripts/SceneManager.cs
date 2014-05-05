@@ -17,6 +17,8 @@ public class SceneManager : MonoBehaviour
 	public float Bellcount = 0f; //Used for animating the counting at the end
 	public float CountdownTimer;
     public bool ShowEndGUI;
+    public bool AddBells ;
+    public GameObject GoldenBell;
 
     public int TotalSilverBellCount;
 
@@ -75,33 +77,44 @@ public class SceneManager : MonoBehaviour
                 //If the player passes the last checkpoint in the collection of all checkpoints,
                 //change to the end state
 		        if (checkpoints.IndexOf(activeCheckpoint) == (checkpoints.Count - 1))
-		        {
 		            currentlevelState = LevelState.End;
-		        }
 			    break;
 
 		    case LevelState.End:
 		        StartCoroutine(PlayEndSequence());
-			    break;
+                ShowEndGUI = true;
+                if (AddBells)
+                    this.Bellcount = iTween.FloatUpdate(this.Bellcount, CurrentSilverBellCount, 2f);
+                break;
 		}
 	}
 
     private IEnumerator PlayEndSequence()
     {
+        if (ShowEndGUI)
+        {
+            yield break;
+        }
+
         //Stop player and center the camera
 
         player.CanPlayerMove = false;
 		player.MoveHorizontal(0, false);
         cameraMan.IsFollowingPlayer = false;
-        iTween.MoveTo(cameraMan.gameObject, new Vector3(player.transform.position.x, 2.5f, -10f), 1f);
+        iTween.MoveTo(cameraMan.gameObject, new Vector3(player.transform.position.x, player.transform.position.y + 10f, -10f), 1f);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
 		//Add up current bells
-        ShowEndGUI = true;
-		this.Bellcount = iTween.FloatUpdate(this.Bellcount, CurrentSilverBellCount, 1f);
+        AddBells = true;
+		
 
         //TODO: Check if the number of bells collected equals the total number in the level. If so, Give a Golden Bell
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
+
+        var goldenBell = (GameObject)Instantiate(GoldenBell, player.transform.position + new Vector3(0, 12, 0), Quaternion.identity);
+
+
+        yield return new WaitForSeconds(4f);
 
 		//Walk player off the stage
 		player.MoveHorizontal(1, true);
@@ -131,7 +144,7 @@ public class SceneManager : MonoBehaviour
             case LevelState.End:
 	            if (ShowEndGUI)
 	            {
-	                GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), "Silver Bells Collected: " + Mathf.CeilToInt(CurrentSilverBellCount) + "/" + this.TotalSilverBellCount);
+	                GUI.Label(new Rect((Screen.width/2f),(Screen.height/2f) - 70, 200, 200), "Silver Bells Collected: " + Mathf.CeilToInt(Bellcount) + "/" + this.TotalSilverBellCount);
 	            }
                 break;
 	    }

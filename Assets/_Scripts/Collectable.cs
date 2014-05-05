@@ -23,9 +23,7 @@ public abstract class Collectable : MonoBehaviour
             return;
 
         if (otherObj.tag == "Player")
-        {
             this.ApplyCollectedEffect(otherObj.GetComponent<Player>());
-        }
 
         if (PartOfGroup)
             this.gameObject.transform.parent.GetComponent<CollectableGroup>().DestroyGroup();
@@ -49,9 +47,9 @@ public abstract class Collectable : MonoBehaviour
 
         //Hide and explode
         renderer.enabled = false;
-        var particle = (GameObject)Instantiate(CollectedParticleEffect, this.transform.position, Quaternion.identity);
+        var particle = (GameObject)Instantiate(CollectedParticleEffect, this.transform.position + new Vector3(0, 0, -5f), Quaternion.identity);
+        
         //TODO: Add SoundManager.PlaySFX(CollectedAudioClip);
-
 
         //Destroy the particles
         Destroy(idleParticle);

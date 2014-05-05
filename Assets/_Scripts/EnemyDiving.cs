@@ -20,6 +20,7 @@ public class EnemyDiving : ActorBase
         //Wait
         yield return new WaitForSeconds(0.75f);
         //Dive toward player
+        this.SpriteAnimator.SetBool("Diving", true);
         iTween.MoveTo(this.gameObject, iTween.Hash("position", new Vector3(-75, -20, 10), "islocal", true, "time", 1f, "easetype", iTween.EaseType.easeInBack));
         //Wait then destroy
         yield return new WaitForSeconds(5f);

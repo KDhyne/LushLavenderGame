@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Security.Permissions;
+
 using UnityEngine;
 
 public class Player : Actor
@@ -6,6 +8,7 @@ public class Player : Actor
     public bool IsAlwaysRunning;
     public float SpeedUpAmount;
     public int SpeedUpLevel;
+    public GameObject AngerVein;
 
     private float initialMaxHorizontalSpeed;
 
@@ -109,6 +112,19 @@ public class Player : Actor
         #endregion
 
 	}
+
+    public override IEnumerator TakeDamage(int damageAmount, float invincibileTime = -1)
+    {
+        //If the player isn't invincible and won't die, add the anger vein
+        if (this.CanBeHit && this.CurrentHitPoints > 1)
+        {
+            var angerVein = (GameObject)Instantiate(AngerVein, this.transform.position + new Vector3(0, 1.5f, -1), Quaternion.identity);
+            angerVein.transform.parent = this.gameObject.transform;
+            Debug.Log("made soemthing" + angerVein.transform.position);
+            Destroy(angerVein, this.InvincibilityTime);
+        }
+        return base.TakeDamage(damageAmount, invincibileTime);
+    }
 
     public override IEnumerator DestroyActor()
     {

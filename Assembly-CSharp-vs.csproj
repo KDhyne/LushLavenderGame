@@ -88,6 +88,7 @@
      <Compile Include="Assets\_Scripts\Misc Unused\Bullet.cs" />
      <Compile Include="Assets\_Scripts\Misc Unused\FillingBar.cs" />
      <Compile Include="Assets\_Scripts\Misc Unused\temp_platformMove.cs" />
+     <Compile Include="Assets\_Scripts\ParallaxBackground.cs" />
      <Compile Include="Assets\_Scripts\Player.cs" />
      <Compile Include="Assets\_Scripts\SceneManager.cs" />
      <Compile Include="Assets\_Scripts\SilverBell.cs" />
