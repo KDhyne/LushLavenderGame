@@ -29,6 +29,12 @@ public class SceneManager : MonoBehaviour
 	private Player player;
     private CameraMan cameraMan;
 
+	Dictionary<string, string> levelMap = new Dictionary<string, string>()
+	{
+		{"1_Flowery Fields", "2_Superfluous Sierra"},
+		{"2_Superfluous Sierra", "0_Main Menu"}
+	};
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -116,6 +122,14 @@ public class SceneManager : MonoBehaviour
 
 		//Walk player off the stage
 		player.MoveHorizontal(1, true);
+
+		yield return new WaitForSeconds(1f);
+
+		cameraMan.TransitionOut();
+
+		yield return new WaitForSeconds(2f);
+		Debug.Log(Application.loadedLevelName);
+		Application.LoadLevel(levelMap[Application.loadedLevelName]);
     }
 
     public void SetActiveCheckpoint(GameObject newActiveCheckpoint)

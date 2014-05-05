@@ -11,11 +11,14 @@ public class CameraMan : MonoBehaviour
     public float VerticalAdjustment = 0f;
     public float AdjustmentSpeed;
 
+	public GameObject TransitionStill;
+
     // Use this for initialization
     void Start()
     {
         cameraManTransform = Camera.main.transform;
         cameraTarget = GameObject.Find("Player");
+		Invoke("TransitionIn", 1f);
     }
 
     // Update is called once per frame
@@ -55,4 +58,23 @@ public class CameraMan : MonoBehaviour
         //else
             //VerticalAdjustment = iTween.FloatUpdate(cameraTarget.transform.position.y, 0f, 2f);
     }
+
+	public void TransitionIn()
+	{
+		TransitionStill.transform.localPosition = new Vector3(0f,0f,1f);
+
+		Vector3 targetPosition  = new Vector3(
+			transform.localPosition.x - 100f,
+			transform.localPosition.y,
+			1f);
+
+		iTween.MoveTo(TransitionStill, iTween.Hash("islocal", true, "position", targetPosition, "time", 5f));
+	}
+
+	public void TransitionOut()
+	{
+		Vector3 targetPosition  = new Vector3(0f,0f,1f);
+
+		iTween.MoveTo(TransitionStill, iTween.Hash("islocal", true, "position", targetPosition, "time", 3f));
+	}
 }
