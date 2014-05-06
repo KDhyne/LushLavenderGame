@@ -11,11 +11,14 @@ public class CameraMan : MonoBehaviour
     public float VerticalAdjustment = 0f;
     public float AdjustmentSpeed;
 
+    private bool transOut;
+
 	public GameObject TransitionStill;
 
     // Use this for initialization
     void Start()
     {
+        TransitionStill.GetComponent<SpriteRenderer>().enabled = true;
         cameraManTransform = Camera.main.transform;
         cameraTarget = GameObject.Find("Player");
 		Invoke("TransitionIn", 0.5f);
@@ -63,18 +66,22 @@ public class CameraMan : MonoBehaviour
 	{
 		TransitionStill.transform.localPosition = new Vector3(0f,0f,1f);
 
-		Vector3 targetPosition  = new Vector3(
-			transform.localPosition.x - 100f,
-			transform.localPosition.y,
-			1f);
+		var targetPosition  = new Vector3(-120f, 0, 1f);
 
-		iTween.MoveTo(TransitionStill, iTween.Hash("islocal", true, "position", targetPosition, "time", 5f));
+		iTween.MoveTo(TransitionStill, iTween.Hash("islocal", true, "position", targetPosition, "time", 1.5f, "easetype", iTween.EaseType.linear));
 	}
 
 	public void TransitionOut()
 	{
-		Vector3 targetPosition  = new Vector3(0f,0f,1f);
+	    if (transOut)
+	        return;
 
-		iTween.MoveTo(TransitionStill, iTween.Hash("islocal", true, "position", targetPosition, "time", 3f));
+	    transOut = true;
+
+        TransitionStill.transform.localPosition = new Vector3(120f, 0, 1f);
+
+        var targetPosition = new Vector3(0, 0f, 1f);
+
+		iTween.MoveTo(TransitionStill, iTween.Hash("islocal", true, "position", targetPosition, "time", 1.5f, "easetype", iTween.EaseType.linear));
 	}
 }
