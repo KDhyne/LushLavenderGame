@@ -102,7 +102,7 @@ public class SceneManager : MonoBehaviour
 			    //general upkeep things
                 if (StartScreen)
                 {
-                    player.MoveHorizontal(1, true);
+                    player.MoveHorizontal(2, true);
 
                     if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
                     {
