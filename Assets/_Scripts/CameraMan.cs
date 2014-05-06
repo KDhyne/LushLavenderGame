@@ -18,7 +18,7 @@ public class CameraMan : MonoBehaviour
     {
         cameraManTransform = Camera.main.transform;
         cameraTarget = GameObject.Find("Player");
-		Invoke("TransitionIn", 1f);
+		Invoke("TransitionIn", 0.5f);
     }
 
     // Update is called once per frame
