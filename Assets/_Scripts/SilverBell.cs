@@ -7,5 +7,6 @@ public class SilverBell : Collectable
         Debug.Log("+1 Silver Bell");
         var sceneManager = GameObject.Find("SceneManager").GetComponent<SceneManager>();
         sceneManager.CurrentSilverBellCount++;
+        SoundManager.PlaySFX("BellGet");
     }
 }

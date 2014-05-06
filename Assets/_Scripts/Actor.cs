@@ -332,7 +332,8 @@ public class Actor : ActorBase
     /// </summary>
     /// <param name="moveInput">Determines the direction at which the actor moves</param>
     /// <param name="setInput">True will cause the player to flip if a different signed value is given</param>
-    public virtual void MoveHorizontal(int moveInput, bool setInput)
+    /// <param name="skid">True will cause the player to skid if decelerating</param>
+    public virtual void MoveHorizontal(int moveInput, bool setInput, bool skid = false)
     {
         //Scale the running animation's speed based on player speed
         //spriteAnim.GetAnimation("Lavender_Run").speed = (HorizontalSpeed/MaxHorizontalSpeed);
@@ -383,7 +384,7 @@ public class Actor : ActorBase
         {
             //Maintain horizontal momentum while in the air
             if (this.CurrentVerticalState == VerticalState.Grounded)
-                Decelerate();
+                Decelerate(skid);
         }
 
         //Allow horizontal movement if the actor isn't hanging on a wall
@@ -451,12 +452,19 @@ public class Actor : ActorBase
     /// <summary>
     /// Decelerate to zero movement speed. Only decelerate main player if no input received.
     /// </summary>
-    protected virtual void Decelerate()
+    /// <param name="skid"></param>
+    protected virtual void Decelerate(bool skid)
     {
         //Maintain horizontal momentum while in the air
         if (this.CurrentVerticalState == VerticalState.Grounded)
         {
             this.HorizontalSpeed -= this.Deceleration;
+
+            if (skid && this.HorizontalSpeed > 0)
+            {
+                this.SpriteAnimator.SetBool("Skid", true);
+            }
+
         }
 
         if (this.HorizontalSpeed <= 0)
@@ -465,6 +473,7 @@ public class Actor : ActorBase
             this.SpriteAnimator.SetBool("Running", false);
             this.SpriteAnimator.SetBool("Sliding", false);
             this.SpriteAnimator.SetBool("Pushing", false);
+            this.SpriteAnimator.SetBool("Skid", false);
         }
     }
 

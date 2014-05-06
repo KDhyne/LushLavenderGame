@@ -23,13 +23,16 @@ public abstract class Collectable : MonoBehaviour
             return;
 
         if (otherObj.tag == "Player")
+        {
             this.ApplyCollectedEffect(otherObj.GetComponent<Player>());
 
-        if (PartOfGroup)
-            this.gameObject.transform.parent.GetComponent<CollectableGroup>().DestroyGroup();
+            if (PartOfGroup)
+                this.gameObject.transform.parent.GetComponent<CollectableGroup>().DestroyGroup();
 
-        else
-            this.DestroyCollectable();
+            else
+                this.DestroyCollectable();
+        }
+            
     }
 
     /// <summary>
